@@ -4,6 +4,8 @@ using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 using UnityEngine.Accessibility;
 
+using System;
+
 public class PlayerController : MonoBehaviour
 {
     private float Speed;
@@ -12,9 +14,10 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
 
     private bool onAttack;
-    private bool onHit;
+    private bool onClimb;
+    private bool rollBegin;
 
-    private bool rollNow;
+    private bool rPressed;
 
     // Start is called before the first frame update
     void Start()
@@ -25,9 +28,10 @@ public class PlayerController : MonoBehaviour
         animator = this.GetComponent<Animator>();
 
         onAttack = false;
-        onHit = false;
+        onClimb = false;
+        rollBegin = false;
 
-        rollNow = false;
+        rPressed = false;
     }
 
     // Update is called once per frame
@@ -48,10 +52,6 @@ public class PlayerController : MonoBehaviour
         {
             OnAttack();
 		}
-		if (Input.GetKey(KeyCode.LeftShift))
-		{
-			OnHit();
-		}
 
 		if (Input.GetKey(KeyCode.F))
 		{
@@ -60,11 +60,25 @@ public class PlayerController : MonoBehaviour
 
 		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow))
 		{
-			animator.SetTrigger("Climbing");
+            OnClimb();
 		}
 
+        if (Input.GetKey(KeyCode.Q))
+		{
+            animator.SetTrigger("Hit");
+		}
 
-		animator.SetFloat("Speed", Hor);
+        if (Input.GetKey(KeyCode.R))
+		{
+            if (!rPressed)
+			{
+                
+			}
+            rPressed = true;
+            animator.SetTrigger("Roll");
+		}
+
+        animator.SetFloat("Speed", Hor);
 		transform.position += Movement;
 	}
 
@@ -84,25 +98,35 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("Attack");
     }
 
-	private void OnHit()
-	{
-		if (onHit)
-		{
-			return;
-		}
+    private void OnClimb()
+    {
+        if (onClimb)
+        {
+            return;
+        }
 
-		onHit = true;
-		animator.SetTrigger("Hit");
-	}
+        onClimb = true;
+        animator.SetTrigger("Climb");
+    }
 
- 
-	private void SetAttack()
+
+    private void SetAttack()
     {
         onAttack = false;
     }
     
-    private void SetHit()
+    private void SetClimb()
     {
-        onHit = false;
+        onClimb = false;
     }
+
+    private void SetDie()
+	{
+        animator.SetTrigger("Die");
+	}
+
+    private void Rebirth()
+	{
+        animator.SetTrigger("Rebirth");
+	}
 }
