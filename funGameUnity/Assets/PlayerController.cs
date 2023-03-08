@@ -5,33 +5,54 @@ using UnityEngine;
 using UnityEngine.Accessibility;
 
 using System;
+using UnityEditor.Experimental.GraphView;
 
 public class PlayerController : MonoBehaviour
 {
-    private float Speed;
-    private Vector3 Movement=new Vector3(0f,0f,0f);
+	// ** 움직이는 속도
+	private float Speed;
+	// ** 움직임을 저장하는 벡터
+	private Vector3 Movement=new Vector3(0f,0f,0f);
 
-    public Animator animator;
+	// ** 플레이어의 Animator 구성 요소를 받아오기 위해..
+	public Animator animator;
+    // **플레이어의 SpriteRenderer 구성요소
+    private SpriteRenderer spriteRenderer;
 
-    private bool onAttack;
-    private bool onClimb;
-    private bool rollBegin;
+	// ** [상태체크]
+	private bool onAttack;
+    private bool onHit;
 
     private bool rPressed;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Speed = 5.0f;
+	// ** 총알 원본
+	public GameObject BulletPrefab;
 
-        // ** player의 Animator를 받아온다.
-        animator = this.GetComponent<Animator>();
+    private List<GameObject> Bullets = new List<GameObject>();
+
+    private float Direction;
+
+	private void Awake()
+	{
+		// ** player의 Animator를 받아온다.
+		animator = this.GetComponent<Animator>();
+
+		// ** player의 SpriteRenderer를 받아온다.
+		spriteRenderer = this.GetComponent<SpriteRenderer>();
+	}
+
+	// Start is called before the first frame update
+	void Start()
+    {
+		// ** 속도를 초기화
+		Speed = 5.0f;
 
         onAttack = false;
-        onClimb = false;
-        rollBegin = false;
+        onHit = false;
 
         rPressed = false;
+
+		Direction = 0;
     }
 
     // Update is called once per frame
@@ -43,84 +64,143 @@ public class PlayerController : MonoBehaviour
         // ** Input.GetAxisRaw = -1, 0, 1 중 하나의 값을 반환함.
         float Hor = Input.GetAxisRaw("Horizontal");
         float Ver = Input.GetAxisRaw("Vertical");
-        Movement=new Vector3(
+
+        // ** Hor 이 0이라면 멈춰있는 상태이므로 예외처리
+        if (Hor != 0)
+			Direction = Hor;
+
+		// ** 플레이어가 바라보고 있는 방향에 따라 이미지 플립 설정
+		if (Direction<0)
+        {
+			spriteRenderer.flipX = true;
+		}
+        else if (Direction>0)
+        {
+            spriteRenderer.flipX = false;
+        }
+
+		// ** 입력받은 값으로 플레이어를 움직인다. 
+		Movement = new Vector3(
             Hor * Time.deltaTime * Speed, 
             Ver * Time.deltaTime * Speed
             , 0.0f);
 
-        if(Input.GetKey(KeyCode.LeftControl))
-        {
-            OnAttack();
-		}
-
-		if (Input.GetKey(KeyCode.F))
+		// ** 좌측 컨트롤키를 입력한다면.....
+		if (Input.GetKey(KeyCode.LeftControl))
 		{
-            animator.SetTrigger("Roll Begin");
+			// ** 공격
+			OnAttack();
 		}
 
 		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow))
 		{
-            OnClimb();
+			animator.SetTrigger("Climb");
 		}
 
-        if (Input.GetKey(KeyCode.Q))
+		// ** 좌측 쉬프트키를 입력한다면
+		if (Input.GetKey(KeyCode.LeftShift))
 		{
-            animator.SetTrigger("Hit");
+			// ** 피격
+			OnHit();
 		}
 
-        if (Input.GetKey(KeyCode.R))
+		if (Input.GetKey(KeyCode.R))
 		{
             if (!rPressed)
 			{
-                
+				animator.SetTrigger("Roll Begin");
 			}
             rPressed = true;
-            animator.SetTrigger("Roll");
 		}
+        else
+        {
+            rPressed = false;
+            animator.SetTrigger("Roll End");
+        }
 
-        animator.SetFloat("Speed", Hor);
+		// ** 스페이스바를 입력한다면..
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			// ** 총알원본을 복제한다.
+			GameObject Obj = Instantiate(BulletPrefab);
+
+
+			// ** 복제된 총알의 위치를 현재 플레이어의 위치로 초기화한다.
+			Obj.transform.position = transform.position;
+
+
+			// ** 총알의 BulletController 스크립트를 받아온다. 
+			BulletController Controller = Obj.AddComponent<BulletController>();
+
+			// ** 총알 스크립트내부의 방향 변수를 현재 플레이어의 방향 변수로 설정한다. 
+			Controller.Direction = new Vector3(Direction, 0.0f, 0.0f);
+
+			//** 총알의 SpriteRenderer를 받아온다. 
+			SpriteRenderer renderer = Obj.GetComponent<SpriteRenderer>(); ;
+
+			//** 총알의 이미지 반전 상태를 플레이어의 이미지 반전 상태로 설정한다. 
+			renderer.flipX = spriteRenderer.flipX;
+
+			//** 모든 설정이 종료되었다면 저장소에 저장
+			Bullets.Add(Obj);
+        }
+
+		//** 플레이어의 움직임에 따라 애니메이션 설정
+		animator.SetFloat("Speed", Hor);
+
+		//** 실제 플레이어를 움직인다.
 		transform.position += Movement;
 	}
 
-	private void FixedUpdate()
+    private void OnAttack()
 	{
-		//transform.position += Movement;
+		//** 이미 공격모션이 진행중이라면
+		if (onAttack)
+		{
+			//**함수를 종료한다.
+			return;
+        }
+
+		//** 함수가 종료되지 않았다면...
+		//**공격상태를 활성화 하고
+		onAttack = true;
+
+		//**공격 모션을 실행 시킨다.
+		animator.SetTrigger("Attack");
+    }
+
+	private void OnHit()
+	{
+		//** 이미 피격모션이 진행중이라면
+		if (onHit)
+		{
+			//**함수를 종료한다.
+			return;
+		}
+
+		//** 함수가 종료되지 않았다면...
+		//**피격상태를 활성화 하고
+		onHit = true;
+
+		//**피격 모션을 실행 시킨다.
+		animator.SetTrigger("Hit");
 	}
 
-    private void OnAttack()
-    {
-        if (onAttack)
-        {
-            return;
-        }
-
-        onAttack = true;
-        animator.SetTrigger("Attack");
+	private void SetAttack()
+	{
+		//** 함수가 실행되면 공격 모션이 비활성화 된다.
+		//** 함수는 애니메이션 클립의 이벤트 프레임으로 삽입됨.
+		onAttack = false;
     }
 
-    private void OnClimb()
-    {
-        if (onClimb)
-        {
-            return;
-        }
+	private void SetHit()
+	{
+		//** 함수가 실행되면 피격 모션이 비활성화 된다.
+		//** 함수는 애니메이션 클립의 이벤트 프레임으로 삽입됨.
+		onHit = false;
+	}
 
-        onClimb = true;
-        animator.SetTrigger("Climb");
-    }
-
-
-    private void SetAttack()
-    {
-        onAttack = false;
-    }
-    
-    private void SetClimb()
-    {
-        onClimb = false;
-    }
-
-    private void SetDie()
+	private void SetDie()
 	{
         animator.SetTrigger("Die");
 	}
