@@ -8,7 +8,10 @@ public class BulletController : MonoBehaviour
 {
 	// ** 총알이 날라가는 속도
 	private float Speed;
+	
+	private int hp;
 
+	public GameObject fxPrefab;
 	//overflow!
 	//public Vector3 Direction
 	//{
@@ -29,6 +32,7 @@ public class BulletController : MonoBehaviour
 	{
 		// ** 속도 초기값
 		Speed = 6.0f;
+		hp = 3;
 	}
 	// Update is called once per frame
 	void Update()
@@ -39,8 +43,34 @@ public class BulletController : MonoBehaviour
 	}
 
 	// ** 충돌체와 물리엔진이 포함된 오브젝트가 다른 충돌체와 충돌 한다면 실행되는 함수
-	private void OnTriggerEnter2D (Collider2D other)
+	private void OnTriggerEnter2D (Collider2D collision)
 	{
-		DestroyObject(this.gameObject);
+		--hp;
+
+		GameObject Obj = Instantiate(fxPrefab);
+
+		GameObject camera = new GameObject("Camera Test");
+		camera.AddComponent<CameraShake>();
+
+		Obj.transform.position = transform.position;
+
+		//print("Enter");
+		DestroyObject(collision.transform.gameObject);
+		if (hp==0)
+		{
+			DestroyObject(this.transform.gameObject);
+		}
 	}
+
+	/*
+	private void OnTriggerStay2D(Collider2D collision)
+	{
+		print("Stay");
+	}
+
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		print("Exit");
+	}
+	*/
 }

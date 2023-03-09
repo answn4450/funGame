@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
 	// ** 플레이어의 Animator 구성 요소를 받아오기 위해..
 	public Animator animator;
     // **플레이어의 SpriteRenderer 구성요소
-    private SpriteRenderer spriteRenderer;
+    private SpriteRenderer playerRenderer;
 
 	// ** [상태체크]
 	private bool onAttack;
@@ -25,10 +25,14 @@ public class PlayerController : MonoBehaviour
 
     private bool rPressed;
 
-	// ** 총알 원본
+	// ** 복제할 총알 원본
 	public GameObject BulletPrefab;
+	public GameObject[] StageBack = new GameObject[7];
 
-    private List<GameObject> Bullets = new List<GameObject>();
+	// ** 복제할 fx 원본
+	public GameObject FxPrefab;
+
+	private List<GameObject> Bullets = new List<GameObject>();
 
     private float Direction;
 
@@ -38,7 +42,7 @@ public class PlayerController : MonoBehaviour
 		animator = this.GetComponent<Animator>();
 
 		// ** player의 SpriteRenderer를 받아온다.
-		spriteRenderer = this.GetComponent<SpriteRenderer>();
+		playerRenderer = this.GetComponent<SpriteRenderer>();
 	}
 
 	// Start is called before the first frame update
@@ -53,7 +57,12 @@ public class PlayerController : MonoBehaviour
         rPressed = false;
 
 		Direction = 0;
-    }
+
+		for (int i = 0; i < 7; ++i)
+		{
+			StageBack[i] = GameObject.Find(i.ToString());
+		}
+	}
 
     // Update is called once per frame
     // ** 프레임마다 반복적으로 실행되는 함수.
@@ -72,16 +81,17 @@ public class PlayerController : MonoBehaviour
 		// ** 플레이어가 바라보고 있는 방향에 따라 이미지 플립 설정
 		if (Direction<0)
         {
-			spriteRenderer.flipX = true;
+			playerRenderer.flipX = true;
 		}
         else if (Direction>0)
         {
-            spriteRenderer.flipX = false;
+            playerRenderer.flipX = false;
         }
 
 		// ** 입력받은 값으로 플레이어를 움직인다. 
 		Movement = new Vector3(
-            Hor * Time.deltaTime * Speed, 
+     //     Hor * Time.deltaTime * Speed, 
+		0,
             Ver * Time.deltaTime * Speed
             , 0.0f);
 
@@ -121,29 +131,33 @@ public class PlayerController : MonoBehaviour
 		// ** 스페이스바를 입력한다면..
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			// ** 총알원본을 복제한다.
-			GameObject Obj = Instantiate(BulletPrefab);
+			// ** 공격
+			OnAttack();
 
+			// ** 총알원본을 본제한다.
+			GameObject Obj = Instantiate(BulletPrefab);
 
 			// ** 복제된 총알의 위치를 현재 플레이어의 위치로 초기화한다.
 			Obj.transform.position = transform.position;
 
-
-			// ** 총알의 BulletController 스크립트를 받아온다. 
+			// ** 총알의 BullerController 스크립트를 받아온다.
 			BulletController Controller = Obj.AddComponent<BulletController>();
+			
+			Controller.fxPrefab = FxPrefab;
 
-			// ** 총알 스크립트내부의 방향 변수를 현재 플레이어의 방향 변수로 설정한다. 
+			// ** 총알 스크립트내부의 방향 변수를 현재 플레이어의 방향 변수로 설정 한다.
 			Controller.Direction = new Vector3(Direction, 0.0f, 0.0f);
 
-			//** 총알의 SpriteRenderer를 받아온다. 
-			SpriteRenderer renderer = Obj.GetComponent<SpriteRenderer>(); ;
+			// ** 총알의 SpriteRenderer를 받아온다.
+			SpriteRenderer buleltRenderer = Obj.GetComponent<SpriteRenderer>();
 
-			//** 총알의 이미지 반전 상태를 플레이어의 이미지 반전 상태로 설정한다. 
-			renderer.flipX = spriteRenderer.flipX;
+			// ** 총알의 이미지 반전 상태를 플레이어의 이미지 반전 상태로 설정한다.
+			buleltRenderer.flipY = playerRenderer.flipX;
 
-			//** 모든 설정이 종료되었다면 저장소에 저장
+			// ** 모든 설정이 종료되었다면 저장소에 보관한다.
 			Bullets.Add(Obj);
-        }
+
+		}
 
 		//** 플레이어의 움직임에 따라 애니메이션 설정
 		animator.SetFloat("Speed", Hor);
