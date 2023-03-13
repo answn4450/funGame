@@ -22,19 +22,16 @@ public class PlayerController : MonoBehaviour
     private bool rPressed;
 
 	// ** 복제할 총알 원본
-	public GameObject BulletPrefab;
+	private GameObject BulletPrefab;
 	public GameObject[] StageBack = new GameObject[7];
 
 	// ** 복제할 fx 원본
-	public GameObject FxPrefab;
+	private GameObject FxPrefab;
 
 	private List<GameObject> Bullets = new List<GameObject>();
 
     private float Direction;
 
-	// ** 플레이어가 바라보는 방향
-	public bool DirLeft=false;
-	public bool DirRight=false;
 
 	private void Awake()
 	{
@@ -43,7 +40,11 @@ public class PlayerController : MonoBehaviour
 
 		// ** player의 SpriteRenderer를 받아온다.
 		playerRenderer = this.GetComponent<SpriteRenderer>();
-	}
+
+		// ** [Resources] 폴더에 내가 쓸 prefab을 로드한다. 
+		BulletPrefab = Resources.Load("Prefabs/Bullet") as GameObject;
+		FxPrefab = Resources.Load("Prefabs/FX/Smoke") as GameObject;
+}
 
 	// Start is called before the first frame update
 	void Start()
@@ -77,32 +78,51 @@ public class PlayerController : MonoBehaviour
         // ** Hor 이 0이라면 멈춰있는 상태이므로 예외처리
         if (Hor != 0)
 			Direction = Hor;
-		else
+
+		// ** 입력받은 값으로 플레이어를 움직인다. 
+		Movement = new Vector3(
+		//     Hor * Time.deltaTime * Speed, 
+		0,
+			Ver * Time.deltaTime * Speed
+			, 0.0f);
+
+		if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
 		{
-			DirLeft = false;
-			DirRight = false;
-			print(DirLeft);
-			print(DirRight);
+			ControllerManager.GetInstance().DirRight = true;
+			ControllerManager.GetInstance().DirLeft = false;
+			if (transform.position.x<0.0f)
+			{
+				transform.position += Movement;
+			}
 		}
+
+		if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+		{
+			ControllerManager.GetInstance().DirRight = false;
+			ControllerManager.GetInstance().DirLeft = true;
+
+			if (transform.position.x>-15.0f)
+			{
+				transform.position += Movement;
+			}
+		}
+
+		if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow))
+		{
+			ControllerManager.GetInstance().DirRight = false;
+			ControllerManager.GetInstance().DirLeft = false;
+		}
+
 
 		// ** 플레이어가 바라보고 있는 방향에 따라 이미지 플립 설정
 		if (Direction<0)
         {
-			playerRenderer.flipX = DirLeft= false;
-			transform.position += Movement;
+			playerRenderer.flipX = false;
 		}
 		else if (Direction>0)
         {
 			playerRenderer.flipX = false;
-			DirRight	= true;
 		}
-
-		// ** 입력받은 값으로 플레이어를 움직인다. 
-		Movement = new Vector3(
-     //     Hor * Time.deltaTime * Speed, 
-		0,
-            Ver * Time.deltaTime * Speed
-            , 0.0f);
 
 		// ** 좌측 컨트롤키를 입력한다면.....
 		if (Input.GetKey(KeyCode.LeftControl))
