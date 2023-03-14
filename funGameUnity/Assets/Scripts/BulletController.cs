@@ -1,55 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
-	// ** 총알이 날라가는 속도
+	// ** 총알이 날아가는 속도
 	private float Speed;
-	
+
 	// ** 총알이 충돌한 횟수
 	private int hp;
 
-
 	// ** 이펙트효과 원본
 	public GameObject fxPrefab;
-	//overflow!
-	//public Vector3 Direction
-	//{
-	//	get
-	//	{
-	//		return Direction;
-	//	}
-	//	set
-	//	{
-	//		Direction = value;
-	//	}
-	//}
 
-	// ** 총알이 날라가는 방향
+	// ** 총알이 날아가야할 방향
 	public Vector3 Direction { get; set; }
 
 	private void Start()
 	{
 		// ** 속도 초기값
-		Speed = 6.0f;
+		Speed = 10.0f;
 
-		// ** 충돌 횟수를 3으로 지정한다. 
+		// ** 충돌 횟수를 3으로 지정한다.
 		hp = 3;
 	}
-	// Update is called once per frame
+
 	void Update()
-    {
+	{
 		// ** 방향으로 속도만큼 위치를 변경
 		transform.position += Direction * Speed * Time.deltaTime;
 	}
 
-	// ** 충돌체와 물리엔진이 포함된 오브젝트가 다른 충돌체와 충돌 한다면 실행되는 함수
-	private void OnTriggerEnter2D (Collider2D collision)
+	// ** 충돌체와 물리엔진이 포함된 오브젝트가 다른 충돌체와 충돌한다면 실행되는 함수. 
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		// ** 충돌 횟수 차감. 
+		// ** 충돌횟수 차감.
 		--hp;
 
 		// ** 이펙트효과 복제.
@@ -58,39 +43,21 @@ public class BulletController : MonoBehaviour
 		// ** 진동효과를 생성할 관리자 생성.
 		GameObject camera = new GameObject("Camera Test");
 
-		// **진동 효과 컨트롤러 생성.
+		// ** 진동 효과 컨트롤러 생성.
 		camera.AddComponent<CameraShake>();
 
-		// ** 이펙트효과의 위치를 지정.
+		// ** 이펙트효과의 위치를 지정
 		Obj.transform.position = transform.position;
 
-		// ** collision = 충돌한 대상
+		// ** collision = 충돌한 대상.
 		// ** 충돌한 대상을 삭제한다. 
-		if(collision.transform.tag != "wall")
-		{
+		if (collision.transform.tag != "wall")
 			Destroy(collision.transform.gameObject);
-		}
 		else
-		{
 			Destroy(this.gameObject);
-		}
 
-		// ** 총알의 충돌 횟수가 0이 되면 총을 삭제. 
-		if (hp==0)
-		{
-			Destroy(this.transform.gameObject);
-		}
+		// ** 총알의 충돌 횟수가 0이 되면 총알 삭제.
+		if (hp == 0)
+			Destroy(this.gameObject);
 	}
-
-	/*
-	private void OnTriggerStay2D(Collider2D collision)
-	{
-		print("Stay");
-	}
-
-	private void OnTriggerExit2D(Collider2D collision)
-	{
-		print("Exit");
-	}
-	*/
 }

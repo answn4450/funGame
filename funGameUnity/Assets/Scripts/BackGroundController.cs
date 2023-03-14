@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BackGroundController : MonoBehaviour
 {
-    // ** 각각의 BackGround가 모여있는 계층구조의 최상위 객체
-    private Transform parent;
+	// ** BackGround 가 모여있는 계층구조의 최상위 객체(부모)
+	private Transform parent;
 
 	// ** Sprite를 포함하고 있는 구성요소
 	private SpriteRenderer spriteRenderer;
@@ -17,72 +16,70 @@ public class BackGroundController : MonoBehaviour
 	// ** 생성지점
 	private float endPoint;
 
-	// ** 삭제 지점
+	// ** 삭제 지점.
 	private float exitPoint;
 
-	// ** 이미지 이동 속도
+	// ** 이미지 이동속도
 	public float Speed;
 
 	// ** 플레이어 정보
-	public GameObject player;
-//rivate SpriteController playerController;
+	private GameObject player;
+	private PlayerController playerController;
 
 	// ** 움직임 정보
-	private Vector3 movemane = new Vector3(0.0f, 0.0f, 0.0f);
+	private Vector3 movemane;
 
-	// ** 이미지가 중앙 위치에 정상적으로 노출될 수 있도록 하기 위한 완충 역할
+	// ** 이미지가 중앙 위치에 정상적으로 노출될 수 있도록 하기 위한 완충역할.
 	private Vector3 offset = new Vector3(0.0f, 5.0f, 0.0f);
+
+	private GameObject Test;
 
 	private void Awake()
 	{
-
-		// ** 플레이어의 기본정보를 받아온다. 
+		// ** 플레이어의 기본정보를 받아온다.
 		player = GameObject.Find("Player").gameObject;
 
-		// ** 부모객체를 받아온다. 
+		// ** 부모객체를 받아온다.
 		parent = GameObject.Find("BackGround").transform;
 
-		// ** 이미지를 담고 있는 구성요소를 받아온다. 
+		// ** 현재 이미지를 담고있는 구성요소를 받아온다.
 		spriteRenderer = GetComponent<SpriteRenderer>();
 
-		// ** 플레이어 이미지를 담고 있는 구성요소를 받아온다. 
-//playerController = GetComponent<>();
+		// ** 플레이어 이미지를 담고있는 구성요소를 받아온다.
+		playerController = player.GetComponent<PlayerController>();
 	}
 
-	// Start is called before the first frame update
 	void Start()
 	{
-		// ** 구성요소에 포함된 이미지를 받아온다. 
+		// ** 구성요소에 포함된 이미지를 받아온다.
 		sprite = spriteRenderer.sprite;
-		
-		// ** 시작지점을 설정
+
+		// ** 시작지점을 설정.
 		endPoint = sprite.bounds.size.x * 0.5f + transform.position.x;
 
-		// ** 종료지점을 설정
-		exitPoint = -sprite.bounds.size.x * 0.5f + player.transform.position.x;
+		/*
+        Test = new GameObject("Gozmo");
+        Test.AddComponent<MyGizmo>();
+        Test.transform.position = new Vector3(endPoint, 0.0f, 0.0f);
+         */
+
+
+		// ** 종료지점을 설정.
+		exitPoint = -(sprite.bounds.size.x * 0.5f) + player.transform.position.x;
 	}
 
-    // Update is called once per frame
-    void Update()
+	void Update()
 	{
-		SpriteRenderer playerRenderer = player.GetComponent<SpriteRenderer>();
 		// ** 이동정보 셋팅
 		movemane = new Vector3(
-				// ** singleton 
-				Input.GetAxisRaw("Horizontal") * Time.deltaTime * Speed + offset.x,
-				player.transform.position.y + offset.y,
-				0.0f + offset.z
-				);
+			Input.GetAxisRaw("Horizontal") * Time.deltaTime * Speed + offset.x,
+			0.0f, 0.0f);
 
-		// ** 플레이어가 바라보고 있는 방향에 따라 분기됨.
-		if (ControllerManager.GetInstance().DirLeft)
-		{// ** 좌측 이동
-			endPoint -= movemane.x;
-		}
-		
+		// ** singleton
 		if (ControllerManager.GetInstance().DirRight)
-		{// ** 우측 이동
+		{
 			transform.position -= movemane;
+			endPoint -= movemane.x;
 		}
 
 		// ** 동일한 이미지 복사
@@ -91,25 +88,23 @@ public class BackGroundController : MonoBehaviour
 			// ** 이미지를 복제한다.
 			GameObject Obj = Instantiate(this.gameObject);
 
-			// ** 복제된 이미지의 부모를 설정한다. 
-			Obj.transform.parent = transform.parent;
+			// ** 본제된 이미지의 부모를 설정한다.
+			Obj.transform.parent = parent.transform;
 
-			// ** 복제된 이미지의 이름 설정한다. 
+			// ** 복제된 이미지의 이름을 설정한다.
 			Obj.transform.name = transform.name;
 
 			// ** 복제된 이미지의 위치를 설정한다.
 			Obj.transform.position = new Vector3(
-                player.transform.position.x + 50.0f,
-                transform.position.y, 0.0f);
+				endPoint + 25.0f,
+				0.0f, 0.0f);
 
 			// ** 시작지점을 변경한다.
-			endPoint += 25.0f;
+			endPoint += endPoint + 25.0f;
 		}
 
-		// ** 종료지점에 도달하면 삭제한다. 
-		if (transform.position.x+(sprite.bounds.size.x*0.5f) - 2 < exitPoint)
-        {
-            Destroy(this.gameObject);
-        }
-    }
+		// ** 종료지점에 도달하면 삭제한다.
+		if (transform.position.x + (sprite.bounds.size.x * 0.5f) - 2 < exitPoint)
+			Destroy(this.gameObject);
+	}
 }
