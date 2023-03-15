@@ -47,8 +47,12 @@ public class PlayerController : MonoBehaviour
 	private float Direction;
 
 
+	[Header("방향")]
 	// ** 플레이어가 바라보는 방향
+
+	[Tooltip("왼쪽")]
 	public bool DirLeft;
+	[Tooltip("오른쪽")]
 	public bool DirRight;
 
 
@@ -62,7 +66,8 @@ public class PlayerController : MonoBehaviour
 
 		// ** [Resources] 폴더에서 사용할 리소스를 들고온다.
 		BulletPrefab = Resources.Load("Prefabs/Bullet") as GameObject;
-		fxPrefab = Resources.Load("Prefabs/FX/Smoke") as GameObject;
+		//fxPrefab = Resources.Load("Prefabs/FX/Smoke") as GameObject;
+		fxPrefab = Resources.Load("Prefabs/FX/Hit") as GameObject;
 	}
 
 	// ** 유니티 기본 제공 함수
@@ -126,7 +131,8 @@ public class PlayerController : MonoBehaviour
 		}
 
 		
-		if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow))
+		if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow)
+			|| Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow))
 		{
 			ControllerManager.GetInstance().DirRight = false;
 			ControllerManager.GetInstance().DirLeft = false;

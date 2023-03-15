@@ -7,7 +7,7 @@ public class CameraShake : MonoBehaviour
 	// ** 카메라의 진동 시간
 	private float shakeTime;
 	// ** 카메라의 진동 범위
-	private Vector3 offset = new Vector3(0.15f, 0.15f, 0.0f);
+	private Vector3 offset = new Vector3(0.025f, 0.025f, 0.0f);
 
 	// ** 카메라의 진동효과를 주기전 카메라 위치를 받아온다. 
 	private Vector3 oldPosition;

@@ -6,6 +6,14 @@ using UnityEngine;
 public class ControllerManager
 {
 	private static ControllerManager Instance = null;
+	
+	public bool DirLeft;
+	public bool DirRight;
+
+	private ControllerManager()
+	{
+
+	}
 
 	public static ControllerManager GetInstance()
 	{
@@ -14,13 +22,5 @@ public class ControllerManager
 			Instance = new ControllerManager();
 		}
 		return Instance;
-	}
-
-	public bool DirLeft;
-	public bool DirRight;
-
-	private ControllerManager()
-	{
-
 	}
 }
