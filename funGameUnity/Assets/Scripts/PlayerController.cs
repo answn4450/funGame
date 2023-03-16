@@ -93,6 +93,9 @@ public class PlayerController : MonoBehaviour
 	// ** 프레임마다 반복적으로 실행되는 함수.
 	void Update()
 	{
+		// 기즈모 테스트
+
+
 		// **  Input.GetAxis =     -1 ~ 1 사이의 값을 반환함. 
 		float Hor = Input.GetAxisRaw("Horizontal"); // -1 or 0 or 1 셋중에 하나를 반환.
 		float Ver = Input.GetAxisRaw("Vertical"); // -1 or 0 or 1 셋중에 하나를 반환.

@@ -369,9 +369,11 @@
 "Assets/Scripts/CameraShake.cs"
 "Assets/Scripts/ControllerManager.cs"
 "Assets/Scripts/EnemyController.cs"
+"Assets/Scripts/EnemyGizmo.cs"
 "Assets/Scripts/EnemyManager.cs"
 "Assets/Scripts/MyGizmo.cs"
 "Assets/Scripts/PlayerController.cs"
+"Assets/Scripts/Test.cs"
 -langversion:9.0
 
 /deterministic

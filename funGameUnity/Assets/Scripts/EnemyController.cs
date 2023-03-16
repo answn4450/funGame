@@ -1,3 +1,5 @@
+//범위 안에 들어오면 쿨타임 가지고 일반공격 모션
+//범위에 상관없이 일정 시간 지나면 스킬(원거리) 공격
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +8,7 @@ public class EnemyController : MonoBehaviour
 {
     public float Speed;
     public int HP;
+
     private Animator Anim;
     private Vector3 Movement;
 
@@ -19,6 +22,8 @@ public class EnemyController : MonoBehaviour
     {
         Speed = 0.2f;
 		HP = 3;
+		Anim.SetFloat("AttackTimer", 1000);
+		Anim.SetFloat("SkillTimer", 4000);
     }
 
     // Update is called once per frame
@@ -30,7 +35,10 @@ public class EnemyController : MonoBehaviour
 
 		transform.position -= Movement * Time.deltaTime;
         Anim.SetFloat("Speed", Movement.x);
-    }
+		
+		Anim.SetFloat("AttackTimer",
+			Mathf.Max(0, Anim.GetFloat("AttackTimer") - Time.deltaTime));
+	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
@@ -46,9 +54,22 @@ public class EnemyController : MonoBehaviour
 		}
 	}
 
-
 	private void DestroyEnemy()
 	{
 		Destroy(gameObject, 0.016f);
+	}
+
+	private void AttackPlayer()
+	{
+		GameObject player = GameObject.Find("Player");
+		if (player != null)
+		{
+			
+		}
+	}
+
+	private void ResetAttackTimer()
+	{
+		Anim.SetFloat("AttackTimer", 100.0f);
 	}
 }
