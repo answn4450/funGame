@@ -12,6 +12,10 @@ public class EnemyController : MonoBehaviour
     private Animator Anim;
     private Vector3 Movement;
 
+	// 체크 - 스킬
+	//      - 기본 공격
+	private bool Near;
+
 	private void Awake()
 	{
 		Anim = GetComponent<Animator>();
@@ -20,9 +24,14 @@ public class EnemyController : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
+		if (EnemyManager.GetInstance.Distance >=10.0f)
+		{
+			print("10.0f");
+		}
+
         Speed = 0.2f;
 		HP = 3;
-		Anim.SetFloat("AttackTimer", 1000);
+		Anim.SetFloat("AttackTimer", 100);
 		Anim.SetFloat("SkillTimer", 4000);
     }
 
@@ -72,4 +81,14 @@ public class EnemyController : MonoBehaviour
 	{
 		Anim.SetFloat("AttackTimer", 100.0f);
 	}
+
+	private void ResetSkillTimer()
+	{
+		Anim.SetFloat("SkillTimer", Random.Range(300.0f,1000.0f));
+	}
+
+	 private void checkNear()
+	 {
+			//기즈모 체크
+	 }
 }
