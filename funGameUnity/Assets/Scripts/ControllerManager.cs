@@ -6,7 +6,8 @@ using UnityEngine;
 public class ControllerManager
 {
 	private static ControllerManager Instance = null;
-	
+
+	public float BulletSpeed=10.0f;
 	public bool DirLeft;
 	public bool DirRight;
 
