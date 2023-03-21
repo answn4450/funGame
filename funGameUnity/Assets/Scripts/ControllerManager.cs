@@ -24,4 +24,6 @@ public class ControllerManager
 		}
 		return Instance;
 	}
+
+	public int Player_HP=100;
 }
