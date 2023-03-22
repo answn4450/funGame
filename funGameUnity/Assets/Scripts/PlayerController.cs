@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
 
 	// ** 플레이어가 마지막으로 바라본 방향.
 	private float Direction;
+	private float BulletTimer;
 
 
 	[Header("방향")]
@@ -77,6 +78,9 @@ public class PlayerController : MonoBehaviour
 		// ** 속도를 초기화.
 		Speed = 5.0f;
 
+		// ** 자동 공격할 때 쓰는 불렛 타이머 초기화
+		BulletTimer = 0.0f;
+
 		// ** 초기값 셋팅
 		onAttack = false;
 		onHit = false;
@@ -93,8 +97,7 @@ public class PlayerController : MonoBehaviour
 	// ** 프레임마다 반복적으로 실행되는 함수.
 	void Update()
 	{
-		// 기즈모 테스트
-
+		BulletTimer += Time.deltaTime;
 
 		// **  Input.GetAxis =     -1 ~ 1 사이의 값을 반환함. 
 		float Hor = Input.GetAxisRaw("Horizontal"); // -1 or 0 or 1 셋중에 하나를 반환.
@@ -126,14 +129,13 @@ public class PlayerController : MonoBehaviour
 		{
 			ControllerManager.GetInstance().DirRight = false;
 			ControllerManager.GetInstance().DirLeft = true;
-
-			// ** 플레이어의 좌표가 -15.0 보다 클때 플레이어만 움직인다.
-			if (transform.position.x > -10.0f)
-				// ** 실제 플레이어를 움직인다.
-				transform.position += Movement;
 		}
 
-		
+		// ** 플레이어의 좌표가 -15.0 보다 클때 플레이어만 움직인다.
+		if (transform.position.x > -10.0f)
+			// ** 실제 플레이어를 움직인다.
+			transform.position += Movement;
+
 		if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow)
 			|| Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow))
 		{
@@ -159,9 +161,10 @@ public class PlayerController : MonoBehaviour
 			// ** 피격
 			OnHit();
 
-		// ** 스페이스바를 입력한다면..
-		if (Input.GetKeyDown(KeyCode.Space))
+		// ** BulletTimer가 3을 넘어간다면....
+		if (BulletTimer>0.7)
 		{
+			BulletTimer = 0.0f;
 			// ** 공격
 			OnAttack();
 

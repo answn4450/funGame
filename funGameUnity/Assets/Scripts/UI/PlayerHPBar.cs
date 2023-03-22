@@ -19,7 +19,7 @@ public class PlayerHPBar : MonoBehaviour
 	}
 
 	private void Update()
-	{/*
+	{
 		if(Input.GetMouseButton(0))
 		{
 			ControllerManager.GetInstance().Player_HP -= 1;
@@ -29,7 +29,7 @@ public class PlayerHPBar : MonoBehaviour
 		{
 			ControllerManager.GetInstance().Player_HP += 1;
 		}
-		*/
+		
 		HPBar.value = ControllerManager.GetInstance().Player_HP;
 	}
 }

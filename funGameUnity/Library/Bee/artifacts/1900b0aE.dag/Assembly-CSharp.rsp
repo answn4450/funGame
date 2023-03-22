@@ -368,6 +368,7 @@
 "Assets/Scripts/BossController.cs"
 "Assets/Scripts/BulletController.cs"
 "Assets/Scripts/Button.cs"
+"Assets/Scripts/ButtonController.cs"
 "Assets/Scripts/CameraShake.cs"
 "Assets/Scripts/ControllerManager.cs"
 "Assets/Scripts/EnemyController.cs"
@@ -377,8 +378,10 @@
 "Assets/Scripts/MyGizmo.cs"
 "Assets/Scripts/PlayerController.cs"
 "Assets/Scripts/Test.cs"
+"Assets/Scripts/Test2.cs"
 "Assets/Scripts/UI/PlayerHPBar.cs"
 "Assets/Scripts/UI/SidebarController.cs"
+"Assets/Scripts/UiController.cs"
 -langversion:9.0
 
 /deterministic

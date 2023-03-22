@@ -21,30 +21,11 @@ public class SidebarController : MonoBehaviour
         check= false;
     }
 
-	private void Update()
-	{/*
-		if(check)
-        {
-            sidebar.transform.position = Vector3.Lerp(
-                //sidebar.transform.position,
-                new Vector3(Screen.width + 150.0f, Screen.height*0.5f, 0.0f),
-                new Vector3(Screen.width - 150.0f, Screen.height*0.5f, 0.0f),
-            );
-        }
-        else
-        {
-			sidebar.transform.position = Vector3.Lerp(
-				new Vector3(1920 - 150.0f, 1080.0f * 0.5f, 0.0f),
-				new Vector3(1920 + 150.0f, 1080.0f * 0.5f, 0.0f),
-			);
-		}
-        */
-	}
 
 	public void ClickButton()
     {
         check = !check;
-        print("click");
+        //print(check);
         Anim.SetBool("Move", check);
     }
 }
