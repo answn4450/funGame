@@ -26,4 +26,5 @@ public class ControllerManager
 	}
 
 	public int Player_HP=100;
+	public float Player_Bullet_Timer_Limit = 0.3f;
 }

@@ -161,8 +161,8 @@ public class PlayerController : MonoBehaviour
 			// ** 피격
 			OnHit();
 
-		// ** BulletTimer가 3을 넘어간다면....
-		if (BulletTimer>0.7)
+		// ** 자동 공격 
+		if (BulletTimer> ControllerManager.GetInstance().Player_Bullet_Timer_Limit)
 		{
 			BulletTimer = 0.0f;
 			// ** 공격
