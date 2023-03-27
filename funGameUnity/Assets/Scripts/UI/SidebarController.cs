@@ -13,6 +13,7 @@ public class SidebarController : MonoBehaviour
 	private void Awake()
 	{
 		Anim=sidebar.GetComponent<Animator>();
+		//ControllerManager.GetInstance().Player_Bullet_Term = 1.9f;
 	}
 
 

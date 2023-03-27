@@ -8,17 +8,16 @@ public class EnemyController : MonoBehaviour
 {
     public float Speed;
     public int HP;
+	public bool closeToPlayer;
 
+	private float Skilltimer;
     private Animator Anim;
     private Vector3 Movement;
-
-	// 체크 - 스킬
-	//      - 기본 공격
-	private bool Near;
 
 	private void Awake()
 	{
 		Anim = GetComponent<Animator>();
+		ResetSkillTimer();
 	}
 
 	// Start is called before the first frame update
@@ -31,7 +30,7 @@ public class EnemyController : MonoBehaviour
 
         Speed = 0.2f;
 		HP = 3;
-		Anim.SetFloat("AttackTimer", 100);
+		closeToPlayer= false;
 		Anim.SetFloat("SkillTimer", 4000);
     }
 
@@ -47,6 +46,20 @@ public class EnemyController : MonoBehaviour
 		
 		Anim.SetFloat("AttackTimer",
 			Mathf.Max(0, Anim.GetFloat("AttackTimer") - Time.deltaTime));
+
+		if (SkillTimer == 0)
+		{
+			Anim.SetTrigger("Skill");
+		}
+		else
+		{
+			if (closeToPlayer)
+			{
+				Anim.SetTrigger("Attack");
+			}
+		}
+
+
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -63,6 +76,11 @@ public class EnemyController : MonoBehaviour
 		}
 	}
 
+	private void SkillEnd()
+	{
+		ResetSkillTimer();
+	}
+
 	private void DestroyEnemy()
 	{
 		Destroy(gameObject, 0.016f);
@@ -75,11 +93,6 @@ public class EnemyController : MonoBehaviour
 		{
 			
 		}
-	}
-
-	private void ResetAttackTimer()
-	{
-		Anim.SetFloat("AttackTimer", 100.0f);
 	}
 
 	private void ResetSkillTimer()

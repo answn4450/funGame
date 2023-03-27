@@ -7,10 +7,16 @@ public class ControllerManager
 {
 	private static ControllerManager Instance = null;
 
+	public int Player_HP = 100;
+	public int HitShock=0;
+	public float Player_Bullet_Term = 0.3f;
+
 	public float BulletSpeed=10.0f;
 	public bool DirLeft;
 	public bool DirRight;
 
+	//ÇÇ°Ý
+	
 	private ControllerManager()
 	{
 
@@ -24,7 +30,4 @@ public class ControllerManager
 		}
 		return Instance;
 	}
-
-	public int Player_HP=100;
-	public float Player_Bullet_Timer_Limit = 0.3f;
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MyGizmo : MonoBehaviour
 {
-	public Color color =Color.blue;
+	public Color color = Color.blue;
 
 	private void OnDrawGizmos()
 	{

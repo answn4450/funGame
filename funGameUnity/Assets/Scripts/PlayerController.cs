@@ -69,6 +69,7 @@ public class PlayerController : MonoBehaviour
 		BulletPrefab = Resources.Load("Prefabs/Bullet") as GameObject;
 		//fxPrefab = Resources.Load("Prefabs/FX/Smoke") as GameObject;
 		fxPrefab = Resources.Load("Prefabs/FX/Hit") as GameObject;
+
 	}
 
 	// ** 유니티 기본 제공 함수
@@ -99,6 +100,58 @@ public class PlayerController : MonoBehaviour
 	{
 		BulletTimer += Time.deltaTime;
 
+		Move();
+		AutoAttack();
+
+		if (ControllerManager.GetInstance().HitShock>=0)
+		{
+			animator.SetTrigger("Hit");
+			ControllerManager.GetInstance().Player_HP -= 10;
+		}
+
+		// ** 좌측 쉬프트키를 입력한다면.....
+		if (Input.GetKey(KeyCode.LeftShift))
+			// ** 피격
+			OnHit();
+	}
+
+	private void AutoAttack()
+	{
+		// ** 자동 공격 
+		if (BulletTimer > ControllerManager.GetInstance().Player_Bullet_Term)
+		{
+			BulletTimer = 0.0f;
+			// ** 공격
+			OnAttack();
+
+			// ** 총알원본을 본제한다.
+			GameObject Obj = Instantiate(BulletPrefab);
+
+			// ** 복제된 총알의 위치를 현재 플레이어의 위치로 초기화한다.
+			Obj.transform.position = transform.position;
+
+			// ** 총알의 BullerController 스크립트를 받아온다.
+			BulletController Controller = Obj.AddComponent<BulletController>();
+
+			// ** 총알 스크립트내부의 방향 변수를 현재 플레이어의 방향 변수로 설정 한다.
+			Controller.Direction = new Vector3(Direction, 0.0f, 0.0f);
+
+			// ** 총알 스크립트내부의 FX Prefab을 설정한다.
+			Controller.fxPrefab = fxPrefab;
+
+			// ** 총알의 SpriteRenderer를 받아온다.
+			SpriteRenderer bulletRenderer = Obj.GetComponent<SpriteRenderer>();
+
+			// ** 총알의 이미지 반전 상태를 플레이어의 이미지 반전 상태로 설정한다.
+			bulletRenderer.flipY = playerRenderer.flipX;
+
+			// ** 모든 설정이 종료되었다면 저장소에 보관한다.
+			Bullets.Add(Obj);
+		}
+	}
+
+	private void Move()
+	{
 		// **  Input.GetAxis =     -1 ~ 1 사이의 값을 반환함. 
 		float Hor = Input.GetAxisRaw("Horizontal"); // -1 or 0 or 1 셋중에 하나를 반환.
 		float Ver = Input.GetAxisRaw("Vertical"); // -1 or 0 or 1 셋중에 하나를 반환.
@@ -153,44 +206,6 @@ public class PlayerController : MonoBehaviour
 		{
 			playerRenderer.flipX = false;
 			DirRight = true;
-		}
-
-
-		// ** 좌측 쉬프트키를 입력한다면.....
-		if (Input.GetKey(KeyCode.LeftShift))
-			// ** 피격
-			OnHit();
-
-		// ** 자동 공격 
-		if (BulletTimer> ControllerManager.GetInstance().Player_Bullet_Timer_Limit)
-		{
-			BulletTimer = 0.0f;
-			// ** 공격
-			OnAttack();
-
-			// ** 총알원본을 본제한다.
-			GameObject Obj = Instantiate(BulletPrefab);
-
-			// ** 복제된 총알의 위치를 현재 플레이어의 위치로 초기화한다.
-			Obj.transform.position = transform.position;
-
-			// ** 총알의 BullerController 스크립트를 받아온다.
-			BulletController Controller = Obj.AddComponent<BulletController>();
-
-			// ** 총알 스크립트내부의 방향 변수를 현재 플레이어의 방향 변수로 설정 한다.
-			Controller.Direction = new Vector3(Direction, 0.0f, 0.0f);
-
-			// ** 총알 스크립트내부의 FX Prefab을 설정한다.
-			Controller.fxPrefab = fxPrefab;
-
-			// ** 총알의 SpriteRenderer를 받아온다.
-			SpriteRenderer bulletRenderer = Obj.GetComponent<SpriteRenderer>();
-
-			// ** 총알의 이미지 반전 상태를 플레이어의 이미지 반전 상태로 설정한다.
-			bulletRenderer.flipY = playerRenderer.flipX;
-
-			// ** 모든 설정이 종료되었다면 저장소에 보관한다.
-			Bullets.Add(Obj);
 		}
 
 		// ** 플레이의 움직임에 따라 이동 모션을 실행 한다.
