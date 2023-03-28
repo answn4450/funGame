@@ -6,60 +6,65 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public float Speed;
+	public GameObject Player;
+	public float Speed;
     public int HP;
-	public bool closeToPlayer;
+	public bool CloseToPlayer;
+	public bool DoSkill;
 
-	private float Skilltimer;
-    private Animator Anim;
-    private Vector3 Movement;
+	private float SkillTimer;
+
+	private GameObject EnemyBulletPrefab;
+
+	private Animator Anim;
+    
+	private Vector3 Movement;
 
 	private void Awake()
 	{
+		EnemyBulletPrefab = Resources.Load("Prefabs/Enemy/EnemyBullet") as GameObject;
 		Anim = GetComponent<Animator>();
 		ResetSkillTimer();
+		CloseToPlayer = false;
+		DoSkill= false;
 	}
 
 	// Start is called before the first frame update
 	void Start()
     {
-		if (EnemyManager.GetInstance.Distance >=10.0f)
-		{
-			print("10.0f");
-		}
-
-        Speed = 0.2f;
+		Player = GameObject.Find("Player");
+		CloseToPlayer= false;
+		
+		Speed = 0.2f;
 		HP = 3;
-		closeToPlayer= false;
 		Anim.SetFloat("SkillTimer", 4000);
     }
 
     // Update is called once per frame
     void Update()
     {
-		// ** 이동정보 셋팅
-		Movement = ControllerManager.GetInstance().DirRight ?
-			new Vector3(Speed+1, 0.0f, 0.0f) : new Vector3(Speed, 0.0f, 0.0f);
-
-		transform.position -= Movement * Time.deltaTime;
         Anim.SetFloat("Speed", Movement.x);
 		
 		Anim.SetFloat("AttackTimer",
 			Mathf.Max(0, Anim.GetFloat("AttackTimer") - Time.deltaTime));
 
-		if (SkillTimer == 0)
+		//print(SkillTimer);
+		if (!DoSkill)
 		{
-			Anim.SetTrigger("Skill");
-		}
-		else
-		{
-			if (closeToPlayer)
+			//Walk();
+
+			if (CloseToPlayer)
 			{
 				Anim.SetTrigger("Attack");
 			}
+
+			SkillTimer -= Time.deltaTime;
+			if (SkillTimer <= 0)
+			{
+				Anim.SetTrigger("Skill");
+				DoSkill = true;
+			}
 		}
-
-
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -76,9 +81,13 @@ public class EnemyController : MonoBehaviour
 		}
 	}
 
-	private void SkillEnd()
+	private void Walk()
 	{
-		ResetSkillTimer();
+		// ** 이동정보 셋팅
+		Movement = ControllerManager.GetInstance().DirRight ?
+			new Vector3(Speed + 1, 0.0f, 0.0f) : new Vector3(Speed, 0.0f, 0.0f);
+
+		transform.position -= Movement * Time.deltaTime;
 	}
 
 	private void DestroyEnemy()
@@ -93,6 +102,20 @@ public class EnemyController : MonoBehaviour
 		{
 			
 		}
+	}
+
+	private void SpawnEnemyBullet()
+	{
+		GameObject Obj = Instantiate(EnemyBulletPrefab);
+
+		// ** 복제된 총알의 위치를 현재 플레이어의 위치로 초기화한다.
+		Obj.transform.position = Player.transform.position;
+	}
+
+	private void SkillEnd()
+	{
+		DoSkill = false;
+		ResetSkillTimer();
 	}
 
 	private void ResetSkillTimer()

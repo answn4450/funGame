@@ -25,12 +25,12 @@ public class EnemyGizmo : MonoBehaviour
 		{
 
 			test.GetComponent<MyGizmo>().color = Color.green;
-			this.GetComponent<EnemyController>().closeToPlayer = false;
+			this.GetComponent<EnemyController>().CloseToPlayer = false;
 		}
 		else
 		{
 			test.GetComponent<MyGizmo>().color = Color.red;
-			this.GetComponent<EnemyController>().closeToPlayer = true;
+			this.GetComponent<EnemyController>().CloseToPlayer = true;
 		}
 
 		if (weapon_distance > 0.5f)

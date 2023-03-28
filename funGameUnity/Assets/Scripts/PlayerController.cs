@@ -56,9 +56,11 @@ public class PlayerController : MonoBehaviour
 	[Tooltip("오른쪽")]
 	public bool DirRight;
 
+	public float TravelDistance;
 
 	private void Awake()
 	{
+		TravelDistance = 0.0f;
 		// ** player 의 Animator를 받아온다.
 		animator = this.GetComponent<Animator>();
 
@@ -118,7 +120,7 @@ public class PlayerController : MonoBehaviour
 	private void AutoAttack()
 	{
 		// ** 자동 공격 
-		if (BulletTimer > ControllerManager.GetInstance().Player_Bullet_Term)
+		if (BulletTimer > ControllerManager.GetInstance().Player_BulletTerm)
 		{
 			BulletTimer = 0.0f;
 			// ** 공격
@@ -173,6 +175,7 @@ public class PlayerController : MonoBehaviour
 				transform.position += Movement;
 			else
 			{
+				TravelDistance += Speed*Time.deltaTime/3;
 				ControllerManager.GetInstance().DirRight = true;
 				ControllerManager.GetInstance().DirLeft = false;
 			}
@@ -182,12 +185,12 @@ public class PlayerController : MonoBehaviour
 		{
 			ControllerManager.GetInstance().DirRight = false;
 			ControllerManager.GetInstance().DirLeft = true;
+			
+			// ** 플레이어의 좌표가 -15.0 보다 클때 플레이어만 움직인다.
+			if (transform.position.x > -10.0f)
+				// ** 실제 플레이어를 움직인다.
+				transform.position += Movement;
 		}
-
-		// ** 플레이어의 좌표가 -15.0 보다 클때 플레이어만 움직인다.
-		if (transform.position.x > -10.0f)
-			// ** 실제 플레이어를 움직인다.
-			transform.position += Movement;
 
 		if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow)
 			|| Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow))

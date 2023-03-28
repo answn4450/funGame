@@ -102,6 +102,6 @@ public class EnemyManager : MonoBehaviour
 
 	private float LevelDesign()
 	{
-		return 1.5f;
+		return 10.5f;
 	}
 }

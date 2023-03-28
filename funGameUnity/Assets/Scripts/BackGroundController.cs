@@ -95,12 +95,15 @@ public class BackGroundController : MonoBehaviour
 			Obj.transform.name = transform.name;
 
 			// ** 복제된 이미지의 위치를 설정한다.
-			Obj.transform.position = new Vector3(
-				endPoint + 25.0f,
-				3.0f, 0.0f);
+			//Obj.transform.position = new Vector3(
+			//	endPoint + 20.0f,
+				//0.0f, 0.0f);
+			Obj.transform.position = transform.position + new Vector3(
+				20.0f,0.0f,0.0f		
+			);
 
 			// ** 시작지점을 변경한다.
-			endPoint += endPoint + 25.0f;
+			endPoint += endPoint + 20.0f;
 		}
 
 		// ** 종료지점에 도달하면 삭제한다.
