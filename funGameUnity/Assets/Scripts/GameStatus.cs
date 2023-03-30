@@ -6,33 +6,33 @@ using UnityEngine.UI;
 public class GameStatus : MonoBehaviour
 {
     private Text UITravelDistance;
-    private Text UILevel;
+    private Text UIPlayerLV;
     private GameObject Player;
 
 	private void Awake()
 	{
 		Player = GameObject.Find("Player");
 		UITravelDistance = this.transform.GetChild(0).GetComponent<Text>();
-		UILevel = this.transform.GetChild(1).GetComponent<Text>();
+		UIPlayerLV = this.transform.GetChild(1).GetComponent<Text>();
 	}
-
-	void Start()
-    {
-           
-    }
 
     void Update()
     {
         UITravelDistance.text = ((int)Player.GetComponent<PlayerController>().TravelDistance).ToString();
-        DrawUILevel();
+        DrawPlayerLV();
     }
 
-    private void DrawUILevel()
+    private void DrawPlayerLV()
     {
-        string str = "";
-        str += ControllerManager.GetInstance().LV_BulletTerm.ToString();
-        str += '/';
-        str += ControllerManager.GetInstance().LV_HealRegen.ToString();
-        UILevel.text = str;
+        string LVStr = "";
+        for (int i = 0; i < 5; ++i)
+        {
+			LVStr+=ControllerManager.GetInstance().NowLV[i].ToString();
+            if (i!=4)
+            {
+                LVStr += '/';
+            }
+		}
+        UIPlayerLV.text = LVStr;
     }
 }

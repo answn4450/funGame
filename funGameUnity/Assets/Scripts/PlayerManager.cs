@@ -12,8 +12,6 @@ public class PlayerManager : MonoBehaviour
 
 	void Update()
     {
-        ControllerManager.GetInstance().RegularUpdate();
-        //print(ControllerManager.GetInstance().TrialBulletTermTimer);
-        //print(ControllerManager.GetInstance().Player_BulletTerm);
+        ControllerManager.GetInstance().Update();
     }
 }

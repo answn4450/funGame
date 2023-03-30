@@ -41,26 +41,14 @@ public class Button : MonoBehaviour
 	}
 
 
-	public void PushButton(int index, float cool, float duration)
+	public void PushButton(int index, float cool, float skillduration)
 	{
 		ButtonImages[index].fillAmount = 0;
 		//print(Buttons[index].GetComponent<Button>());
 		//Buttons[0].GetComponent<Button>().enabled = false;
-
+		
 		StartCoroutine(PushButton_Coroutine(index, cool));
-		ApplyEffect(index);
-		StartCoroutine(SkillEffect_Coroutine(index, duration));
-	}
-
-	IEnumerator SkillEffect_Coroutine(int index, float cool)
-	{
-		while (cool > 0)
-		{
-			//print(cool);
-			cool -= Time.deltaTime;
-			yield return null;
-		}
-		EraseSomeEffect(index);
+		ControllerManager.GetInstance().GoTrial(index,skillduration);
 	}
 
 	IEnumerator PushButton_Coroutine(int index, float cool)
@@ -102,30 +90,5 @@ public class Button : MonoBehaviour
 	{
 		PushButton(4, 0.5f, 2.5f);
 		print("테스트 메세지 5 입니다.");
-	}
-
-	private void ApplyEffect(int index)
-	{
-		switch (index)
-		{
-			case 0:
-				ControllerManager.GetInstance().GoTrialBulletTerm(3.0f);
-				break;
-
-			case 1:
-				ControllerManager.GetInstance().BigHeal();
-				break;
-		}
-	}
-
-	//PowerUp, DefenceUp, SpeedUp, Shield, Heal
-	private void EraseSomeEffect(int index)
-	{
-		switch (index)
-		{
-			case 0:
-				ControllerManager.GetInstance().EndTrialBulletTerm();
-				break;
-		}
 	}
 }

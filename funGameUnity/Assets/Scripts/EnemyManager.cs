@@ -74,7 +74,7 @@ public class EnemyManager : MonoBehaviour
 			// ** 클론의 위치를 초기화.
 			Obj.transform.position = new Vector3(
 	//	18.0f, Random.Range(-8.2f, 5.5f), 0.0f);
-				10.0f, Random.Range(-8.2f, 5.5f), 0.0f);
+				-2.0f, Random.Range(-8.2f, 5.5f), 0.0f);
 
 			// ** 클론의 이름 초기화.
 			Obj.transform.name = "Enemy";
@@ -102,6 +102,6 @@ public class EnemyManager : MonoBehaviour
 
 	private float LevelDesign()
 	{
-		return 10.5f;
+		return 100.5f;
 	}
 }
