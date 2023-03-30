@@ -30,7 +30,7 @@ public class ControllerManager
 		//Defence 
 		{ 0.0f, 1.0f, 4.0f, 9.0f, 20.0f},
 		//BulletTerm
-		{ 0.7f, 0.3f, 0.2f, 0.1f, 0.0f},
+		{ 70f, 0.3f, 0.2f, 0.1f, 0.0f},
 		//ImmortalChance ¹éºÐÀ§
 		{ 1.0f, 3.0f, 5.0f, 7.0f, 10.0f},
 		//HPRegenSpeed 

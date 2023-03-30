@@ -105,12 +105,6 @@ public class PlayerController : MonoBehaviour
 		Move();
 		AutoAttack();
 
-		if (ControllerManager.GetInstance().HitShock>=0)
-		{
-			animator.SetTrigger("Hit");
-			ControllerManager.GetInstance().Player_HP -= 10;
-		}
-
 		// ** 좌측 쉬프트키를 입력한다면.....
 		if (Input.GetKey(KeyCode.LeftShift))
 			// ** 피격

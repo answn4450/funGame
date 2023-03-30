@@ -6,60 +6,63 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-	public GameObject Player;
 	public float Speed;
-    public int HP;
+	public int HP;
 	public bool CloseToPlayer;
+	public bool DoAttack;
 	public bool DoSkill;
+	public bool WeaponHitPlayer;
 
+	private int Damage=2;
 	private float SkillTimer;
-
-	private GameObject EnemyBulletPrefab;
-
 	private Animator Anim;
-    
 	private Vector3 Movement;
 
 	private void Awake()
 	{
-		EnemyBulletPrefab = Resources.Load("Prefabs/Enemy/EnemyBullet") as GameObject;
 		Anim = GetComponent<Animator>();
 		ResetSkillTimer();
+		WeaponHitPlayer= false;
 		CloseToPlayer = false;
-		DoSkill= false;
+		DoAttack = false;
+		DoSkill = false;
 	}
 
 	// Start is called before the first frame update
 	void Start()
-    {
-		Player = GameObject.Find("Player");
-		CloseToPlayer= false;
-		
+	{
 		Speed = 0.2f;
 		HP = 3;
-		Anim.SetFloat("SkillTimer", 4000);
-    }
+		CloseToPlayer = false;
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        Anim.SetFloat("Speed", Movement.x);
-		
-		Anim.SetFloat("AttackTimer",
-			Mathf.Max(0, Anim.GetFloat("AttackTimer") - Time.deltaTime));
-
-		//print(SkillTimer);
+	// Update is called once per frame
+	void Update()
+	{
+		Anim.SetFloat("Speed", Movement.x);
 		if (!DoSkill)
 		{
-			//Walk();
-
-			if (CloseToPlayer)
+			if (DoAttack)
 			{
-				Anim.SetTrigger("Attack");
+				if (WeaponHitPlayer)
+				{
+					ControllerManager.GetInstance().SmallHit(Damage);
+					WeaponHitPlayer = false;
+				}
 			}
+			else
+			{
+				Walk();
+				if (CloseToPlayer)
+				{
+					Anim.SetTrigger("Attack");
+					DoAttack = true;
+				}
+			}
+			
 
 			SkillTimer -= Time.deltaTime;
-			if (SkillTimer <= 0)
+			if (SkillTimer == 0)
 			{
 				Anim.SetTrigger("Skill");
 				DoSkill = true;
@@ -69,11 +72,11 @@ public class EnemyController : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if(collision.tag ==	"Bullet")
+		if (collision.tag == "Bullet")
 		{
-			--HP;
+			HP-=(int)ControllerManager.GetInstance().Player_BulletPower;
 
-			if(HP<=0)
+			if (HP <= 0)
 			{
 				Anim.SetTrigger("Die");
 				GetComponent<CapsuleCollider2D>().enabled = false;
@@ -90,26 +93,9 @@ public class EnemyController : MonoBehaviour
 		transform.position -= Movement * Time.deltaTime;
 	}
 
-	private void DestroyEnemy()
+	private void AttackEnd()
 	{
-		Destroy(gameObject, 0.016f);
-	}
-
-	private void AttackPlayer()
-	{
-		GameObject player = GameObject.Find("Player");
-		if (player != null)
-		{
-			
-		}
-	}
-
-	private void SpawnEnemyBullet()
-	{
-		GameObject Obj = Instantiate(EnemyBulletPrefab);
-
-		// ** 복제된 총알의 위치를 현재 플레이어의 위치로 초기화한다.
-		Obj.transform.position = Player.transform.position;
+		DoAttack=false;
 	}
 
 	private void SkillEnd()
@@ -120,11 +106,11 @@ public class EnemyController : MonoBehaviour
 
 	private void ResetSkillTimer()
 	{
-		Anim.SetFloat("SkillTimer", Random.Range(300.0f,1000.0f));
+		SkillTimer=Random.Range(300.0f, 1000.0f);
 	}
 
-	 private void checkNear()
-	 {
-			//기즈모 체크
-	 }
+	private void DestroyEnemy()
+	{
+		Destroy(gameObject, 0.016f);
+	}
 }

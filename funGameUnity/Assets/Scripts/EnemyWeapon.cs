@@ -8,10 +8,14 @@ public class EnemyWeapon : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		print("weaopn hit player");
-
+		print(collision.transform.tag);
+		if (collision.transform.tag=="Untagged")
+		{
+			print(collision.gameObject.name);
+		}
 		if (collision.transform.tag == "Player")
 		{
+			print("hit");
 			Enemy.GetComponent<EnemyController>().WeaponHitPlayer = true;
 		}
 	}

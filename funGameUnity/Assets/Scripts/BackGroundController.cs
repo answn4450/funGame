@@ -82,6 +82,12 @@ public class BackGroundController : MonoBehaviour
 			endPoint -= movemane.x;
 		}
 
+		if (transform.gameObject.name=="Sky")
+		{
+			transform.position -= Climate.GetInstance().Wind;
+			endPoint -= Climate.GetInstance().Wind.x;
+		}
+
 		// ** 동일한 이미지 복사
 		if (player.transform.position.x + (sprite.bounds.size.x * 0.5f) + 1 > endPoint)
 		{
