@@ -7,6 +7,7 @@ public class EnemyManager : MonoBehaviour
 {
 	private EnemyManager() { }
 	private static EnemyManager instance = null;
+	private GameObject Player;
 
 	public static EnemyManager GetInstance
 	{
@@ -23,7 +24,6 @@ public class EnemyManager : MonoBehaviour
 
 	// ** Enemy로 사용할 원형 객체
 	private GameObject Prefab;
-	private GameObject HPPrefab;
 
 	//** 플레이어의 누적 이동 거리
 	public float Distance;
@@ -41,11 +41,9 @@ public class EnemyManager : MonoBehaviour
 
 			// ** 생성되는 Enemy를 담아둘 상위 객체
 			Parrent = new GameObject("EnemyList");
-
+			Player = GameObject.Find("Player");
 			// ** Enemy로 사용할 원형 객체
 			Prefab = Resources.Load("Prefabs/Enemy/Enemy") as GameObject;
-			HPPrefab = Resources.Load("Prefabs/HP") as GameObject;
-
 		}
 	}
 
@@ -61,15 +59,10 @@ public class EnemyManager : MonoBehaviour
 		{
 			// ** Enemy 원형 객체를 복제한다.
 			GameObject Obj = Instantiate(Prefab);
-			
-			// ** Enemy HP UI 복제
-			GameObject Bar = Instantiate(HPPrefab);
 
+			GameObject HPBar = Obj.GetComponent<EnemyController>().HPBar;
 			// ** 복제된 UI를 캔버스에 위치시킨다. 
-			Bar.transform.parent = GameObject.Find("EnemyHPCanvas").transform;
-			
-			// ** Enemy 작동 스크립트 포함.
-			//Obj.AddComponent<EnemyController>();
+			HPBar.transform.parent = GameObject.Find("EnemyHPCanvas").transform;
 
 			// ** 클론의 위치를 초기화.
 			Obj.transform.position = new Vector3(
@@ -83,7 +76,7 @@ public class EnemyManager : MonoBehaviour
 			Obj.transform.parent = Parrent.transform;
 
 			// ** UI 객체가 들고 있는 스크립트에 접근.
-			EnemyHPBar enemyHPBar = Bar.GetComponent<EnemyHPBar>();
+			EnemyHPBar enemyHPBar = HPBar.GetComponent<EnemyHPBar>();
 
 			enemyHPBar.Target = Obj;
 
@@ -102,6 +95,7 @@ public class EnemyManager : MonoBehaviour
 
 	private float LevelDesign()
 	{
-		return 100.5f;
+		int dist = (int)Player.GetComponent<PlayerController>().TravelDistance;
+		return Mathf.Max(100.0f - dist / 10.0f, 0.7f);
 	}
 }

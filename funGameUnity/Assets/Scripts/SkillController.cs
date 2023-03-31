@@ -7,14 +7,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using static BulletPattern;
 
-enum Skill
-{
-	PowerUp,
-	DefenceUp,
-	SpeedUp,
-	Shield,
-	Heal
-};
 
 public class SkillController: MonoBehaviour
 {
@@ -67,33 +59,28 @@ public class SkillController: MonoBehaviour
 		//Buttons[0].GetComponent<Button>().enabled = true;
 	}
 
-	public void PushButton1()
+	public void ButtonTrialBulletPower()
 	{
 		PushButton(0, 0.5f, 3.0f);
-		print("테스트 메세지 1 입니다.");
 	}
 
-	public void PushButton2()
+	public void ButtonTrialDefence()
 	{
 		PushButton(1, 0.5f,2.5f);
-		print("테스트 메세지 2 입니다.");
 	}
 
-	public void PushButton3()
+	public void ButtonTrialBulletTerm()
 	{
 		PushButton(2, 0.5f, 2.5f);
-		print("테스트 메세지 3 입니다.");
 	}
 
-	public void PushButton4()
+	public void ButtonTrialImmortalChance()
 	{
 		PushButton(3, 0.5f, 2.5f);
-		print("테스트 메세지 4 입니다.");
 	}
 
-	public void PushButton5()
+	public void ButtonTrialHPRegenSpeed()
 	{
 		PushButton(4, 0.5f, 2.5f);
-		print("테스트 메세지 5 입니다.");
 	}
 }

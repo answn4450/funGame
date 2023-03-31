@@ -6,8 +6,11 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+	public GameObject HPBar;
+
 	public float Speed;
 	public int HP;
+	public int MaxHP;
 	public bool CloseToPlayer;
 	public bool DoAttack;
 	public bool DoSkill;
@@ -32,8 +35,9 @@ public class EnemyController : MonoBehaviour
 	void Start()
 	{
 		Speed = 0.2f;
-		HP = 3;
 		CloseToPlayer = false;
+		MaxHP = 3;
+		HP = MaxHP;
 	}
 
 	// Update is called once per frame
@@ -46,6 +50,7 @@ public class EnemyController : MonoBehaviour
 			{
 				if (WeaponHitPlayer)
 				{
+					print("asfas");
 					ControllerManager.GetInstance().SmallHit(Damage);
 					WeaponHitPlayer = false;
 				}

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Climate
 {
-    public Vector3 Wind = new Vector3(0.01f,0.0f,0.0f);
+    public Vector3 Wind = new Vector3(1f,0.0f,0.0f);
 
 	private static Climate Instance = null;
 

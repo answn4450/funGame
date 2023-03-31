@@ -257,4 +257,10 @@ public class PlayerController : MonoBehaviour
 	{
 		print("collision");
 	}
+
+	public void LikeJump()
+	{
+		animator.SetBool("Jump Up", Input.GetKey(KeyCode.Q));
+		animator.SetBool("Jump Down", Input.GetKey(KeyCode.E));
+	}
 }
