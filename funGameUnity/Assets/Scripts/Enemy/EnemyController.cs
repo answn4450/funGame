@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class EnemyController : MonoBehaviour
 	private float SkillTimer;
 	private Animator Anim;
 	private Vector3 Movement;
+	private Object Battery;
 
 	private void Awake()
 	{
@@ -29,6 +31,7 @@ public class EnemyController : MonoBehaviour
 		CloseToPlayer = false;
 		DoAttack = false;
 		DoSkill = false;
+		Battery = Resources.Load("/Prefabs/Battery1");
 	}
 
 	// Start is called before the first frame update
@@ -117,6 +120,13 @@ public class EnemyController : MonoBehaviour
 
 	private void DestroyEnemy()
 	{
+		ControllerManager.GetInstance().PlayerExp += 1;
 		Destroy(gameObject, 0.016f);
+		//Canvas dropItemCanvas = Canvas.find Find("DropItemCanvas");
+	}
+
+	private void DropItem()
+	{
+		
 	}
 }

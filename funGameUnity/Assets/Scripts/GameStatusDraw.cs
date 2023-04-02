@@ -7,10 +7,10 @@ public class GameStatusDraw : MonoBehaviour
 {
     private Text UITravelDistance;
     private Text UIPlayerLV;
+    private Text UIPlayerExp;
     private Transform Course;
 
     private GameObject Player;
-
 
     private void Awake()
 	{
@@ -18,6 +18,7 @@ public class GameStatusDraw : MonoBehaviour
 		UITravelDistance = this.transform.GetChild(0).GetComponent<Text>();
 		UIPlayerLV = this.transform.GetChild(1).GetComponent<Text>();
         Course = this.transform.GetChild(2);
+        UIPlayerExp = this.transform.GetChild(3).GetComponent<Text>();
     }
 
     void Update()
@@ -25,6 +26,7 @@ public class GameStatusDraw : MonoBehaviour
         UITravelDistance.text = ((int)GameStatus.GetInstance().RunDistance).ToString();
         DrawPlayerLV();
         DrawPaceUI();
+        DrawPlayerExp();
     }
 
     private void DrawPlayerLV()
@@ -62,4 +64,9 @@ public class GameStatusDraw : MonoBehaviour
         //Image currentPoint = Course.getc
         //CurrentPace.transform.position = new Vector3(startX+ GameStatus.GetInstance().RunDistance / GameStatus.GetInstance().DistanceLength * (endX - startX),0.0f,0.0f);
     }
+
+    private void DrawPlayerExp()
+	{
+        UIPlayerExp.text = ControllerManager.GetInstance().PlayerExp.ToString();
+	}
 }

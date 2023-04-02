@@ -51,7 +51,7 @@ public class ControllerManager
 	public float Player_HPRegenSpeed = 0.0f;
 
 	public int Player_HP = 100;
-	
+	public int PlayerExp = 0;
 	public int HitShock=0;
 
 	public float BulletSpeed=10.0f;
