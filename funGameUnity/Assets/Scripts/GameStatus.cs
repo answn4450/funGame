@@ -1,54 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class GameStatus : MonoBehaviour
+public class GameStatus
 {
-    private Text UITravelDistance;
-    private Text UIPlayerLV;
-    private GameObject Player;
+	public float RunDistance = 0.0f;
+	public float DistanceLength = 100.0f;
 
-    private GameObject Pace;
-    private GameObject CurrentPace;
+	private static GameStatus Instance;
 
-	private void Awake()
+	public static GameStatus GetInstance()
 	{
-		Player = GameObject.Find("Player");
-		UITravelDistance = this.transform.GetChild(0).GetComponent<Text>();
-		UIPlayerLV = this.transform.GetChild(1).GetComponent<Text>();
-        Pace = GameObject.Find("Pace");
-        CurrentPace = GameObject.Find("CurrentPace");
-        
-	}
-
-    void Update()
-    {
-        UITravelDistance.text = ((int)Player.GetComponent<PlayerController>().TravelDistance).ToString();
-        DrawPlayerLV();
-        DrawPaceUI();
-    }
-
-    private void DrawPlayerLV()
-    {
-        string LVStr = "";
-        for (int i = 0; i < 5; ++i)
-        {
-			LVStr+=ControllerManager.GetInstance().NowLV[i].ToString();
-            if (i!=4)
-            {
-                LVStr += '/';
-            }
+		if (Instance == null)
+		{
+			Instance = new GameStatus();
 		}
-        UIPlayerLV.text = LVStr;
-    }
-
-
-    private void DrawPaceUI()
-    {
-        // 烙矫
-        //float PassedPace = 2.2f;
-        //林青 / 醚 林青 *  (pace width-current width) + pace x
-        //CurrentPace.transform.position =;
-    }
+		return Instance;
+	}
 }

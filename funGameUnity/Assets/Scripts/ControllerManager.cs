@@ -16,9 +16,9 @@ public class ControllerManager
 		ImmortalChance,
 		HPRegenSpeed
 	}
-	
-	private static ControllerManager Instance = null;
 
+	private static ControllerManager Instance = null;
+	
 	//List<List<int>> LVTable = new List<List<int>>();
 	//플레이어가 스킬 없이 이룰 수 있는 LV 제한. 레벨은 0부터 MaxLV까지
 	public int MaxPureLV=3;

@@ -46,7 +46,8 @@ public class PlayerController : MonoBehaviour
 	// ** 플레이어가 마지막으로 바라본 방향.
 	private float Direction;
 	private float BulletTimer;
-
+	private Vector3 BreakWind = new Vector3(0.0f, 0.0f, 0.0f);
+	private GameObject gameStatus;
 
 	[Header("방향")]
 	// ** 플레이어가 바라보는 방향
@@ -56,11 +57,8 @@ public class PlayerController : MonoBehaviour
 	[Tooltip("오른쪽")]
 	public bool DirRight;
 
-	public float TravelDistance;
-
 	private void Awake()
 	{
-		TravelDistance = 0.0f;
 		// ** player 의 Animator를 받아온다.
 		animator = this.GetComponent<Animator>();
 
@@ -78,6 +76,7 @@ public class PlayerController : MonoBehaviour
 	// ** 초기값을 설정할 때 사용
 	void Start()
 	{
+		gameStatus = GameObject.Find("GameStauts");
 		// ** 속도를 초기화.
 		Speed = 5.0f;
 
@@ -104,7 +103,8 @@ public class PlayerController : MonoBehaviour
 
 		Move();
 		AutoAttack();
-
+		Climate.GetInstance().PlayerBreakWind = BreakWind;
+		GameStatus.GetInstance().RunDistance+= (BreakWind + Climate.GetInstance().Wind).x * Time.deltaTime;
 		// ** 좌측 쉬프트키를 입력한다면.....
 		if (Input.GetKey(KeyCode.LeftShift))
 			// ** 피격
@@ -119,35 +119,43 @@ public class PlayerController : MonoBehaviour
 			BulletTimer = 0.0f;
 			// ** 공격
 			OnAttack();
-
-			// ** 총알원본을 본제한다.
-			GameObject Obj = Instantiate(BulletPrefab);
-
-			// ** 복제된 총알의 위치를 현재 플레이어의 위치로 초기화한다.
-			Obj.transform.position = transform.position;
-
-			// ** 총알의 BullerController 스크립트를 받아온다.
-			BulletController Controller = Obj.AddComponent<BulletController>();
-
-			// ** 총알 스크립트내부의 방향 변수를 현재 플레이어의 방향 변수로 설정 한다.
-			Controller.Direction = new Vector3(Direction, 0.0f, 0.0f);
-
-			// ** 총알 스크립트내부의 FX Prefab을 설정한다.
-			Controller.fxPrefab = fxPrefab;
-
-			// ** 총알의 SpriteRenderer를 받아온다.
-			SpriteRenderer bulletRenderer = Obj.GetComponent<SpriteRenderer>();
-
-			// ** 총알의 이미지 반전 상태를 플레이어의 이미지 반전 상태로 설정한다.
-			bulletRenderer.flipY = playerRenderer.flipX;
-
-			// ** 모든 설정이 종료되었다면 저장소에 보관한다.
-			Bullets.Add(Obj);
+			ThrowBullet(new Vector3(Direction, 0.0f, 0.0f));
+			ThrowBullet(new Vector3(0.0f, 1.0f, 0.0f));
+			ThrowBullet(new Vector3(0.0f, -1.0f, 0.0f));
 		}
+	}
+
+	private void ThrowBullet(Vector3 dir)
+	{
+		// ** 총알원본을 본제한다.
+		GameObject Obj = Instantiate(BulletPrefab);
+
+		// ** 복제된 총알의 위치를 현재 플레이어의 위치로 초기화한다.
+		Obj.transform.position = transform.position;
+
+		// ** 총알의 BullerController 스크립트를 받아온다.
+		BulletController Controller = Obj.AddComponent<BulletController>();
+
+		// ** 총알 스크립트내부의 방향 변수를 현재 플레이어의 방향 변수로 설정 한다.
+		Controller.Direction = dir;
+		Obj.transform.rotation = Quaternion.Euler(dir);
+		// ** 총알 스크립트내부의 FX Prefab을 설정한다.
+		Controller.fxPrefab = fxPrefab;
+
+		// ** 총알의 SpriteRenderer를 받아온다.
+		SpriteRenderer bulletRenderer = Obj.GetComponent<SpriteRenderer>();
+
+		// ** 총알의 이미지 반전 상태를 플레이어의 이미지 반전 상태로 설정한다.
+		bulletRenderer.flipY = playerRenderer.flipX;
+
+		// ** 모든 설정이 종료되었다면 저장소에 보관한다.
+		Bullets.Add(Obj);
 	}
 
 	private void Move()
 	{
+		Climate.GetInstance().Slide(gameObject);
+
 		// **  Input.GetAxis =     -1 ~ 1 사이의 값을 반환함. 
 		float Hor = Input.GetAxisRaw("Horizontal"); // -1 or 0 or 1 셋중에 하나를 반환.
 		float Ver = Input.GetAxisRaw("Vertical"); // -1 or 0 or 1 셋중에 하나를 반환.
@@ -166,13 +174,21 @@ public class PlayerController : MonoBehaviour
 		{
 			// ** 플레이어의 좌표가 0.0 보다 작을때 플레이어만 움직인다.
 			if (transform.position.x < 0.1f)
+			{ 
+				BreakWind = new Vector3(1.0f, 0.0f, 0.0f);
+
 				transform.position += Movement;
+			}
 			else
-			{
-				TravelDistance += Speed*Time.deltaTime/3;
+			{	
 				ControllerManager.GetInstance().DirRight = true;
 				ControllerManager.GetInstance().DirLeft = false;
 			}
+		}
+		else
+		{
+			// 플레이어가 최대치로 뛰는걸로 간주
+			BreakWind = new Vector3(0.0f, 0.0f, 0.0f);
 		}
 
 		if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
