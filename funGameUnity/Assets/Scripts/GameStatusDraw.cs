@@ -9,7 +9,8 @@ public class GameStatusDraw : MonoBehaviour
     private Text UIPlayerLV;
     private Text UIPlayerExp;
     private Transform Course;
-
+    private Transform Danger;
+    
     private GameObject Player;
 
     private void Awake()
@@ -19,6 +20,7 @@ public class GameStatusDraw : MonoBehaviour
 		UIPlayerLV = this.transform.GetChild(1).GetComponent<Text>();
         Course = this.transform.GetChild(2);
         UIPlayerExp = this.transform.GetChild(3).GetComponent<Text>();
+        Danger=Course.GetChild(2);
     }
 
     void Update()
@@ -63,5 +65,7 @@ public class GameStatusDraw : MonoBehaviour
     private void DrawPlayerExp()
 	{
         UIPlayerExp.text = ControllerManager.GetInstance().PlayerExp.ToString();
-	}
+	
+        
+    }
 }

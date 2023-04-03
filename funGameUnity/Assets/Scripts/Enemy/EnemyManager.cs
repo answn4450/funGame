@@ -24,7 +24,6 @@ public class EnemyManager : MonoBehaviour
 
 	// ** Enemy로 사용할 원형 객체
 	private GameObject Prefab;
-	private GameObject Group1Prefab;
 
 	//** 플레이어의 누적 이동 거리
 	public float Distance;
@@ -45,7 +44,6 @@ public class EnemyManager : MonoBehaviour
 			Player = GameObject.Find("Player");
 			// ** Enemy로 사용할 원형 객체
 			Prefab = Resources.Load("Prefabs/Enemy/Enemy") as GameObject;
-			Group1Prefab = Resources.Load("Prefabs/GroupEnemy/BringerGroup") as GameObject;
 		}
 	}
 
@@ -61,7 +59,7 @@ public class EnemyManager : MonoBehaviour
 		{
 			// ** Enemy 원형 객체를 복제한다.
 			//GameObject Obj = Instantiate(Prefab);
-			GameObject Obj = Instantiate(Group1Prefab);
+			GameObject Obj = Instantiate(Prefab);
 
 			GameObject HPBar = Obj.GetComponent<EnemyController>().HPBar;
 			// ** 복제된 UI를 캔버스에 위치시킨다. 
@@ -98,7 +96,7 @@ public class EnemyManager : MonoBehaviour
 	private float LevelDesign()
 	{
 		int dist = (int)GameStatus.GetInstance().RunDistance;
-		//return Mathf.Max(100.0f - dist / 10.0f, 0.7f);
-		return 1.0f;
+		return Mathf.Max(100.0f - dist / 10.0f, 0.7f);
+		//return 1.0f;
 	}
 }

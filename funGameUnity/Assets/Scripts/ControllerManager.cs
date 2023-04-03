@@ -59,6 +59,7 @@ public class ControllerManager
 	public bool DirLeft;
 	public bool DirRight;
 
+	public float[] DangerPercent = {10.0f,20.0f,40.0f};
 	//ÇÇ°Ý
 
 	private ControllerManager()
