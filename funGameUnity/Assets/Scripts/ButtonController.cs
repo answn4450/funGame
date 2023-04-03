@@ -43,4 +43,9 @@ public class ButtonController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 		OldColor = text.color;
 		text.color = Color.white;
 	}
+
+	public void RestartGameScene()
+	{
+
+	}
 }

@@ -46,14 +46,17 @@ public class EnemyController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		Anim.SetFloat("Speed", Movement.x);
+		//언제나 걷도록 수정
+		Anim.SetFloat("Speed", 1.0f);
+		//Anim.SetFloat("Speed", Movement.x);
+		
 		if (!DoSkill)
 		{
 			if (DoAttack)
 			{
 				if (WeaponHitPlayer)
 				{
-					print("asfas");
+					print("weapon hit player");
 					ControllerManager.GetInstance().SmallHit(Damage);
 					WeaponHitPlayer = false;
 				}

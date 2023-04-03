@@ -44,25 +44,20 @@ public class GameStatusDraw : MonoBehaviour
     }
 
 
+    //수동으로 시작점이랑 끝점을 정한 후 움직였음.
     private void DrawPaceUI()
     {
-        //GameObject currentPace = 
-        //Transform currentPace = PaceBar.transform.GetChild(0);
-        //currentPace.position = new Vector3();
         Transform currentPoint=Course.Find("CurrentPoint");
-        Transform DistanceBar =Course.Find("DistanceBar");
-        float startX = DistanceBar.transform.position.x;
-        float width = 100.0f;
-            //startX+DistanceBar. GetComponent<Rect>().width;
+        float startX = 480.0f;
+        float endX = 1457.0f;
+        float width = endX - startX;
         float percent = GameStatus.GetInstance().RunDistance / GameStatus.GetInstance().DistanceLength;
-        percent = 0.0f;
+        
         currentPoint.transform.position = new Vector3(
-            width*percent+startX,
-            0.0f,
+            width * percent + startX,
+            57.0f,
             0.0f
-            )+ DistanceBar.position;
-        //Image currentPoint = Course.getc
-        //CurrentPace.transform.position = new Vector3(startX+ GameStatus.GetInstance().RunDistance / GameStatus.GetInstance().DistanceLength * (endX - startX),0.0f,0.0f);
+            );
     }
 
     private void DrawPlayerExp()

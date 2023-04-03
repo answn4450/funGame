@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Profiling;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Test2 : MonoBehaviour
 {
     public GameObject ui;
     public RectTransform uiTranspos;
+    public string Record;
 
     public float sizeX;
     public float sizeY;
@@ -58,5 +60,8 @@ public class Test2 : MonoBehaviour
 				);
 			yield return null;
 		}
+
+		//ui.SetActive(false);
+		//transform.gameObject.SetActive(false);
 	}
 }

@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEditor;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 public class ControllerManager
 {
@@ -23,14 +24,14 @@ public class ControllerManager
 	//플레이어가 스킬 없이 이룰 수 있는 LV 제한. 레벨은 0부터 MaxLV까지
 	public int MaxPureLV=3;
 	//크기는 MaxPureLV + 1
-	float[,] LVTable = 
+	public float[,] LVTable = 
 	{
 		//BulletPower int로 바꿔서 써야 함
 		{ 1.0f, 2.0f, 4.0f, 6.0f, 10.0f},
 		//Defence 
 		{ 0.0f, 1.0f, 4.0f, 9.0f, 20.0f},
 		//BulletTerm
-		{ 70f, 0.3f, 0.2f, 0.1f, 0.0f},
+		{ 0.5f, 0.3f, 0.2f, 0.1f, 0.0f},
 		//ImmortalChance 백분위
 		{ 1.0f, 3.0f, 5.0f, 7.0f, 10.0f},
 		//HPRegenSpeed 
@@ -48,9 +49,9 @@ public class ControllerManager
 	public float Player_Defence = 0.0f;
 	public float Player_BulletTerm = 0.0f;
 	public float Player_ImmortalChance = 0.0f;
-	public float Player_HPRegenSpeed = 0.0f;
+	public float PlayerHPRegenSpeed = 0.0f;
 
-	public int Player_HP = 100;
+	public int PlayerHP = 100;
 	public int PlayerExp = 0;
 	public int HitShock=0;
 
@@ -76,6 +77,24 @@ public class ControllerManager
 
 	public void Update()
 	{
+		//게임 끝
+		if (PlayerHP<=0)
+		{
+			GameEnd.GetInstance().Record = "Fail";
+			GameEnd.GetInstance().Record = "Run: ";
+			GameEnd.GetInstance().Record += GameStatus.GetInstance().RunDistance;
+			GameEnd.GetInstance().Record = "M";
+
+			SceneManager.LoadScene("GameEnd");
+		}
+		if (GameStatus.GetInstance().RunDistance>=GameStatus.GetInstance().DistanceLength)
+		{
+			GameEnd.GetInstance().Record = "Win";
+			GameEnd.GetInstance().Record = "M";
+
+			SceneManager.LoadScene("GameEnd");
+		}
+
 		SetPlayerStatus();
 	}
 
@@ -119,14 +138,14 @@ public class ControllerManager
 	{
 		if (UnityEngine.Random.Range(0, 100)>Player_ImmortalChance)
 		{
-			Player_HP -= damage;
+			PlayerHP -= damage;
 		}
 	}
 
 	public void BigHeal()
 	{
-		Player_HP = Math.Min(
-			Player_HP + 10, 100
+		PlayerHP = Math.Min(
+			PlayerHP + 10, 100
 		);
 	}
 }

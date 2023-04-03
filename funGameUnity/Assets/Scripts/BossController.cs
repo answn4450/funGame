@@ -17,6 +17,7 @@ public class BossController : MonoBehaviour
 
 	private Vector3 Movement;
 	private Vector3 EndPoint;
+	private Vector3 Direction;
 
 	private float CoolDown;
 	private float Speed;
@@ -26,7 +27,8 @@ public class BossController : MonoBehaviour
 	private bool Attack;
 	private bool Walk;
 	private bool active;
-
+	private bool SlideStarted = false;
+	
 	private int choice;
 
 	private void Awake()
@@ -164,7 +166,7 @@ public class BossController : MonoBehaviour
 
 		if (Distance > 0.5f)
 		{
-			Vector3 Direction = (EndPoint - transform.position).normalized;
+			Direction = (EndPoint - transform.position).normalized;
 
 			Movement = new Vector3(
 				Speed * Direction.x,
@@ -180,10 +182,21 @@ public class BossController : MonoBehaviour
 
 	private void onSlide()
 	{
+		if (!SlideStarted)
 		{
-			//print("onSlide");
-		}
+			Anim.SetTrigger("Slide");
+			EndPoint = new Vector3(0.0f, transform.position.y, 0.0f);
+			SlideStarted = true;
 
-		active = true;
+			Direction = (EndPoint - transform.position).normalized;
+		}
+		Speed = 2.0f;
+		Movement = new Vector3(
+				Speed * Direction.x,
+				Speed * Direction.y,
+				0.0f);
+
+		if (Vector3.Distance(transform.position, EndPoint) < 1.0f)
+			active = true;
 	}
 }
