@@ -175,7 +175,7 @@ public class PlayerController : MonoBehaviour
 			// ** 플레이어의 좌표가 0.0 보다 작을때 플레이어만 움직인다.
 			if (transform.position.x < 0.1f)
 			{ 
-				BreakWind = new Vector3(1.0f, 0.0f, 0.0f);
+				BreakWind = new Vector3(1.5f, 0.0f, 0.0f);
 
 				transform.position += Movement;
 			}

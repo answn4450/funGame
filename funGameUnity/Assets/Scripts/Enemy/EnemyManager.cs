@@ -95,8 +95,6 @@ public class EnemyManager : MonoBehaviour
 
 	private float LevelDesign()
 	{
-		int dist = (int)GameStatus.GetInstance().RunDistance;
-		return Mathf.Max(100.0f - dist / 10.0f, 0.7f);
-		//return 1.0f;
+		return Mathf.Max(2-GameStatus.GetInstance().GetRunPercent()/10, 0.5f);
 	}
 }

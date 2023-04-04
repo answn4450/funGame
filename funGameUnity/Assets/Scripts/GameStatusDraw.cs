@@ -1,26 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class GameStatusDraw : MonoBehaviour
 {
     private Text UITravelDistance;
     private Text UIPlayerLV;
     private Text UIPlayerExp;
-    private Transform Course;
-    private Transform Danger;
-    
-    private GameObject Player;
+    private Transform UICourse;
+    private float UICourseStartX = 480.0f, UICourseEndX = 1457.0f;
 
     private void Awake()
 	{
-		Player = GameObject.Find("Player");
 		UITravelDistance = this.transform.GetChild(0).GetComponent<Text>();
 		UIPlayerLV = this.transform.GetChild(1).GetComponent<Text>();
-        Course = this.transform.GetChild(2);
+        UICourse = this.transform.GetChild(2);
         UIPlayerExp = this.transform.GetChild(3).GetComponent<Text>();
-        Danger=Course.GetChild(2);
     }
 
     void Update()
@@ -49,23 +47,35 @@ public class GameStatusDraw : MonoBehaviour
     //수동으로 시작점이랑 끝점을 정한 후 움직였음.
     private void DrawPaceUI()
     {
-        Transform currentPoint=Course.Find("CurrentPoint");
-        float startX = 480.0f;
-        float endX = 1457.0f;
-        float width = endX - startX;
-        float percent = GameStatus.GetInstance().RunDistance / GameStatus.GetInstance().DistanceLength;
+		Transform currentPoint=UICourse.Find("CurrentPoint");
+        Transform wavePoint = UICourse.Find("WavePoint");
+
+
+		float width = UICourseEndX - UICourseStartX;
+        float pointY = 59.0f;
         
         currentPoint.transform.position = new Vector3(
-            width * percent + startX,
-            57.0f,
+            width * GameStatus.GetInstance().GetRunPercent()/100.0f + UICourseStartX,
+            pointY,
             0.0f
             );
+
+        // run percent 글자 채움
+        currentPoint.GetChild(0).GetComponent<Text>().text = GameStatus.GetInstance().GetRunPercent().ToString() + "%";
+        currentPoint.GetChild(1).GetComponent<Text>().text = GameStatus.GetInstance().GetRunPercent().ToString() + "%";
+
+        for (int i =0;i<GameStatus.GetInstance().WaveNumber;++i)
+        {
+            wavePoint.GetChild(i).transform.position = new Vector3(
+                UICourseStartX + width * GameStatus.GetInstance().WavePoints[i] / 100,
+                pointY,
+                0.0f
+            );
+        }
     }
 
     private void DrawPlayerExp()
 	{
         UIPlayerExp.text = ControllerManager.GetInstance().PlayerExp.ToString();
-	
-        
     }
 }

@@ -9,12 +9,12 @@ public class BulletPattern : MonoBehaviour
 	{
 		Screw,
 		DelayScrew,
-		C, D,
-		Explosion, Twist,
-		GuideBullet,
+		Twist, D,
+		Explosion, F,
+		GuideBullet
 	};
 
-	public Pattern pattern = Pattern.Explosion;
+	public Pattern pattern = Pattern.Screw;
 	public Sprite sprite;
 
 
@@ -23,7 +23,7 @@ public class BulletPattern : MonoBehaviour
 
 	void Start()
 	{
-		BulletPrefab = Resources.Load("Prefabs/PatternBullet") as GameObject;
+		BulletPrefab = Resources.Load("Prefabs/BossBullet") as GameObject;
 
 		switch (pattern)
 		{
@@ -36,8 +36,8 @@ public class BulletPattern : MonoBehaviour
 
 				break;
 
-			case Pattern.C:
-
+			case Pattern.Twist:
+				StartCoroutine(TwistPattern());
 				break;
 
 			case Pattern.D:
@@ -48,8 +48,8 @@ public class BulletPattern : MonoBehaviour
 				StartCoroutine(ExplosionPattern(5.0f, (int)(360 / 5.0f)));
 				break;
 
-			case Pattern.Twist:
-				StartCoroutine(TwistPattern());
+			case Pattern.F:
+
 				break;
 
 			case Pattern.GuideBullet:
@@ -111,6 +111,23 @@ public class BulletPattern : MonoBehaviour
 		}
 	}
 
+
+	public IEnumerator TwistPattern()
+	{
+		float fTime = 3.0f;
+
+		while (fTime > 0)
+		{
+			fTime -= Time.deltaTime;
+
+			GameObject obj = Instantiate(Resources.Load("Prefabs/Twist")) as GameObject;
+
+			yield return null;
+		}
+	}
+
+
+
 	public IEnumerator ExplosionPattern(float _angle, int _count, bool _option = false)
 	{
 		GameObject ParentObj = new GameObject("Bullet");
@@ -162,17 +179,5 @@ public class BulletPattern : MonoBehaviour
 		controller.Option = true;
 
 		Obj.transform.position = transform.position;
-	}
-
-	public IEnumerator TwistPattern()
-	{
-		float fTime = 3.0f;
-
-		while(fTime<0.3f)
-		{
-			fTime += Time.deltaTime;
-			GameObject Obj = Instantiate(Resources.Load("Prefabs/Twist")) as GameObject;
-			yield return null;
-		}	
 	}
 }

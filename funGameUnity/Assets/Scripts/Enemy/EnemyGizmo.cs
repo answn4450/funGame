@@ -7,19 +7,16 @@ public class EnemyGizmo : MonoBehaviour
 	public GameObject player;
 	public GameObject test;
 
-	// Start is called before the first frame update
 	private void Start()
 	{
 		player = GameObject.Find("Player");
-		//player = test;
 	}
 
-	// Update is called once per frame
 	void Update()
 	{
 		float distance = Vector3.Distance(player.transform.position, test.transform.position);
 
-		if (distance > 2.0f)
+		if (distance > 1.5f)
 		{
 
 			test.GetComponent<MyGizmo>().color = Color.green;

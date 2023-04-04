@@ -21,7 +21,6 @@ public class EnemyController : MonoBehaviour
 	private float SkillTimer;
 	private Animator Anim;
 	private Vector3 Movement;
-	private Object Battery;
 
 	private void Awake()
 	{
@@ -31,7 +30,6 @@ public class EnemyController : MonoBehaviour
 		CloseToPlayer = false;
 		DoAttack = false;
 		DoSkill = false;
-		Battery = Resources.Load("/Prefabs/Battery1");
 	}
 
 	// Start is called before the first frame update
@@ -57,7 +55,7 @@ public class EnemyController : MonoBehaviour
 				if (WeaponHitPlayer)
 				{
 					print("weapon hit player");
-					ControllerManager.GetInstance().SmallHit(Damage);
+					ControllerManager.GetInstance().CommonHit(Damage);
 					WeaponHitPlayer = false;
 				}
 			}
@@ -98,11 +96,7 @@ public class EnemyController : MonoBehaviour
 	private void Walk()
 	{
 		// ** 이동정보 셋팅
-		//Movement = ControllerManager.GetInstance().DirRight ?
-		//	new Vector3(Speed + 0, 0.0f, 0.0f) : new Vector3(Speed, 0.0f, 0.0f);
-		//Movement = 
 		Climate.GetInstance().Slide(gameObject);
-		//transform.position -= Movement * Time.deltaTime;
 	}
 
 	private void AttackEnd()
@@ -126,10 +120,5 @@ public class EnemyController : MonoBehaviour
 		ControllerManager.GetInstance().PlayerExp += 1;
 		Destroy(gameObject, 0.016f);
 		//Canvas dropItemCanvas = Canvas.find Find("DropItemCanvas");
-	}
-
-	private void DropItem()
-	{
-		
 	}
 }

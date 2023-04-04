@@ -1,9 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static BulletPattern;
 
 public class BossController : MonoBehaviour
 {
+	public enum Pattern
+	{
+		Screw,
+		DelayScrew,
+		Twist, D,
+		Explosion, F,
+		GuideBullet
+	};
+
+	private int HP = 300;
+	public Pattern pattern = Pattern.Screw;
+	public Sprite sprite;
+
+	private List<GameObject> BulletList = new List<GameObject>();
+	private GameObject BulletPrefab;
+
 	const int STATE_WALK = 1;
 	const int STATE_ATTACK = 2;
 	const int STATE_SLIDE = 3;
@@ -17,18 +34,16 @@ public class BossController : MonoBehaviour
 
 	private Vector3 Movement;
 	private Vector3 EndPoint;
-	private Vector3 Direction;
 
 	private float CoolDown;
 	private float Speed;
-	private int HP;
+	//private int HP;
 
 	private bool SkillAttack;
 	private bool Attack;
 	private bool Walk;
 	private bool active;
-	private bool SlideStarted = false;
-	
+
 	private int choice;
 
 	private void Awake()
@@ -42,10 +57,11 @@ public class BossController : MonoBehaviour
 
 	void Start()
 	{
-		EndPoint = Target.transform.position;
+		BulletPrefab = Resources.Load("Prefabs/Boss/BossBullet") as GameObject;
+
 		CoolDown = 1.5f;
 		Speed = 0.3f;
-		HP = 30000;
+		//HP = 30000;
 
 		SkillAttack = false;
 		Attack = false;
@@ -59,7 +75,7 @@ public class BossController : MonoBehaviour
 
 	void Update()
 	{
-		float result = EndPoint.x - transform.position.x;
+		float result = Target.transform.position.x - transform.position.x;
 
 		if (result < 0.0f)
 			renderer.flipX = true;
@@ -110,6 +126,7 @@ public class BossController : MonoBehaviour
 
 			if (SkillAttack)
 			{
+				ShotBullet();
 				SkillAttack = false;
 			}
 
@@ -145,28 +162,20 @@ public class BossController : MonoBehaviour
 
 	private void onAttack()
 	{
-		{
-			//print("onAttack");
-		}
-
+		ShotBullet();
 		active = true;
 	}
 
 	private void onWalk()
 	{
-		//print("onWalk");
 		Walk = true;
 
 		// ** 목적지에 도착할 때까지......
 		float Distance = Vector3.Distance(EndPoint, transform.position);
 
-
-		//print(EndPoint);
-		//print(Distance);
-
 		if (Distance > 0.5f)
 		{
-			Direction = (EndPoint - transform.position).normalized;
+			Vector3 Direction = (EndPoint - transform.position).normalized;
 
 			Movement = new Vector3(
 				Speed * Direction.x,
@@ -182,21 +191,175 @@ public class BossController : MonoBehaviour
 
 	private void onSlide()
 	{
-		if (!SlideStarted)
+		active = true;
+	}
+
+	private void ShotBullet()
+	{
+		switch (pattern)
 		{
-			Anim.SetTrigger("Slide");
-			EndPoint = new Vector3(0.0f, transform.position.y, 0.0f);
-			SlideStarted = true;
+			case Pattern.Screw:
+				GetScrewPattern(5.0f, (int)(360 / 5.0f));
+				break;
 
-			Direction = (EndPoint - transform.position).normalized;
+			case Pattern.DelayScrew:
+				StartCoroutine(GetDelayScrewPattern());
+
+				break;
+
+			case Pattern.Twist:
+				StartCoroutine(TwistPattern());
+				break;
+
+			case Pattern.D:
+
+				break;
+
+			case Pattern.Explosion:
+				StartCoroutine(ExplosionPattern(5.0f, (int)(360 / 5.0f)));
+				break;
+
+			case Pattern.F:
+
+				break;
+
+			case Pattern.GuideBullet:
+				GuideBulletPattern();
+				break;
 		}
-		Speed = 2.0f;
-		Movement = new Vector3(
-				Speed * Direction.x,
-				Speed * Direction.y,
-				0.0f);
+	}
 
-		if (Vector3.Distance(transform.position, EndPoint) < 1.0f)
-			active = true;
+	private void GetScrewPattern(float _angle, int _count, bool _option = false)
+	{
+		for (int i = 0; i < _count; ++i)
+		{
+			GameObject Obj = Instantiate(BulletPrefab);
+			BulletControll controller = Obj.GetComponent<BulletControll>();
+
+			controller.Option = _option;
+
+			_angle += 5.0f;
+
+			controller.Direction = new Vector3(
+				Mathf.Cos(_angle * 3.141592f / 180),
+				Mathf.Sin(_angle * 3.141592f / 180),
+				0.0f) * 5 + transform.position;
+
+			Obj.transform.position = transform.position;
+
+			BulletList.Add(Obj);
+		}
+	}
+
+
+	private IEnumerator GetDelayScrewPattern()
+	{
+		float fAngle = 30.0f;
+
+		int iCount = (int)(360 / fAngle);
+
+		int i = 0;
+
+		while (i < (iCount) * 3)
+		{
+			GameObject Obj = Instantiate(BulletPrefab);
+			BulletControll controller = Obj.GetComponent<BulletControll>();
+
+			controller.Option = false;
+
+			fAngle += 30.0f;
+
+			controller.Direction = new Vector3(
+				Mathf.Cos(fAngle * Mathf.Deg2Rad),
+				Mathf.Sin(fAngle * Mathf.Deg2Rad),
+				0.0f) * 5 + transform.position;
+
+			Obj.transform.position = transform.position;
+
+			BulletList.Add(Obj);
+			++i;
+			yield return new WaitForSeconds(0.025f);
+		}
+	}
+
+	public IEnumerator TwistPattern()
+	{
+		float fTime = 3.0f;
+
+		while (fTime > 0)
+		{
+			fTime -= Time.deltaTime;
+
+			GameObject obj = Instantiate(Resources.Load("Prefabs/Twist")) as GameObject;
+
+			yield return null;
+		}
+	}
+
+	public IEnumerator ExplosionPattern(float _angle, int _count, bool _option = false)
+	{
+		GameObject ParentObj = new GameObject("Bullet");
+
+		SpriteRenderer renderer = ParentObj.AddComponent<SpriteRenderer>();
+		renderer.sprite = sprite;
+
+		BulletControll controll = ParentObj.AddComponent<BulletControll>();
+
+		controll.Option = false;
+
+		controll.Direction = Target.transform.position - transform.position;
+
+		ParentObj.transform.position = transform.position;
+
+		yield return new WaitForSeconds(1.5f);
+
+		Vector3 pos = ParentObj.transform.position;
+
+		Destroy(ParentObj);
+
+		for (int i = 0; i < _count; ++i)
+		{
+			GameObject Obj = Instantiate(BulletPrefab);
+
+			BulletControll controller = Obj.GetComponent<BulletControll>();
+
+			controller.Option = _option;
+
+			_angle += 5.0f;
+
+			controller.Direction = new Vector3(
+				Mathf.Cos(_angle * 3.141592f / 180),
+				Mathf.Sin(_angle * 3.141592f / 180),
+				0.0f) * 5 + transform.position;
+
+			Obj.transform.position = pos;
+
+			BulletList.Add(Obj);
+		}
+	}
+
+	public void GuideBulletPattern()
+	{
+		GameObject Obj = Instantiate(BulletPrefab);
+		BulletControll controller = Obj.GetComponent<BulletControll>();
+
+		controller.Target = Target;
+		controller.Option = true;
+
+		Obj.transform.position = transform.position;
+	}
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.tag == "Bullet")
+		{
+			HP -= (int)ControllerManager.GetInstance().Player_BulletPower;
+
+			if (HP <= 0)
+			{
+				Anim.SetTrigger("Die");
+				GetComponent<CapsuleCollider2D>().enabled = false;
+			}
+		}
 	}
 }

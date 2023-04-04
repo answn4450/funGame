@@ -19,19 +19,19 @@ public class ControllerManager
 	}
 
 	private static ControllerManager Instance = null;
-	
+
 	//List<List<int>> LVTable = new List<List<int>>();
 	//플레이어가 스킬 없이 이룰 수 있는 LV 제한. 레벨은 0부터 MaxLV까지
-	public int MaxPureLV=3;
+	public int MaxPureLV = 3;
 	//크기는 MaxPureLV + 1
-	public float[,] LVTable = 
+	public float[,] LVTable =
 	{
 		//BulletPower int로 바꿔서 써야 함
 		{ 1.0f, 2.0f, 4.0f, 6.0f, 10.0f},
 		//Defence 
 		{ 0.0f, 1.0f, 4.0f, 9.0f, 20.0f},
 		//BulletTerm
-		{ 0.5f, 0.3f, 0.2f, 0.1f, 0.0f},
+		{ 5f, 0.3f, 0.2f, 0.1f, 0.0f},
 		//ImmortalChance 백분위
 		{ 1.0f, 3.0f, 5.0f, 7.0f, 10.0f},
 		//HPRegenSpeed 
@@ -53,13 +53,13 @@ public class ControllerManager
 
 	public int PlayerHP = 100;
 	public int PlayerExp = 0;
-	public int HitShock=0;
+	public int HitShock = 0;
 
-	public float BulletSpeed=10.0f;
+	public float BulletSpeed = 10.0f;
 	public bool DirLeft;
 	public bool DirRight;
 
-	public float[] DangerPercent = {10.0f,20.0f,40.0f};
+	public float[] DangerPercent = { 10.0f, 20.0f, 40.0f };
 	//피격
 
 	private ControllerManager()
@@ -79,7 +79,7 @@ public class ControllerManager
 	public void Update()
 	{
 		//게임 끝
-		if (PlayerHP<=0)
+		if (PlayerHP <= 0)
 		{
 			GameEnd.GetInstance().Record = "Fail";
 			GameEnd.GetInstance().Record = "Run: ";
@@ -88,7 +88,7 @@ public class ControllerManager
 
 			SceneManager.LoadScene("GameEnd");
 		}
-		if (GameStatus.GetInstance().RunDistance>=GameStatus.GetInstance().DistanceLength)
+		if (GameStatus.GetInstance().RunDistance >= GameStatus.GetInstance().DistanceLength)
 		{
 			GameEnd.GetInstance().Record = "Win";
 			GameEnd.GetInstance().Record = "M";
@@ -128,16 +128,15 @@ public class ControllerManager
 	{
 		Trial[LVIndex] = true;
 		TrialTimer[LVIndex] = t;
-		if (NowLV[LVIndex]<MaxPureLV)
+		if (NowLV[LVIndex] < MaxPureLV)
 		{
 			TrialLV[LVIndex] = NowLV[LVIndex] + 1;
 		}
 	}
 
-	//잡몹한테 얻어 맞았을 때
-	public void SmallHit(int damage)
+	public void CommonHit(int damage)
 	{
-		if (UnityEngine.Random.Range(0, 100)>Player_ImmortalChance)
+		if (UnityEngine.Random.Range(0, 100) > Player_ImmortalChance)
 		{
 			PlayerHP -= damage;
 		}
