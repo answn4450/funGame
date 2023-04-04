@@ -170,25 +170,21 @@ public class PlayerController : MonoBehaviour
 		if (Hor != 0)
 			Direction = Hor;
 
+		Climate.GetInstance().PlayerRunHard = false;
+
 		if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
 		{
 			// ** 플레이어의 좌표가 0.0 보다 작을때 플레이어만 움직인다.
 			if (transform.position.x < 0.1f)
 			{ 
-				BreakWind = new Vector3(1.5f, 0.0f, 0.0f);
-
 				transform.position += Movement;
 			}
 			else
-			{	
+			{
+				Climate.GetInstance().PlayerRunHard = true;
 				ControllerManager.GetInstance().DirRight = true;
 				ControllerManager.GetInstance().DirLeft = false;
 			}
-		}
-		else
-		{
-			// 플레이어가 최대치로 뛰는걸로 간주
-			BreakWind = new Vector3(0.0f, 0.0f, 0.0f);
 		}
 
 		if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))

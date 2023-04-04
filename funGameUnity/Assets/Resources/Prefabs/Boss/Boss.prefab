@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3910336677058222297}
   m_Layer: 0
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 7677239725031844441}
   m_Layer: 0
   m_Name: Beak
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -241,6 +241,10 @@ PrefabInstance:
     - target: {fileID: 3771232154710500571, guid: cf4aacdd328c0704a83468dd702e5955, type: 3}
       propertyPath: m_Name
       value: BossHP
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771232154710500571, guid: cf4aacdd328c0704a83468dd702e5955, type: 3}
+      propertyPath: m_TagString
+      value: Boss
       objectReference: {fileID: 0}
     - target: {fileID: 5562613573628493323, guid: cf4aacdd328c0704a83468dd702e5955, type: 3}
       propertyPath: m_Pivot.x

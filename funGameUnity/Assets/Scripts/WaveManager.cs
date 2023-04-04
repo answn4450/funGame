@@ -21,8 +21,8 @@ public class WaveManager : MonoBehaviour
 		float percent = GameStatus.GetInstance().GetRunPercent();
 		if (percent > WavePoints[CurrentWaveIndex])
 		{
-			GenBoss(CurrentWaveIndex);
-			if (CurrentWaveIndex+1< WaveNumber)
+			//GenBoss(CurrentWaveIndex);
+			if (CurrentWaveIndex+1<= WaveNumber)
 			{
 				CurrentWaveIndex += 1;
 			}

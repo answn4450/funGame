@@ -39,7 +39,6 @@ public class BossController : MonoBehaviour
 	private float Speed;
 	//private int HP;
 
-	private bool SkillAttack;
 	private bool Attack;
 	private bool Walk;
 	private bool active;
@@ -63,12 +62,10 @@ public class BossController : MonoBehaviour
 		Speed = 0.3f;
 		//HP = 30000;
 
-		SkillAttack = false;
 		Attack = false;
 
 		active = true;
 
-		SkillAttack = false;
 		Attack = false;
 		Walk = false;
 	}
@@ -88,9 +85,11 @@ public class BossController : MonoBehaviour
 
 		if (active)
 		{
+			Color shadow = new Color(255.0f, 0.0f, 0.0f,10.0f);
+			transform.GetComponent<SpriteRenderer>().color = shadow;
 			active = false;
 			choice = onController();
-			//StartCoroutine(onCooldown());
+			StartCoroutine(onCooldown());
 		}
 		else
 		{
@@ -122,12 +121,6 @@ public class BossController : MonoBehaviour
 				Movement = new Vector3(0.0f, 0.0f, 0.0f);
 				Anim.SetFloat("Speed", Movement.x);
 				Walk = false;
-			}
-
-			if (SkillAttack)
-			{
-				ShotBullet();
-				SkillAttack = false;
 			}
 
 			if (Attack)
@@ -162,6 +155,8 @@ public class BossController : MonoBehaviour
 
 	private void onAttack()
 	{
+
+		pattern = (Pattern) Random.Range(0, 6);
 		ShotBullet();
 		active = true;
 	}
@@ -188,7 +183,7 @@ public class BossController : MonoBehaviour
 		else
 			active = true;
 	}
-
+	
 	private void onSlide()
 	{
 		active = true;
