@@ -10,11 +10,6 @@ public class GameEnd : MonoBehaviour
     public GameObject RecordText;
     public string Record = "asdf";
 
-    private GameEnd()
-    {
-
-    }
-
     public static GameEnd GetInstance()
     {
         if (Instance==null)

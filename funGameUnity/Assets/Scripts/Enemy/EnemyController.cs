@@ -55,7 +55,6 @@ public class EnemyController : MonoBehaviour
 			{
 				if (WeaponHitPlayer)
 				{
-					print("weapon hit player");
 					ControllerManager.GetInstance().CommonHit(Damage);
 					WeaponHitPlayer = false;
 				}

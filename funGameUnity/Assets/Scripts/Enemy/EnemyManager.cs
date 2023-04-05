@@ -63,7 +63,8 @@ public class EnemyManager : MonoBehaviour
 
 			GameObject HPBar = Obj.GetComponent<EnemyController>().HPBar;
 			// ** 복제된 UI를 캔버스에 위치시킨다. 
-			HPBar.transform.parent = GameObject.Find("EnemyHPCanvas").transform;
+			HPBar.transform.SetParent(GameObject.Find("EnemyHPCanvas").transform);
+			//HPBar.transform.parent = GameObject.Find("EnemyHPCanvas").transform;
 
 			// ** 클론의 위치를 초기화.
 			Obj.transform.position = new Vector3(

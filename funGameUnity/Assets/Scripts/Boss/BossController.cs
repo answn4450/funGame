@@ -100,7 +100,6 @@ public class BossController : MonoBehaviour
 		{
 			active = false;
 			choice = onController();
-			print(choice);
 			StartCoroutine(onCooldown());
 		}
 		else
@@ -150,8 +149,9 @@ public class BossController : MonoBehaviour
 		// * 1 : 이동         STATE_WALK
 		// * 2 : 공격         STATE_ATTACK
 		// * 3 : 슬라이딩     STATE_SLIDE
-		return 3;
+		//return 3;
 		//return Random.Range(STATE_WALK, STATE_SLIDE + 1);
+		return 2;
 	}
 
 
@@ -195,35 +195,31 @@ public class BossController : MonoBehaviour
 		else
 			active = true;
 	}
-	
+
 	private void onSlide()
 	{
-		Anim.SetTrigger("Slide");
-		Anim.SetBool("SlideEnd", false);
-		float timer = 6;
 		Vector3 Direction = (EndPoint - transform.position).normalized;
-
 		Movement = new Vector3(
 			Speed * Direction.x,
 			0.0f,
 			0.0f);
 
-		while (Mathf.Abs(transform.position.x-EndPoint.x)>0.01 && timer>0)
+		if (Mathf.Abs(transform.position.x - EndPoint.x) > 0.01)
 		{
-			timer-=Time.deltaTime;
 			transform.position += Movement * Time.deltaTime * Speed;
 		}
+		else
+			active = true;
 
-		print(Mathf.Abs(transform.position.x - EndPoint.x));
-		//Anim.SetBool("SlideEnd", true);
-		active= true;
 	}
+
 
 	#region pragma BossBullet Pattern
 
 	public void ShotBullet()
 	{
 		pattern = (Pattern)Random.Range(0, System.Enum.GetValues(typeof(Pattern)).Length);
+		print(pattern);
 		switch (pattern)
 		{
 			case Pattern.Screw:
