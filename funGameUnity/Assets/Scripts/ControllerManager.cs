@@ -15,7 +15,7 @@ public class ControllerManager
 		Defence,
 		BulletTerm,
 		ImmortalChance,
-		HPRegenSpeed
+		HPRegenSize
 	}
 
 	private static ControllerManager Instance = null;
@@ -35,7 +35,7 @@ public class ControllerManager
 		//ImmortalChance 백분위
 		{ 1.0f, 3.0f, 5.0f, 7.0f, 10.0f},
 		//HPRegenSpeed 
-		{ 5.0f, 4.6f, 4.3f, 4.0f, 3.5f}
+		{ 0.0f, 1.0f, 2.0f, 2.5f, 3.0f}
 	};
 
 	public bool[] Trial = { false, false, false, false, false };
@@ -49,9 +49,8 @@ public class ControllerManager
 	public float Player_Defence = 0.0f;
 	public float Player_BulletTerm = 0.0f;
 	public float Player_ImmortalChance = 0.0f;
-	public float PlayerHPRegenSpeed = 0.0f;
+	public float Player_HPRegenSize = 0.0f;
 
-	public int PlayerHP = 100;
 	public int PlayerExp = 0;
 	public int HitShock = 0;
 
@@ -60,7 +59,6 @@ public class ControllerManager
 	public bool DirRight;
 
 	public float[] DangerPercent = { 10.0f, 20.0f, 40.0f };
-	//피격
 
 	private ControllerManager()
 	{
@@ -79,7 +77,7 @@ public class ControllerManager
 	public void Update()
 	{
 		//게임 끝
-		if (PlayerHP <= 0)
+		if (GameStatus.GetInstance().PlayerHP <= 0)
 		{
 			GameEnd.GetInstance().Record = "Fail";
 			GameEnd.GetInstance().Record = "Run: ";
@@ -97,6 +95,16 @@ public class ControllerManager
 		}
 
 		SetPlayerStatus();
+		PlayerHPRegen();
+	}
+
+	public void PlayerHPRegen()
+	{
+		float regen = Time.deltaTime * LVTable[(int)Status.HPRegenSize, NowLV[(int)Status.HPRegenSize]];
+		if( GameStatus.GetInstance().PlayerHP + regen < GameStatus.GetInstance().MaxPlayerHP)
+		{
+			GameStatus.GetInstance().PlayerHP += regen;
+		}
 	}
 
 	public void SetPlayerStatus()
@@ -121,7 +129,7 @@ public class ControllerManager
 		Player_Defence = LVTable[(int)Status.Defence, NowLV[(int)Status.Defence]];
 		Player_BulletTerm = LVTable[(int)Status.BulletTerm, NowLV[(int)Status.BulletTerm]];
 		Player_ImmortalChance = LVTable[(int)Status.ImmortalChance, NowLV[(int)Status.ImmortalChance]];
-		Player_ImmortalChance = LVTable[(int)Status.HPRegenSpeed, NowLV[(int)Status.HPRegenSpeed]];
+		Player_HPRegenSize = LVTable[(int)Status.HPRegenSize, NowLV[(int)Status.HPRegenSize]];
 	}
 
 	public void GoTrial(int LVIndex, float t)
@@ -138,14 +146,14 @@ public class ControllerManager
 	{
 		if (UnityEngine.Random.Range(0, 100) > Player_ImmortalChance)
 		{
-			PlayerHP -= damage;
+			GameStatus.GetInstance().PlayerHP -= damage;
 		}
 	}
 
 	public void BigHeal()
 	{
-		PlayerHP = Math.Min(
-			PlayerHP + 10, 100
+		GameStatus.GetInstance().PlayerHP = Math.Min(
+			GameStatus.GetInstance().PlayerHP + 10, 100
 		);
 	}
 }

@@ -56,7 +56,11 @@ public class FeelTset : MonoBehaviour
 		print("fx ¼î");
 		GameObject[] LikeFX = { MagicPoof, FSmoke, Smoke, Hit, SwordCross, SwordSpiral, SwordThinSpiral };
 		GameObject Obj = Instantiate(MagicPoof);
-		Obj.transform.position = transform.position;
+		Obj.transform.position = new Vector3(
+			Player.transform.position.x,
+			Player.transform.position.y,
+			-3.0f
+		);
 	}
 
 	private void _Test()

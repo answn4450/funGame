@@ -8,7 +8,12 @@ public class GameEnd : MonoBehaviour
 {
     private static GameEnd Instance;
     public GameObject RecordText;
-    public string Record = "";
+    public string Record = "asdf";
+
+    private GameEnd()
+    {
+
+    }
 
     public static GameEnd GetInstance()
     {
@@ -21,11 +26,13 @@ public class GameEnd : MonoBehaviour
 	private void Update()
 	{
 		RecordText.GetComponent<Text>().text = Record;
+        print(Record);
 	}
 
     //게임씬 초기화 없이 로드
     public void Restart()
     {
         SceneManager.LoadScene("GameStart");
-    }
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	}
 }

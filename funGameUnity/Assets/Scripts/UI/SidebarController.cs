@@ -70,14 +70,14 @@ public class SidebarController : MonoBehaviour
 
 		if (Cost[index] <= exp && CostRoadMapIndex[index] < MaxPureLV)
 		{
-			if (index <= 5)
+			if (index <= 4)
+			{
 				ControllerManager.GetInstance().LV[index] += 1;
+				ControllerManager.GetInstance().PlayerExp -= Cost[index];
+				CostRoadMapIndex[index] += 1;
+				Cost[index] = CostRoadMap[index];
+			}
 
-			ControllerManager.GetInstance().LV[index] += 1;
-			ControllerManager.GetInstance().PlayerExp -= Cost[index];
-			CostRoadMapIndex[index] += 1;
-			Cost[index] = CostRoadMap[index];
-			print(CostRoadMapIndex[index]);	
 		}
 	}
 }

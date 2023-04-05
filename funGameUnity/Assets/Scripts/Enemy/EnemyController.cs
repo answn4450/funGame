@@ -17,6 +17,7 @@ public class EnemyController : MonoBehaviour
 	public bool DoSkill;
 	public bool WeaponHitPlayer;
 
+	private int WeaponDamage = 3;
 	private int Damage=2;
 	private float SkillTimer;
 	private Animator Anim;
@@ -91,6 +92,22 @@ public class EnemyController : MonoBehaviour
 				GetComponent<CapsuleCollider2D>().enabled = false;
 			}
 		}
+		else if(collision.tag=="Player")
+		{
+			if (DoAttack)
+			{
+				ControllerManager.GetInstance().CommonHit(WeaponDamage);
+				WeaponHitPlayer = true;
+			}
+			else
+				ControllerManager.GetInstance().CommonHit(Damage);
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		if (collision.tag == "Player")
+			WeaponHitPlayer = false;
 	}
 
 	private void Walk()

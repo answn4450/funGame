@@ -10,6 +10,7 @@ public class GameStatusDraw : MonoBehaviour
     private Text UITravelDistance;
     private Text UIPlayerLV;
     private Text UIPlayerExp;
+    private Text UIPlayerHP;
     private Transform UICourse;
     private float UICourseStartX = 480.0f, UICourseEndX = 1457.0f;
 
@@ -19,6 +20,7 @@ public class GameStatusDraw : MonoBehaviour
 		UIPlayerLV = this.transform.GetChild(1).GetComponent<Text>();
         UICourse = this.transform.GetChild(2);
         UIPlayerExp = this.transform.GetChild(3).GetComponent<Text>();
+        UIPlayerHP = this.transform.GetChild(4).GetChild(0).GetComponent<Text>();
     }
 
     void Update()
@@ -27,6 +29,7 @@ public class GameStatusDraw : MonoBehaviour
         DrawPlayerLV();
         DrawPaceUI();
         DrawPlayerExp();
+        DrawPlayerHP();
     }
 
     private void DrawPlayerLV()
@@ -78,4 +81,9 @@ public class GameStatusDraw : MonoBehaviour
 	{
         UIPlayerExp.text = ControllerManager.GetInstance().PlayerExp.ToString();
     }
+
+    private void DrawPlayerHP()
+    {
+		UIPlayerHP.text =  ((int)GameStatus.GetInstance().PlayerHP).ToString();
+	}
 }

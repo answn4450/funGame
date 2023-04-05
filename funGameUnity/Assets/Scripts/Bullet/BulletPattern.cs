@@ -23,7 +23,18 @@ public class BulletPattern : MonoBehaviour
 
 	void Start()
 	{
-		BulletPrefab = Resources.Load("Prefabs/BossBullet") as GameObject;
+		BulletPrefab = Resources.Load("Prefabs/Boss/BossBullet") as GameObject;
+		Fire();
+	}
+
+	private void Update()
+	{
+		if (Input.GetKeyUp(KeyCode.Space))
+			Fire();
+	}
+
+	public void Fire()
+	{
 
 		switch (pattern)
 		{
@@ -33,7 +44,6 @@ public class BulletPattern : MonoBehaviour
 
 			case Pattern.DelayScrew:
 				StartCoroutine(GetDelayScrewPattern());
-
 				break;
 
 			case Pattern.Twist:
@@ -41,11 +51,10 @@ public class BulletPattern : MonoBehaviour
 				break;
 
 			case Pattern.D:
-
 				break;
 
 			case Pattern.Explosion:
-				StartCoroutine(ExplosionPattern(5.0f, (int)(360 / 5.0f)));
+				StartCoroutine(ExplosionPattern(10));
 				break;
 
 			case Pattern.F:
@@ -127,9 +136,9 @@ public class BulletPattern : MonoBehaviour
 	}
 
 
-
-	public IEnumerator ExplosionPattern(float _angle, int _count, bool _option = false)
+	public IEnumerator ExplosionPattern(int _count, bool _option = false)
 	{
+		float _angle = 0.0f;
 		GameObject ParentObj = new GameObject("Bullet");
 
 		SpriteRenderer renderer = ParentObj.AddComponent<SpriteRenderer>();
@@ -157,7 +166,7 @@ public class BulletPattern : MonoBehaviour
 
 			controller.Option = _option;
 
-			_angle += 5.0f;
+			_angle += 360.0f/_count;
 
 			controller.Direction = new Vector3(
 				Mathf.Cos(_angle * 3.141592f / 180),

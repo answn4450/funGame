@@ -31,12 +31,21 @@ public class Climate
 			gameObject.transform.position = new Vector3();
 			//Vector3.Max(Wind*Time.deltaTime-new vec)
 		}
-		else
+		else if (gameObject.tag=="Enemy")
 		{
 			if (PlayerRunHard)
 				gameObject.transform.position -= (Wind + PlayerBreakWind) * Time.deltaTime;
 			else
 				gameObject.transform.position -= Wind * Time.deltaTime;
 		}
+		else
+		{
+			gameObject.transform.position -= (Wind + PlayerBreakWind) * Time.deltaTime;
+		}
+	}
+
+	public Vector3 GetBackgroundWind()
+	{
+		return Wind + PlayerBreakWind;
 	}
 }

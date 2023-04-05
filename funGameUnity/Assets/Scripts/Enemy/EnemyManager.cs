@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -38,22 +39,21 @@ public class EnemyManager : MonoBehaviour
 
 			// ** 씬이 변경되어도 계속 유지될 수 있게 해준다.
 			DontDestroyOnLoad(gameObject);
-
-			// ** 생성되는 Enemy를 담아둘 상위 객체
-			Parrent = new GameObject("EnemyList");
-			Player = GameObject.Find("Player");
-			// ** Enemy로 사용할 원형 객체
-			Prefab = Resources.Load("Prefabs/Enemy/Enemy") as GameObject;
 		}
 	}
-
-	private void Reset()
+	
+	private void Start()
 	{
-		print("from enemy manager Reset");
+		// ** 생성되는 Enemy를 담아둘 상위 객체
+		Parrent = new GameObject("EnemyList");
+		Player = GameObject.Find("Player");
+		// ** Enemy로 사용할 원형 객체
+		Prefab = Resources.Load("Prefabs/Enemy/Enemy") as GameObject;
+		StartCoroutine(Generate());
 	}
 
 	// ** 시작하자마자 Start 함수를 코루틴 함수로 실행
-	private IEnumerator Start()
+	private IEnumerator Generate()
 	{
 		while (true)
 		{

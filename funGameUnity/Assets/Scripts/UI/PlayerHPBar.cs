@@ -14,12 +14,12 @@ public class PlayerHPBar : MonoBehaviour
 
 	private void Start()
 	{
-		HPBar.maxValue = ControllerManager.GetInstance().PlayerHP;
+		HPBar.maxValue = GameStatus.GetInstance().PlayerHP;
 		HPBar.value=HPBar.maxValue;
 	}
 
 	private void Update()
 	{	
-		HPBar.value = ControllerManager.GetInstance().PlayerHP;
+		HPBar.value = GameStatus.GetInstance().PlayerHP;
 	}
 }

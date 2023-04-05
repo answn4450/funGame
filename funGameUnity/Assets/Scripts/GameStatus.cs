@@ -5,7 +5,8 @@ using UnityEngine;
 public class GameStatus
 {
 	public int[] LV = { 0, 0, 0, 0, 0 };
-
+	public int MaxPlayerHP = 100;
+	public float PlayerHP = 100;
 	public float RunDistance = 0.0f;
 	public float DistanceLength = 300.0f;
 	//public float currentWavePercent = 0.0f;
