@@ -10,8 +10,8 @@ public class BossController : MonoBehaviour
 	{
 		Screw,
 		DelayScrew,
-		Twist, D,
-		Explosion, F,
+		ShotGun,
+		Explosion,
 		GuideBullet
 	};
 
@@ -210,41 +210,41 @@ public class BossController : MonoBehaviour
 		}
 		else
 			active = true;
-
 	}
 
-
-	#region pragma BossBullet Pattern
-
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.tag == "Bullet")
+		{
+			HP -= (int)ControllerManager.GetInstance().Player_BulletPower;
+		}
+		else if (collision.tag=="Player")
+		{
+			print("boss collision");
+			ControllerManager.GetInstance().CommonHit(10);
+		}
+	}
+	
 	public void ShotBullet()
 	{
 		pattern = (Pattern)Random.Range(0, System.Enum.GetValues(typeof(Pattern)).Length);
-		print(pattern);
+		//print(pattern);
 		switch (pattern)
 		{
 			case Pattern.Screw:
-				GetScrewPattern(5.0f, (int)(360 / 5.0f));
+				GetScrewPattern(20);
 				break;
 
 			case Pattern.DelayScrew:
 				StartCoroutine(GetDelayScrewPattern());
-
 				break;
 
-			case Pattern.Twist:
-				StartCoroutine(TwistPattern());
-				break;
-
-			case Pattern.D:
-
+			case Pattern.ShotGun:
+				GetShotGunPattern(15);
 				break;
 
 			case Pattern.Explosion:
-				StartCoroutine(ExplosionPattern(1));
-				break;
-
-			case Pattern.F:
-
+				StartCoroutine(ExplosionPattern(10));
 				break;
 
 			case Pattern.GuideBullet:
@@ -252,9 +252,29 @@ public class BossController : MonoBehaviour
 				break;
 		}
 	}
+	///////////////////////BulletPattern.cs º¹ºÙ////////////////////////////
 
-	private void GetScrewPattern(float _angle, int _count, bool _option = false)
+	public void GetShotGunPattern(int _count)
 	{
+		for (int i = 0; i < _count; ++i)
+		{
+			GameObject Obj = Instantiate(BulletPrefab);
+			BulletControll controller = Obj.GetComponent<BulletControll>();
+			Vector3 offSet = new Vector3(
+				Random.Range(-1.0f, 1.0f),
+				Random.Range(-1.0f, 1.0f),
+				0.0f
+				) * 0.3f;
+			float speed = Random.Range(10.0f, 20.0f);
+			controller.Direction = speed * (offSet + (Target.transform.position - transform.position).normalized);
+			Obj.transform.position = transform.position;
+			BulletList.Add(Obj);
+		}
+	}
+
+	public void GetScrewPattern(int _count, bool _option = false)
+	{
+		float _angle = 0.0f;
 		for (int i = 0; i < _count; ++i)
 		{
 			GameObject Obj = Instantiate(BulletPrefab);
@@ -262,7 +282,7 @@ public class BossController : MonoBehaviour
 
 			controller.Option = _option;
 
-			_angle += 5.0f;
+			_angle += 360.0f / _count;
 
 			controller.Direction = new Vector3(
 				Mathf.Cos(_angle * 3.141592f / 180),
@@ -275,11 +295,12 @@ public class BossController : MonoBehaviour
 		}
 	}
 
-	private IEnumerator GetDelayScrewPattern()
-	{
-		float fAngle = 30.0f;
 
-		int iCount = (int)(360 / fAngle);
+	public IEnumerator GetDelayScrewPattern()
+	{
+		int iCount = 12;
+
+		float fAngle = 360.0f / iCount;
 
 		int i = 0;
 
@@ -301,23 +322,10 @@ public class BossController : MonoBehaviour
 
 			BulletList.Add(Obj);
 			++i;
-			yield return new WaitForSeconds(0.025f);
+			yield return new WaitForSeconds(0.25f);
 		}
 	}
 
-	public IEnumerator TwistPattern()
-	{
-		float fTime = 3.0f;
-
-		while (fTime > 0)
-		{
-			fTime -= Time.deltaTime;
-
-			GameObject obj = Instantiate(Resources.Load("Prefabs/Twist")) as GameObject;
-
-			yield return null;
-		}
-	}
 
 	public IEnumerator ExplosionPattern(int _count, bool _option = false)
 	{
@@ -350,9 +358,10 @@ public class BossController : MonoBehaviour
 			controller.Option = _option;
 
 			_angle += 360.0f / _count;
+
 			controller.Direction = new Vector3(
-				Mathf.Cos(_angle * Mathf.Deg2Rad),
-				Mathf.Sin(_angle * Mathf.Deg2Rad),
+				Mathf.Cos(_angle * 3.141592f / 180),
+				Mathf.Sin(_angle * 3.141592f / 180),
 				0.0f) * 5 + transform.position;
 
 			Obj.transform.position = pos;
@@ -370,14 +379,5 @@ public class BossController : MonoBehaviour
 		controller.Option = true;
 
 		Obj.transform.position = transform.position;
-	}
-	#endregion pragma BossBullet Pattern
-
-	private void OnTriggerEnter2D(Collider2D collision)
-	{
-		if (collision.tag == "Bullet")
-		{
-			HP -= (int)ControllerManager.GetInstance().Player_BulletPower;
-		}
 	}
 }

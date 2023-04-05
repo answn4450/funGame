@@ -101,10 +101,10 @@ public class ControllerManager
 	public void PlayerHPRegen()
 	{
 		float regen = Time.deltaTime * LVTable[(int)Status.HPRegenSize, NowLV[(int)Status.HPRegenSize]];
-		if( GameStatus.GetInstance().PlayerHP + regen < GameStatus.GetInstance().MaxPlayerHP)
-		{
-			GameStatus.GetInstance().PlayerHP += regen;
-		}
+		GameStatus.GetInstance().PlayerHP = Math.Min(
+				GameStatus.GetInstance().PlayerHP+regen,
+				GameStatus.GetInstance().MaxPlayerHP
+			);
 	}
 
 	public void SetPlayerStatus()
@@ -142,18 +142,13 @@ public class ControllerManager
 		}
 	}
 
-	public void CommonHit(int damage)
+	public void CommonHit(float damage)
 	{
+		float defence = LVTable[(int)Status.Defence, NowLV[(int)Status.Defence]];
+		damage = Math.Max(0.0f, damage - defence);
 		if (UnityEngine.Random.Range(0, 100) > Player_ImmortalChance)
 		{
 			GameStatus.GetInstance().PlayerHP -= damage;
 		}
-	}
-
-	public void BigHeal()
-	{
-		GameStatus.GetInstance().PlayerHP = Math.Min(
-			GameStatus.GetInstance().PlayerHP + 10, 100
-		);
 	}
 }

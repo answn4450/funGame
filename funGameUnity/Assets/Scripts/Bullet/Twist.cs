@@ -37,6 +37,7 @@ public class Twist : MonoBehaviour
 	}
 	void Update()
     {
+		print("a");
 		Angle += 2.5f;
 		Bullet[0].transform.position += new Vector3(
 			Mathf.Cos(Angle * Mathf.Deg2Rad), 1.0f, 0.0f)*Speed*Time.deltaTime;

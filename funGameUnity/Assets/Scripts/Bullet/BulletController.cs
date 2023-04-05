@@ -36,7 +36,6 @@ public class BulletController : MonoBehaviour
 	{
 		// ** 충돌횟수 차감.
 		--hp;
-		print(collision.transform.name);
 		// ** collision = 충돌한 대상.
 		// ** 충돌한 대상을 삭제한다. 
 		if (collision.transform.tag == "wall")

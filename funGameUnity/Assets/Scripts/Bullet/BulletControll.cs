@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BulletControll : MonoBehaviour
 {
+	public string MasterTag;
 	// ** 총알이 날아가는 속도
 	public float Speed;
 	public GameObject Target;
@@ -39,10 +40,10 @@ public class BulletControll : MonoBehaviour
 		if (Option && Target)
 		{
 			Direction = (Target.transform.position - transform.position).normalized;
-			float fAngle = getAngle(Vector3.down, Direction);
-			transform.eulerAngles = new Vector3(
-			0.0f, 0.0f, fAngle);
 		}
+		float fAngle = getAngle(Vector3.down, Direction);
+		transform.eulerAngles = new Vector3(
+		0.0f, 0.0f, fAngle);
 		// ** 방향으로 속도만큼 위치를 변경
 		transform.position += Direction * Speed * Time.deltaTime;
 
@@ -53,10 +54,17 @@ public class BulletControll : MonoBehaviour
 	{
 		// ** collision = 충돌한 대상.
 		// ** 충돌한 대상을 삭제한다. 
+		print(collision.transform.tag);
 		if (collision.transform.tag == "wall")
 		{
 			GameObject Obj = Instantiate(fxPrefab);
 			Obj.transform.position = transform.position;
+			Destroy(this.gameObject);
+		}
+		else if(collision.transform.tag=="Player")
+		{
+			print("boss bullet player hit");
+			ControllerManager.GetInstance().CommonHit(1);
 			Destroy(this.gameObject);
 		}
 		else

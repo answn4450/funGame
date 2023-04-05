@@ -5,41 +5,56 @@ using UnityEngine.UI;
 
 public class BulletPattern : MonoBehaviour
 {
+	private static BulletPattern Instance = null;
+	
+	public static BulletPattern GetInstance()
+	{
+		if (Instance == null)
+		{
+			Instance = new BulletPattern();
+		}
+		return Instance;
+	}
+
 	public enum Pattern
 	{
 		Screw,
 		DelayScrew,
-		Twist, D,
+		Twist, ShotGun,
 		Explosion, F,
 		GuideBullet
 	};
 
 	public Pattern pattern = Pattern.Screw;
 	public Sprite sprite;
-
+	public GameObject Target;
 
 	private List<GameObject> BulletList = new List<GameObject>();
 	private GameObject BulletPrefab;
 
 	void Start()
 	{
+		//Target = new GameObject("Mouse");
+		//Target.AddComponent<MyGizmo>();
+		Target = GameObject.Find("Target");
 		BulletPrefab = Resources.Load("Prefabs/Boss/BossBullet") as GameObject;
-		Fire();
+		ShotBullet();
 	}
 
 	private void Update()
 	{
+		//Target.transform.position = Input.mousePosition;
+		print(Input.mousePosition.x);
 		if (Input.GetKeyUp(KeyCode.Space))
-			Fire();
+			ShotBullet();
 	}
 
-	public void Fire()
+	public void ShotBullet()
 	{
-
 		switch (pattern)
 		{
 			case Pattern.Screw:
-				GetScrewPattern(5.0f, (int)(360 / 5.0f));
+				GetScrewPattern(20);
 				break;
 
 			case Pattern.DelayScrew:
@@ -50,7 +65,8 @@ public class BulletPattern : MonoBehaviour
 				StartCoroutine(TwistPattern());
 				break;
 
-			case Pattern.D:
+			case Pattern.ShotGun:
+				GetShotGunPattern(15);
 				break;
 
 			case Pattern.Explosion:
@@ -67,8 +83,27 @@ public class BulletPattern : MonoBehaviour
 		}
 	}
 
-	private void GetScrewPattern(float _angle, int _count, bool _option = false)
+	public void GetShotGunPattern(int _count)
 	{
+		for (int i =0;i<_count;++i)
+		{
+			GameObject Obj = Instantiate(BulletPrefab);
+			BulletControll controller = Obj.GetComponent<BulletControll>();
+			Vector3 offSet = new Vector3(
+				Random.Range(-1.0f, 1.0f),
+				Random.Range(-1.0f, 1.0f),
+				0.0f
+				)*0.3f;
+			float speed = Random.Range(10.0f, 20.0f);
+			controller.Direction = speed*(offSet+(Target.transform.position - transform.position).normalized);
+			Obj.transform.position = transform.position;
+			BulletList.Add(Obj);
+		}
+	}
+
+	public void GetScrewPattern(int _count, bool _option = false)
+	{
+		float _angle = 0.0f;
 		for (int i = 0; i < _count; ++i)
 		{
 			GameObject Obj = Instantiate(BulletPrefab);
@@ -76,7 +111,7 @@ public class BulletPattern : MonoBehaviour
 
 			controller.Option = _option;
 
-			_angle += 5.0f;
+			_angle += 360.0f/_count;
 
 			controller.Direction = new Vector3(
 				Mathf.Cos(_angle * 3.141592f / 180),
@@ -90,11 +125,11 @@ public class BulletPattern : MonoBehaviour
 	}
 
 
-	private IEnumerator GetDelayScrewPattern()
+	public IEnumerator GetDelayScrewPattern()
 	{
-		float fAngle = 30.0f;
+		int iCount = 12;
 
-		int iCount = (int)(360 / fAngle);
+		float fAngle = 360.0f / iCount;
 
 		int i = 0;
 
@@ -116,7 +151,7 @@ public class BulletPattern : MonoBehaviour
 
 			BulletList.Add(Obj);
 			++i;
-			yield return new WaitForSeconds(0.025f);
+			yield return new WaitForSeconds(0.25f);
 		}
 	}
 
@@ -148,7 +183,7 @@ public class BulletPattern : MonoBehaviour
 
 		controll.Option = false;
 
-		controll.Direction = (GameObject.Find("Target").transform.position - transform.position);
+		controll.Direction = Target.transform.position - transform.position;
 
 		ParentObj.transform.position = transform.position;
 
@@ -184,7 +219,7 @@ public class BulletPattern : MonoBehaviour
 		GameObject Obj = Instantiate(BulletPrefab);
 		BulletControll controller = Obj.GetComponent<BulletControll>();
 
-		controller.Target = GameObject.Find("Target");
+		controller.Target = Target;
 		controller.Option = true;
 
 		Obj.transform.position = transform.position;
