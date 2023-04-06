@@ -241,7 +241,7 @@ public class BossController : MonoBehaviour
 				break;
 
 			case Pattern.ShotGun:
-				GetShotGunPattern(15);
+				GetShotGunPattern(12);
 				break;
 
 			case Pattern.Explosion:
@@ -267,7 +267,7 @@ public class BossController : MonoBehaviour
 				0.0f
 				) * 0.3f;
 			float speed = Random.Range(10.0f, 20.0f);
-			controller.Direction = speed * (offSet + (Target.transform.position - transform.position).normalized);
+			controller.Direction = 0.5f * speed * (offSet + (Target.transform.position - transform.position).normalized);
 			Obj.transform.position = transform.position;
 			BulletList.Add(Obj);
 		}

@@ -9,6 +9,7 @@ public class BulletControll : MonoBehaviour
 	public float Speed;
 	public GameObject Target;
 
+	public int HP = 5;
 	public bool Option;
 	public float Angnle;
 
@@ -36,6 +37,8 @@ public class BulletControll : MonoBehaviour
 
 	void Update()
 	{
+		if (HP<=0)
+			Destroy(this.gameObject);
 		// ** 실시간으로 타겟의 위치를 확인하고 방향을 갱신한다.
 		if (Option && Target)
 		{
@@ -64,6 +67,10 @@ public class BulletControll : MonoBehaviour
 		{
 			ControllerManager.GetInstance().CommonHit(1);
 			Destroy(this.gameObject);
+		}
+		else if(collision.tag=="Bullet")
+		{
+			HP -= 1;
 		}
 		else
 		{

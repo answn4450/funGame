@@ -22,20 +22,20 @@ public class ControllerManager
 
 	//List<List<int>> LVTable = new List<List<int>>();
 	//플레이어가 스킬 없이 이룰 수 있는 LV 제한. 레벨은 0부터 MaxLV까지
-	public int MaxPureLV = 3;
+	public int MaxPureLV = 4;
 	//크기는 MaxPureLV + 1
 	public float[,] LVTable =
 	{
 		//BulletPower int로 바꿔서 써야 함
-		{ 1.0f, 2.0f, 4.0f, 6.0f, 10.0f},
+		{ 1.0f, 2.0f, 4.0f, 6.0f, 10.0f, 20.0f},
 		//Defence 
-		{ 0.0f, 1.0f, 4.0f, 9.0f, 20.0f},
+		{ 0.0f, 1.0f, 4.0f, 9.0f, 10.0f, 20.0f},
 		//BulletTerm
-		{ 100f, 0.5f, 0.3f, 0.2f, 0.1f},
+		{ 2.0f, 1.0f, 0.5f, 0.3f, 0.2f, 0.1f},
 		//ImmortalChance 백분위
-		{ 1.0f, 3.0f, 5.0f, 7.0f, 10.0f},
-		//HPRegenSpeed 
-		{ 0.0f, 1.0f, 2.0f, 2.5f, 3.0f}
+		{ 1.0f, 3.0f, 5.0f, 7.0f, 8.0f, 9.0f},
+		//HPRegenSize
+		{ 0.0f, 1.0f, 2.0f, 2.5f, 3.0f, 4.0f}
 	};
 
 	public bool[] Trial = { false, false, false, false, false };

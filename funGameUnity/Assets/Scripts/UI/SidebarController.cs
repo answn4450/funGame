@@ -15,9 +15,9 @@ public class SidebarController : MonoBehaviour
 
 	private int MaxPureLV;
 	int StatNumber;
-	// 스킬들 중 앞 5개 스탯만 스킬로 적용
+	// 스킬들 중 앞 5개만 스킬로 적용
 	public GameObject[] StatButton = new GameObject[1000];
-	int[] CostRoadMap = { 3, 5, 10, 15, 20 , 0};
+	int[] CostRoadMap = { 3, 5, 15, 27, 40 , 80};
 	//statnumber (일단 6개) 만큼
 	int[] CostRoadMapIndex = new int[1000];
 	//현재 요구되는 cost
