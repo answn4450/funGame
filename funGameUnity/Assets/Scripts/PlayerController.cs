@@ -18,8 +18,10 @@ public class PlayerController : MonoBehaviour
 	// ** 움직이는 속도
 	private float Speed;
 
-	// ** 움직임을 저장하는 벡터
-	private Vector3 Movement;
+	// ** 가로 움직임을 저장하는 벡터
+	private Vector3 HorMovement;
+	// ** 세로 움직임을 저장하는 벡터
+	private Vector3 VerMovement;
 
 	// ** 플레이어의 Animator 구성요소를 받아오기위해...
 	private Animator animator;
@@ -154,15 +156,25 @@ public class PlayerController : MonoBehaviour
 
 	private void Move()
 	{
+
 		Climate.GetInstance().Slide(gameObject);
 
 		// **  Input.GetAxis =     -1 ~ 1 사이의 값을 반환함. 
 		float Hor = Input.GetAxisRaw("Horizontal"); // -1 or 0 or 1 셋중에 하나를 반환.
 		float Ver = Input.GetAxisRaw("Vertical"); // -1 or 0 or 1 셋중에 하나를 반환.
 
+		animator.SetBool("Jump Up", Ver==1);
+		animator.SetBool("Jump Down", Ver==-1);
+		
 		// ** 입력받은 값으로 플레이어를 움직인다.
-		Movement = new Vector3(
+		HorMovement = new Vector3(
 			Hor * Time.deltaTime * Speed,
+			0.0f,
+			0.0f);
+
+		// ** 입력받은 값으로 플레이어를 움직인다.
+		VerMovement = new Vector3(
+			0.0f,
 			Ver * Time.deltaTime * Speed,
 			0.0f);
 
@@ -172,12 +184,13 @@ public class PlayerController : MonoBehaviour
 
 		Climate.GetInstance().PlayerRunHard = false;
 
+		transform.position += VerMovement;
 		if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
 		{
 			// ** 플레이어의 좌표가 0.0 보다 작을때 플레이어만 움직인다.
 			if (transform.position.x < 0.1f)
 			{ 
-				transform.position += Movement;
+				transform.position += HorMovement;
 			}
 			else
 			{
@@ -195,7 +208,7 @@ public class PlayerController : MonoBehaviour
 			// ** 플레이어의 좌표가 -15.0 보다 클때 플레이어만 움직인다.
 			if (transform.position.x > -10.0f)
 				// ** 실제 플레이어를 움직인다.
-				transform.position += Movement;
+				transform.position += HorMovement;
 		}
 
 		if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow)

@@ -125,7 +125,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.32, y: -0.17}
-  m_Size: {x: 0.49, y: 0.16}
+  m_Size: {x: 0.49, y: 0.62}
   m_Direction: 1
 --- !u!114 &1715651586041493895
 MonoBehaviour:
@@ -141,8 +141,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HPBar: {fileID: 7303338336055768240}
   Speed: 0
-  HP: 0
   MaxHP: 3
+  HP: 3
   CloseToPlayer: 0
   DoAttack: 0
   DoSkill: 0

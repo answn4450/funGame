@@ -7,27 +7,27 @@ using UnityEngine.UIElements;
 
 public class GameStatusDraw : MonoBehaviour
 {
-    private Text UITravelDistance;
-    private Text UIPlayerLV;
-    private Text UIPlayerExp;
-    private Text UIPlayerHP;
+    private Transform UITravelDistance;
+    private Transform UIPlayerLV;
+    private Transform UIPlayerExp;
+    private Transform UIPlayerHP;
     private Transform UICourse;
     private float UICourseStartX = 480.0f, UICourseEndX = 1457.0f;
 
     private void Awake()
 	{
-		UITravelDistance = this.transform.GetChild(0).GetComponent<Text>();
-		UIPlayerLV = this.transform.GetChild(1).GetComponent<Text>();
+		UITravelDistance = this.transform.GetChild(0);
+		UIPlayerLV = this.transform.GetChild(1);
         UICourse = this.transform.GetChild(2);
-        UIPlayerExp = this.transform.GetChild(3).GetComponent<Text>();
-        UIPlayerHP = this.transform.GetChild(4).GetChild(0).GetComponent<Text>();
+        UIPlayerExp = this.transform.GetChild(3);
+        UIPlayerHP = this.transform.GetChild(4);
     }
 
     void Update()
     {
-        UITravelDistance.text = ((int)GameStatus.GetInstance().RunDistance).ToString();
+        UITravelDistance.GetComponent<Text>().text = ((int)GameStatus.GetInstance().RunDistance).ToString();
         DrawPlayerLV();
-        DrawPaceUI();
+        DrawCourseUI();
         DrawPlayerExp();
         DrawPlayerHP();
     }
@@ -43,20 +43,20 @@ public class GameStatusDraw : MonoBehaviour
                 LVStr += '/';
             }
 		}
-        UIPlayerLV.text = LVStr;
+        UIPlayerLV.GetComponent<Text>().text = LVStr;
     }
 
 
     //수동으로 시작점이랑 끝점을 정한 후 움직였음.
-    private void DrawPaceUI()
+    private void DrawCourseUI()
     {
 		Transform currentPoint=UICourse.Find("CurrentPoint");
         Transform wavePoint = UICourse.Find("WavePoint");
 
 
 		float width = UICourseEndX - UICourseStartX;
-        float pointY = UICourse.Find("CourseBar").GetChild(0).transform.position.y;
-        
+		//float pointY = UICourse.Find("CourseBar").GetChild(0).transform.position.y;
+        float pointY = 74;
         currentPoint.transform.position = new Vector3(
             width * GameStatus.GetInstance().GetRunPercent()/100.0f + UICourseStartX,
             pointY,
@@ -79,11 +79,11 @@ public class GameStatusDraw : MonoBehaviour
 
     private void DrawPlayerExp()
 	{
-        UIPlayerExp.text = ControllerManager.GetInstance().PlayerExp.ToString();
+        UIPlayerExp.GetChild(0).GetComponent<Text>().text = ControllerManager.GetInstance().PlayerExp.ToString();
     }
 
     private void DrawPlayerHP()
     {
-		UIPlayerHP.text =  ((int)GameStatus.GetInstance().PlayerHP).ToString();
+		UIPlayerHP.GetChild(0).GetComponent<Text>().text =  ((int)GameStatus.GetInstance().PlayerHP).ToString();
 	}
 }

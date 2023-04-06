@@ -2,6 +2,7 @@
 //범위에 상관없이 일정 시간 지나면 스킬(원거리) 공격
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +11,8 @@ public class EnemyController : MonoBehaviour
 	public GameObject HPBar;
 
 	public float Speed;
-	public int HP;
-	public int MaxHP;
+	public int MaxHP=3;
+	public int HP=3;
 	public bool CloseToPlayer;
 	public bool DoAttack;
 	public bool DoSkill;
@@ -38,17 +39,23 @@ public class EnemyController : MonoBehaviour
 	{
 		Speed = 0.2f;
 		CloseToPlayer = false;
-		MaxHP = 3;
-		HP = MaxHP;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+		if (transform.position.x < -1000.0f)
+			Destroy(gameObject);
+
 		//언제나 걷도록 수정
 		Anim.SetFloat("Speed", 1.0f);
-		//Anim.SetFloat("Speed", Movement.x);
 		
+		if (HP <= 0)
+		{
+			Anim.SetTrigger("Die");
+			GetComponent<CapsuleCollider2D>().enabled = false;
+		}
+
 		if (!DoSkill)
 		{
 			if (DoAttack)
@@ -84,12 +91,6 @@ public class EnemyController : MonoBehaviour
 		if (collision.tag == "Bullet")
 		{
 			HP-=(int)ControllerManager.GetInstance().Player_BulletPower;
-
-			if (HP <= 0)
-			{
-				Anim.SetTrigger("Die");
-				GetComponent<CapsuleCollider2D>().enabled = false;
-			}
 		}
 		else if(collision.tag=="Player")
 		{
@@ -133,7 +134,7 @@ public class EnemyController : MonoBehaviour
 
 	private void DestroyEnemy()
 	{
-		ControllerManager.GetInstance().PlayerExp += 1;
+		ControllerManager.GetInstance().PlayerExp += (int)(float)(MaxHP/5.0f)+1;
 		Destroy(gameObject, 0.016f);
 		//Canvas dropItemCanvas = Canvas.find Find("DropItemCanvas");
 	}

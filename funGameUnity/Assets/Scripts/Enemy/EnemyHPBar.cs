@@ -16,6 +16,8 @@ public class EnemyHPBar : MonoBehaviour
 	private void Awake()
 	{
 		HPBar = GetComponent<Slider>();
+		// ** 복제된 UI를 캔버스에 위치시킨다. 
+		transform.SetParent(GameObject.Find("EnemyHPCanvas").transform);
 	}
 
 

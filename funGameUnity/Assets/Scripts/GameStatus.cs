@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameStatus
 {
+	public string GameEndComment;
 	public int[] LV = { 0, 0, 0, 0, 0 };
 	public int MaxPlayerHP = 100;
 	public float PlayerHP = 100;

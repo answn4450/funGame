@@ -54,16 +54,14 @@ public class BulletControll : MonoBehaviour
 	{
 		// ** collision = 충돌한 대상.
 		// ** 충돌한 대상을 삭제한다. 
-		print(collision.transform.tag);
 		if (collision.transform.tag == "wall")
 		{
 			GameObject Obj = Instantiate(fxPrefab);
 			Obj.transform.position = transform.position;
 			Destroy(this.gameObject);
 		}
-		else if(collision.transform.tag=="Player")
+		else if(collision.tag=="Player")
 		{
-			print("boss bullet player hit");
 			ControllerManager.GetInstance().CommonHit(1);
 			Destroy(this.gameObject);
 		}

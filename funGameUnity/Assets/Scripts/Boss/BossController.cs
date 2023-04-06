@@ -32,7 +32,6 @@ public class BossController : MonoBehaviour
 
 	private Animator Anim;
 
-	// ** 플레이어의 SpriteRenderer 구성요소를 받아오기위해...
 	private SpriteRenderer renderer;
 
 	private Vector3 Movement;
@@ -40,7 +39,6 @@ public class BossController : MonoBehaviour
 
 	private float CoolDown;
 	private float Speed;
-	//private int HP;
 
 	private bool Attack;
 	private bool Walk;
@@ -149,9 +147,9 @@ public class BossController : MonoBehaviour
 		// * 1 : 이동         STATE_WALK
 		// * 2 : 공격         STATE_ATTACK
 		// * 3 : 슬라이딩     STATE_SLIDE
-		//return 3;
-		//return Random.Range(STATE_WALK, STATE_SLIDE + 1);
-		return 2;
+		
+		return Random.Range(STATE_WALK, STATE_SLIDE + 1);
+		//print("1:이동 2:공격 3:슬라이딩"+c.ToString());
 	}
 
 
@@ -198,18 +196,22 @@ public class BossController : MonoBehaviour
 
 	private void onSlide()
 	{
+		Anim.SetBool("Slide", true);
 		Vector3 Direction = (EndPoint - transform.position).normalized;
 		Movement = new Vector3(
-			Speed * Direction.x,
+			Speed * Direction.x * Time.deltaTime * 5,
 			0.0f,
 			0.0f);
 
-		if (Mathf.Abs(transform.position.x - EndPoint.x) > 0.01)
+		if (Mathf.Abs(transform.position.x - EndPoint.x) > 1)
 		{
-			transform.position += Movement * Time.deltaTime * Speed;
+			transform.position += Movement;
 		}
 		else
+		{
 			active = true;
+			Anim.SetBool("Slide", false);
+		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -220,7 +222,6 @@ public class BossController : MonoBehaviour
 		}
 		else if (collision.tag=="Player")
 		{
-			print("boss collision");
 			ControllerManager.GetInstance().CommonHit(10);
 		}
 	}

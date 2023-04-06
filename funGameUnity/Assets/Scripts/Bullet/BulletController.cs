@@ -10,11 +10,15 @@ public class BulletController : MonoBehaviour
 	// ** 총알이 충돌한 횟수
 	private int hp;
 
+	// ** 총알이 움직인 거리
+	private Vector3 Mileage;
+
 	// ** 이펙트효과 원본
 	public GameObject fxPrefab;
 
 	// ** 총알이 날아가야할 방향
 	public Vector3 Direction { get; set; }
+	private Color FadeOutColor = new Color(0.0f, 0.0f, 0.0f, -5f);
 
 	private void Start()
 	{
@@ -29,6 +33,14 @@ public class BulletController : MonoBehaviour
 	{
 		// ** 방향으로 속도만큼 위치를 변경
 		transform.position += Direction * Speed * Time.deltaTime;
+		Mileage += Direction * Speed * Time.deltaTime;
+
+		if (Mileage.magnitude>ControllerManager.GetInstance().Player_BulletMileage)
+		{
+			transform.gameObject.GetComponent<SpriteRenderer>().color += Time.deltaTime*FadeOutColor;
+			if (transform.gameObject.GetComponent<SpriteRenderer>().color.a<=0)
+				Destroy(this.gameObject);
+		}
 	}
 
 	// ** 충돌체와 물리엔진이 포함된 오브젝트가 다른 충돌체와 충돌한다면 실행되는 함수. 

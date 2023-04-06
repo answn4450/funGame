@@ -31,7 +31,7 @@ public class ControllerManager
 		//Defence 
 		{ 0.0f, 1.0f, 4.0f, 9.0f, 20.0f},
 		//BulletTerm
-		{ 50f, 0.3f, 0.2f, 0.1f, 0.0f},
+		{ 100f, 0.5f, 0.3f, 0.2f, 0.1f},
 		//ImmortalChance 백분위
 		{ 1.0f, 3.0f, 5.0f, 7.0f, 10.0f},
 		//HPRegenSpeed 
@@ -50,6 +50,7 @@ public class ControllerManager
 	public float Player_BulletTerm = 0.0f;
 	public float Player_ImmortalChance = 0.0f;
 	public float Player_HPRegenSize = 0.0f;
+	public float Player_BulletMileage = 5.0f;
 
 	public int PlayerExp = 0;
 	public int HitShock = 0;
@@ -79,18 +80,16 @@ public class ControllerManager
 		//게임 끝
 		if (GameStatus.GetInstance().PlayerHP <= 0)
 		{
-			GameEnd.GetInstance().Record = "Fail";
-			GameEnd.GetInstance().Record = "Run: ";
-			GameEnd.GetInstance().Record += GameStatus.GetInstance().RunDistance;
-			GameEnd.GetInstance().Record = "M";
+			GameStatus.GetInstance().GameEndComment = "Fail\n";
+			GameStatus.GetInstance().GameEndComment += "Run: ";
+			GameStatus.GetInstance().GameEndComment += GameStatus.GetInstance().RunDistance;
+			GameStatus.GetInstance().GameEndComment += "M";
 
 			SceneManager.LoadScene("GameEnd");
 		}
 		if (GameStatus.GetInstance().RunDistance >= GameStatus.GetInstance().DistanceLength)
 		{
-			GameEnd.GetInstance().Record = "Win";
-			GameEnd.GetInstance().Record = "M";
-
+			GameStatus.GetInstance().GameEndComment = "Win";
 			SceneManager.LoadScene("GameEnd");
 		}
 
