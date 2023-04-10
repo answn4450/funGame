@@ -18,10 +18,13 @@ public class BulletPattern : MonoBehaviour
 
 	public enum Pattern
 	{
+		SingleOne,
+		SingleTwo,
+		SingleFour,
 		Screw,
 		DelayScrew,
 		Twist, ShotGun,
-		Explosion, F,
+		Explosion,
 		GuideBullet
 	};
 
@@ -71,10 +74,6 @@ public class BulletPattern : MonoBehaviour
 
 			case Pattern.Explosion:
 				StartCoroutine(ExplosionPattern(10));
-				break;
-
-			case Pattern.F:
-
 				break;
 
 			case Pattern.GuideBullet:

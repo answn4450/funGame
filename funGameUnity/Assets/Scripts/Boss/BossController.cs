@@ -74,7 +74,7 @@ public class BossController : MonoBehaviour
 	{
 		if (HP <= 0)
 		{
-			Anim.SetTrigger("Die");
+			//Anim.SetTrigger("Die");
 			GetComponent<CapsuleCollider2D>().enabled = false;
 			Destroy(gameObject);
 		}

@@ -55,7 +55,7 @@ public class GameStatusDraw : MonoBehaviour
 
 		float width = UICourseEndX - UICourseStartX;
 		//float pointY = UICourse.Find("CourseBar").GetChild(0).transform.position.y;
-        float pointY = 74;
+        float pointY = 76;
         currentPoint.transform.position = new Vector3(
             width * GameStatus.GetInstance().GetRunPercent()/100.0f + UICourseStartX,
             pointY,

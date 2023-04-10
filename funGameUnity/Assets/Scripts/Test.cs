@@ -1,34 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Test : MonoBehaviour
 {
-    private Text ui;
-    public GameObject player;
+    [Tooltip("테스트용으로 띄울 것")]
     public GameObject test;
     
-    // Start is called before the first frame update
-    void Start()
-    {
-        ui= GetComponent<Text>();
-    }
+    private void Awake()
+	{
+        //test = new GameObject("EmptyObject");
+        //test.AddComponent<MyGizmo>();
+	}
 
-    // Update is called once per frame
-    void Update()
+	void Update()
     {
-        float distance = Vector3.Distance(player.transform.position,test.transform.position);
-        ui.text = distance.ToString();
-
-        if (distance > 0.5f)
-        {
-            test.GetComponent<MyGizmo>().color = Color.green;
-        }
-        else
-        { 
-            test.GetComponent<MyGizmo>().color = Color.red;
-        }
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        test.transform.position = mousePosition;
     }
 }

@@ -84,7 +84,7 @@ public class BackGroundController : MonoBehaviour
 
 		if (transform.gameObject.name=="Sky")
 		{
-			Vector3 wind = new Vector3(0.4f, 0.0f, 0.0f);
+			Vector3 wind = Climate.GetInstance().Wind;
 			transform.position -= wind * Time.deltaTime;
 			endPoint -= wind.x * Time.deltaTime;
 		}
