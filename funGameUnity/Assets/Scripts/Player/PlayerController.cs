@@ -15,6 +15,8 @@ enum ObjectID
 
 public class PlayerController : MonoBehaviour
 {
+	public BulletPattern2 MyBullet;
+
 	// ** 움직이는 속도
 	private float Speed;
 
