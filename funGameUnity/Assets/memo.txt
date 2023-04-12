@@ -1,0 +1,23 @@
+메모장 대용으로 씀. 쓸데없는 파일임 
+
+겨울 온화기 습윤기 건기
+
+.1. 봄
+2.2. 여름
+2.3. 가을
+2.4. 겨울
+
+온화기(Mild Season)
+3.2. 폭풍기(Hurricane Season)
+3.3. 장마기(Monsoon Season)
+3.4. 건기(Dry Season)
+
+4.1. 온화기(Temperate Season)
+4.2. 습윤기(Humid Season)
+4.3. 개화기(Lush Season)
+4.4. 돼재앙(Aporkalypse)
+
+해야 하는 것:
+버튼 연속 눌림 수정, 보라 enemy 교체, 정리, 다시 시작 버튼 수정, 보스 hp 확인
+또 해야 하는거:
+로그인과 로그아웃, 텍스트 효과, 러닝타임에 따라 바뀌는 배경 종류, 다양한 스킬 

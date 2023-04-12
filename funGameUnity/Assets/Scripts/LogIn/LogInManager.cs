@@ -1,24 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+
+
+enum LoginStatus
+{
+	Create,
+	LogIn,
+	SaveLogOut
+}
+
 
 [System.Serializable]
 public class MemberForm
 {
-	public string name;
-	public int age;
-	public int index;
-	public int gender;
+	string id;
+	string password;
+	string nickname;
+	string favourite;
+	int highScore;
 
-	public MemberForm(string name, int age, int index, int gender)
-	{
-		this.name = name;
-		this.age = age;
-		this.index = index;
-		this.gender = gender;
-	}
 }
 
 // 회원가입
@@ -27,21 +31,41 @@ public class MemberForm
 
 public class LogInManager : MonoBehaviour
 {
-	string URL = "https://script.google.com/macros/s/AKfycbzgvSq1CkKXmBN7sBrnt-e3GrXxjNe8yHR17gJ-gNL5ueT8IoVafJZ2fvh2y_DPshex/exec";
+	public InputField IdInput;
+	public InputField PasswordInput;
+	public Text StatusText;
+
+	string URL = "https://script.google.com/macros/s/AKfycby0sgdU2frCHSu9_OqZiWZBTfJ8mLYBu5gCGmwTwK0/dev";
 
 	IEnumerator Start()
 	{
 		// ** 요청을 하기위한 작업.
-
-
+		StatusText.text = "asdf";
+		string a, b, c;
+		a = IdInput.text;
+		b = IdInput.text;
+		print(a);
+		print(StatusText.text);
+		yield return new WaitForSeconds(2.0f);
+		/*
 		using (UnityWebRequest request = UnityWebRequest.Get(URL))
 		{
 			yield return request.SendWebRequest();
 			MemberForm json = JsonUtility.FromJson<MemberForm>(request.downloadHandler.text);
 
-			print(json.name);
-			// ** 응답에 대한 작업.
-			//print(request.downloadHandler.text);
+			print(json);
+		}
+		*/
+	}
+
+	public IEnumerator TryLogIn()
+	{
+		using (UnityWebRequest request = UnityWebRequest.Get(URL))
+		{
+			yield return request.SendWebRequest();
+			MemberForm json = JsonUtility.FromJson<MemberForm>(request.downloadHandler.text);
+
+			print(json);
 		}
 	}
 

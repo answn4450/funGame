@@ -116,8 +116,8 @@
 -define:TEXTCORE_FONT_ENGINE_1_5_OR_NEWER
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
--r:"C:/Users/SGA/Desktop/김문주/repo/funGameUnity2/funGame/funGameUnity/Library/PackageCache/com.unity.testtools.codecoverage@1.2.2/lib/ReportGenerator/ReportGeneratorMerged.dll"
--r:"C:/Users/SGA/Desktop/김문주/repo/funGameUnity2/funGame/funGameUnity/Library/PackageCache/com.unity.visualscripting@1.8.0/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll"
+-r:"C:/Users/SGA/Desktop/김문주/repo/funGameUnity/funGame/funGameUnity/Library/PackageCache/com.unity.testtools.codecoverage@1.2.2/lib/ReportGenerator/ReportGeneratorMerged.dll"
+-r:"C:/Users/SGA/Desktop/김문주/repo/funGameUnity/funGame/funGameUnity/Library/PackageCache/com.unity.visualscripting@1.8.0/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll"
 -r:"D:/2021.3.19f1/Editor/Data/Managed/UnityEngine/UnityEditor.CoreModule.dll"
 -r:"D:/2021.3.19f1/Editor/Data/Managed/UnityEngine/UnityEditor.DeviceSimulatorModule.dll"
 -r:"D:/2021.3.19f1/Editor/Data/Managed/UnityEngine/UnityEditor.DiagnosticsModule.dll"
@@ -396,6 +396,7 @@
 "Assets/Scripts/Player/PlayerManager.cs"
 "Assets/Scripts/Player/SkillController.cs"
 "Assets/Scripts/Player/SkillTable.cs"
+"Assets/Scripts/PoppingText.cs"
 "Assets/Scripts/Restart.cs"
 "Assets/Scripts/Test.cs"
 "Assets/Scripts/Test2.cs"
