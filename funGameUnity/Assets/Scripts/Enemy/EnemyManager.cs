@@ -36,9 +36,6 @@ public class EnemyManager : MonoBehaviour
 			instance = this;
 
 			Distance = 0.0f;
-
-			// ** 씬이 변경되어도 계속 유지될 수 있게 해준다.
-			DontDestroyOnLoad(gameObject);
 		}
 	}
 	

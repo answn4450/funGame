@@ -284,7 +284,7 @@ public class PlayerController : MonoBehaviour
 	private void OnTriggerStay2D(Collider2D collision)
 	{
 		if (collision.transform.tag == "wall")
-			GameStatus.GetInstance().PlayerHP -= 1 * Time.deltaTime;
+			GameStatus.GetInstance().PlayerHP -= 500 * Time.deltaTime;
 	}
 
 	public void LikeJump()

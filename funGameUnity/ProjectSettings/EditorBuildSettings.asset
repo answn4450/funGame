@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameEnd.unity
     guid: d38b731ea8a961a479a1d302e252ac22
+  - enabled: 1
+    path: Assets/Scenes/ProgressScene.unity
+    guid: feea6bf43edb3734e940ddd495ca669d
   m_configObjects: {}

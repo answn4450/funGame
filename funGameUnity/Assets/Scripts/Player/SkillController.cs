@@ -41,9 +41,7 @@ public class SkillController: MonoBehaviour
 	public void PushButton(int index, float cool, float skillduration)
 	{
 		ButtonImages[index].fillAmount = 0;
-		//print(Buttons[index].GetComponent<Button>());
-		//Buttons[0].GetComponent<Button>().enabled = false;
-		
+		Buttons[index].GetComponent<Button>().enabled = false;
 		StartCoroutine(PushButton_Coroutine(index, cool));
 		ControllerManager.GetInstance().GoTrial(index,skillduration);
 	}
@@ -56,7 +54,7 @@ public class SkillController: MonoBehaviour
 			yield return null;
 		}
 
-		//Buttons[0].GetComponent<Button>().enabled = true;
+		Buttons[index].GetComponent<Button>().enabled = true;
 	}
 
 	public void ButtonTrialBulletPower()

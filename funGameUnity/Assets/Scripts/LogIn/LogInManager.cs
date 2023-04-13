@@ -9,20 +9,24 @@ using UnityEngine.SceneManagement;
 enum LoginStatus
 {
 	Create,
-	LogIn,
-	SaveLogOut
+	LogIn
 }
 
 
 [System.Serializable]
 public class MemberForm
 {
-	string id;
-	string password;
-	string nickname;
-	string favourite;
-	int highScore;
+	public string id;
+	public string password;
+	public string want;
+	public string nickname;
 
+	public MemberForm(string id, string password, string want)
+	{
+		this.id = id;
+		this.password = password;
+		this.want = want;
+	}
 }
 
 // 회원가입
@@ -33,39 +37,86 @@ public class LogInManager : MonoBehaviour
 {
 	public InputField IdInput;
 	public InputField PasswordInput;
-	public Text StatusText;
+	public Text TryStatusText;
 
-	string URL = "https://script.google.com/macros/s/AKfycby0sgdU2frCHSu9_OqZiWZBTfJ8mLYBu5gCGmwTwK0/dev";
+	string URL = "https://script.google.com/macros/s/AKfycbzgvSq1CkKXmBN7sBrnt-e3GrXxjNe8yHR17gJ-gNL5ueT8IoVafJZ2fvh2y_DPshex/exec";
 
-	IEnumerator Start()
+
+	public void LogInButton()
 	{
-		// ** 요청을 하기위한 작업.
-		StatusText.text = "asdf";
-		string a, b, c;
-		a = IdInput.text;
-		b = IdInput.text;
-		print(a);
-		print(StatusText.text);
-		yield return new WaitForSeconds(2.0f);
-		/*
-		using (UnityWebRequest request = UnityWebRequest.Get(URL))
-		{
-			yield return request.SendWebRequest();
-			MemberForm json = JsonUtility.FromJson<MemberForm>(request.downloadHandler.text);
+		IdInput.GetComponent<InputField>().interactable = false;
+		PasswordInput.GetComponent<InputField>().interactable = false;
 
-			print(json);
-		}
-		*/
+		string id = IdInput.text;
+		string password = PasswordInput.text;
+		string want = "logIn";
+
+		MemberForm member = new MemberForm(id, password, want);
+
+		WWWForm form = new WWWForm();
+		form.AddField(nameof(member.id), member.id);
+		form.AddField(nameof(member.password), member.password);
+		form.AddField(nameof(member.want), member.want);
+		
+		StartCoroutine(TryLogIn(form));
+	}
+	
+	public void RegisterButton()
+	{
+		IdInput.GetComponent<InputField>().interactable = false;
+		PasswordInput.GetComponent<InputField>().interactable = false;
+
+		string id = IdInput.text;
+		string password = PasswordInput.text;
+		string want = "register";
+
+		MemberForm member = new MemberForm(id, password, want);
+
+		WWWForm form = new WWWForm();
+		form.AddField(nameof(member.id), member.id);
+		form.AddField(nameof(member.password), member.password);
+		form.AddField(nameof(member.want), member.want);
+
+		StartCoroutine(TryRegister(form));
 	}
 
-	public IEnumerator TryLogIn()
+	public IEnumerator TryLogIn(WWWForm form)
 	{
-		using (UnityWebRequest request = UnityWebRequest.Get(URL))
+		using (UnityWebRequest request = UnityWebRequest.Post(URL, form))
 		{
-			yield return request.SendWebRequest();
-			MemberForm json = JsonUtility.FromJson<MemberForm>(request.downloadHandler.text);
+			TryStatusText.text = "로그인 시도 중...";
 
-			print(json);
+			yield return request.SendWebRequest();
+			if (request.downloadHandler.text == "true")
+			{
+				TryStatusText.text = "로그인 완료";
+			}
+			else
+			{
+				TryStatusText.text = "계정 불일치";
+			}
+			IdInput.GetComponent<InputField>().interactable = true;
+			PasswordInput.GetComponent<InputField>().interactable = true;
+		}
+	}
+
+	public IEnumerator TryRegister(WWWForm form)
+	{
+		using (UnityWebRequest request = UnityWebRequest.Post(URL, form))
+		{
+			TryStatusText.text = "계정 생성 시도 중...";
+
+			yield return request.SendWebRequest();
+			if (request.downloadHandler.text == "true")
+			{
+				TryStatusText.text = "계정 생성 완료";
+			}
+			else
+			{
+				TryStatusText.text = "이미 존재하는 계정 id";
+			}
+			IdInput.GetComponent<InputField>().interactable = true;
+			PasswordInput.GetComponent<InputField>().interactable = true;
 		}
 	}
 

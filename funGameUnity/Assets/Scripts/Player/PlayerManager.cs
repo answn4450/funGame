@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -12,6 +13,6 @@ public class PlayerManager : MonoBehaviour
 
 	void Update()
     {
-        ControllerManager.GetInstance().Update();
+		ControllerManager.GetInstance().Update();
     }
 }

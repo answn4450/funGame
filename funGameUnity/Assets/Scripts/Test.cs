@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class Test : MonoBehaviour
@@ -15,7 +16,7 @@ public class Test : MonoBehaviour
 
 	void Update()
     {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        test.transform.position = mousePosition;
-    }
+        if (Input.GetMouseButtonDown(0))
+            print("mouse down");
+	}
 }

@@ -86,11 +86,13 @@ public class ControllerManager
 			GameStatus.GetInstance().GameEndComment += "M";
 
 			SceneManager.LoadScene("GameEnd");
+			GameStatus.GetInstance().ResetGameStatus();
 		}
-		if (GameStatus.GetInstance().RunDistance >= GameStatus.GetInstance().DistanceLength)
+		else if (GameStatus.GetInstance().RunDistance >= GameStatus.GetInstance().DistanceLength)
 		{
 			GameStatus.GetInstance().GameEndComment = "Win";
 			SceneManager.LoadScene("GameEnd");
+			GameStatus.GetInstance().ResetGameStatus();
 		}
 
 		SetPlayerStatus();
