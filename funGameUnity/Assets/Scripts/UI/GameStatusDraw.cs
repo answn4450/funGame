@@ -12,6 +12,7 @@ public class GameStatusDraw : MonoBehaviour
     private Transform UIPlayerExp;
     private Transform UIPlayerHP;
     private Transform UICourse;
+    private Transform UIBulletPattern;
     private float UICourseStartX = 480.0f, UICourseEndX = 1457.0f;
 
     private void Awake()
@@ -21,6 +22,7 @@ public class GameStatusDraw : MonoBehaviour
         UICourse = this.transform.GetChild(2);
         UIPlayerExp = this.transform.GetChild(3);
         UIPlayerHP = this.transform.GetChild(4);
+        UIBulletPattern = this.transform.GetChild(5);
     }
 
     void Update()
@@ -30,6 +32,12 @@ public class GameStatusDraw : MonoBehaviour
         DrawCourseUI();
         DrawPlayerExp();
         DrawPlayerHP();
+        DrawBulletPattern();
+    }
+
+    private void DrawBulletPattern()
+    {
+        UIBulletPattern.GetComponent<Text>().text = ControllerManager.GetInstance().Scroll.ToString();
     }
 
     private void DrawPlayerLV()

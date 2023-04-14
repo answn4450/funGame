@@ -47,7 +47,6 @@ public class BulletPattern : MonoBehaviour
 	private void Update()
 	{
 		//Target.transform.position = Input.mousePosition;
-		print(Input.mousePosition.x);
 		if (Input.GetKeyUp(KeyCode.Space))
 			ShotBullet();
 	}

@@ -5,14 +5,13 @@ using UnityEngine;
 
 public class GameStatus
 {
-	public string id = "guest";
+	public string Nickname = "guest";
 	public string GameEndComment;
 	public List<int> LV = Enumerable.Repeat(0,5).ToList();
 	public int MaxPlayerHP = 100;
 	public float PlayerHP = 100;
 	public float RunDistance = 0.0f;
 	public float DistanceLength = 300.0f;
-	//public float currentWavePercent = 0.0f;
 	private static GameStatus Instance;
 
 	public int CurrentWanveIndex = 0;
@@ -35,7 +34,6 @@ public class GameStatus
 		MaxPlayerHP = 100;
 		PlayerHP = 100;
 		RunDistance = 0.0f;
-		DistanceLength = 300.0f;
 		CurrentWanveIndex = 0;
 		LV = Enumerable.Repeat(0, 5).ToList();
 	}

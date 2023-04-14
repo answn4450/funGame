@@ -34,43 +34,7 @@ public class BulletPatternTest : MonoBehaviour
 
 	private void Update()
 	{
-		//Target.transform.position = Input.mousePosition;
-		print(Input.mousePosition.x);
 		if (Input.GetKeyUp(KeyCode.Space))
-			Fire();
-	}
-
-	public void Fire()
-	{
-		switch (pattern)
-		{
-			case Pattern.Screw:
-				bulletPattern.GetScrewPattern(20);
-				break;
-
-			case Pattern.DelayScrew:
-				bulletPattern.GetDelayScrewPattern();
-				break;
-
-			case Pattern.Twist:
-				bulletPattern.TwistPattern();
-				break;
-
-			case Pattern.ShotGun:
-				bulletPattern.GetShotGunPattern(15);
-				break;
-
-			case Pattern.Explosion:
-				bulletPattern.ExplosionPattern(10);
-				break;
-
-			case Pattern.F:
-
-				break;
-
-			case Pattern.GuideBullet:
-				bulletPattern.GuideBulletPattern();
-				break;
-		}
+			bulletPattern.getshot
 	}
 }

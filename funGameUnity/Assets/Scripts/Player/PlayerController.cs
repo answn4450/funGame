@@ -15,8 +15,6 @@ enum ObjectID
 
 public class PlayerController : MonoBehaviour
 {
-	public BulletPattern2 MyBullet;
-
 	// ** 움직이는 속도
 	private float Speed;
 
@@ -50,6 +48,8 @@ public class PlayerController : MonoBehaviour
 	private Vector3 BreakWind = new Vector3(0.0f, 0.0f, 0.0f);
 	private GameObject gameStatus;
 
+	private BulletPattern Pattern;
+	
 	[Header("방향")]
 	// ** 플레이어가 바라보는 방향
 
@@ -99,15 +99,29 @@ public class PlayerController : MonoBehaviour
 	void Update()
 	{
 		BulletTimer += Time.deltaTime;
-
+		PatternScroll();
 		Move();
 		AutoAttack();
 		Climate.GetInstance().PlayerBreakWind = BreakWind;
 		GameStatus.GetInstance().RunDistance+= (BreakWind + Climate.GetInstance().Wind).x * Time.deltaTime;
+		if (Input.GetKey(KeyCode.Space))
+			Shot();
+
 		// ** 좌측 쉬프트키를 입력한다면.....
 		if (Input.GetKey(KeyCode.LeftShift))
 			// ** 피격
 			OnHit();
+	}
+
+	private void Shot()
+	{
+		
+		BulletPattern.GetInstance().ShotBullet();
+	}
+
+	private void PatternScroll()
+	{
+		ControllerManager.GetInstance().Scroll += Input.mouseScrollDelta.y;
 	}
 
 	private void AutoAttack()
@@ -181,7 +195,12 @@ public class PlayerController : MonoBehaviour
 
 		Climate.GetInstance().PlayerRunHard = false;
 
-		transform.position += VerMovement;
+		if ((Ver > 0 && transform.position.y < 6.38f) ||
+			(Ver < 0 && transform.position.y > -8.38f))
+		{ 
+			transform.position += VerMovement;
+		}
+
 		if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
 		{
 			// ** 플레이어의 좌표가 0.0 보다 작을때 플레이어만 움직인다.

@@ -35,15 +35,18 @@ public class SkillController: MonoBehaviour
 	//키보드 숫자로 스킬 적용
 	private void Update()
 	{
-		
+		KeyboardSkill();
 	}
 
 	public void PushButton(int index, float cool, float skillduration)
 	{
-		ButtonImages[index].fillAmount = 0;
-		Buttons[index].GetComponent<Button>().enabled = false;
-		StartCoroutine(PushButton_Coroutine(index, cool));
-		ControllerManager.GetInstance().GoTrial(index,skillduration);
+		if (ButtonImages[index].fillAmount == 1)
+		{
+			ButtonImages[index].fillAmount = 0;
+			Buttons[index].GetComponent<Button>().enabled = false;
+			StartCoroutine(PushButton_Coroutine(index, cool));
+			ControllerManager.GetInstance().GoTrial(index,skillduration);
+		}
 	}
 
 	IEnumerator PushButton_Coroutine(int index, float cool)
@@ -80,5 +83,24 @@ public class SkillController: MonoBehaviour
 	public void ButtonTrialHPRegenSpeed()
 	{
 		PushButton(4, 0.5f, 2.5f);
+	}
+
+	public void KeyboardSkill()
+	{
+		if (Input.GetKey(KeyCode.Alpha1))
+			ButtonTrialBulletPower();
+
+		if (Input.GetKey(KeyCode.Alpha2))
+			ButtonTrialDefence();
+
+		if (Input.GetKey(KeyCode.Alpha3))
+			ButtonTrialBulletTerm();
+
+		if (Input.GetKey(KeyCode.Alpha4))
+			ButtonTrialImmortalChance();
+
+		if (Input.GetKey(KeyCode.Alpha5))
+			ButtonTrialHPRegenSpeed();
+
 	}
 }

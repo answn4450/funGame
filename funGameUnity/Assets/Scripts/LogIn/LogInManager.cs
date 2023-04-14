@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 
 enum LoginStatus
@@ -80,6 +81,24 @@ public class LogInManager : MonoBehaviour
 		StartCoroutine(TryRegister(form));
 	}
 
+
+	public void GetNickname()
+	{
+		string id = IdInput.text;
+		string password = PasswordInput.text;
+		string want = "getNickname";
+
+		MemberForm member = new MemberForm(id, password, want);
+
+		WWWForm form = new WWWForm();
+		form.AddField(nameof(member.id), member.id);
+		form.AddField(nameof(member.password), member.password);
+		form.AddField(nameof(member.want), member.want);
+
+		StartCoroutine(TryGetNickName(form));
+	}
+
+
 	public IEnumerator TryLogIn(WWWForm form)
 	{
 		using (UnityWebRequest request = UnityWebRequest.Post(URL, form))
@@ -90,13 +109,16 @@ public class LogInManager : MonoBehaviour
 			if (request.downloadHandler.text == "true")
 			{
 				TryStatusText.text = "로그인 완료";
+
+				//닉네임 가져오는 동안 아이디비번 인풋 금지
+				GetNickname();
 			}
 			else
 			{
 				TryStatusText.text = "계정 불일치";
+				IdInput.GetComponent<InputField>().interactable = true;
+				PasswordInput.GetComponent<InputField>().interactable = true;
 			}
-			IdInput.GetComponent<InputField>().interactable = true;
-			PasswordInput.GetComponent<InputField>().interactable = true;
 		}
 	}
 
@@ -115,6 +137,20 @@ public class LogInManager : MonoBehaviour
 			{
 				TryStatusText.text = "이미 존재하는 계정 id";
 			}
+			IdInput.GetComponent<InputField>().interactable = true;
+			PasswordInput.GetComponent<InputField>().interactable = true;
+		}
+	}
+
+	public IEnumerator TryGetNickName(WWWForm form)
+	{
+		using (UnityWebRequest request = UnityWebRequest.Post(URL, form))
+		{
+			TryStatusText.text = "닉네임 받아오는 중...";
+
+			yield return request.SendWebRequest();
+			GameStatus.GetInstance().Nickname = request.downloadHandler.text;
+			TryStatusText.text = "hi! " + GameStatus.GetInstance().Nickname;
 			IdInput.GetComponent<InputField>().interactable = true;
 			PasswordInput.GetComponent<InputField>().interactable = true;
 		}

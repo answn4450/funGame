@@ -33,12 +33,14 @@ public class EnemyHPBar : MonoBehaviour
     {
 		// ** WorldToScreenPoint = 월드 좌표를 카메라 좌표로 변환
 		// ** 월드상에 있는 타겟의 좌표를 카메라 좌표로 변환하여 UI에 셋팅한다.
-		HPBar.value = Target.GetComponent<EnemyController>().HP;
-		//if (Target.IsDestroyed())
-		if (HPBar.value <= 0.0f)
+		if (Target.IsDestroyed() || Target==null)
+		{
 			Destroy(transform.gameObject);
+		}
 		else
+		{
 			HPBar.value = Target.GetComponent<EnemyController>().HP;
 			transform.position = Camera.main.WorldToScreenPoint(Target.transform.position + offset);
+		}
     }
 }

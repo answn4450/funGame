@@ -7,7 +7,16 @@ using UnityEngine.UI;
 
 public class SidebarController : MonoBehaviour
 {
-    public GameObject sidebar;
+	public enum Status
+	{
+		BulletPower,
+		Defence,
+		BulletTerm,
+		ImmortalChance,
+		HPRegenSize
+	}
+
+	public GameObject sidebar;
 
     public bool check;
 
@@ -65,19 +74,14 @@ public class SidebarController : MonoBehaviour
 
 	public void BuyStatLV(int index)
 	{
-		//print(index);
 		int exp = ControllerManager.GetInstance().PlayerExp;
 
 		if (Cost[index] <= exp && CostRoadMapIndex[index] < MaxPureLV)
 		{
-			if (index <= 4)
-			{
-				ControllerManager.GetInstance().LV[index] += 1;
-				ControllerManager.GetInstance().PlayerExp -= Cost[index];
-				CostRoadMapIndex[index] += 1;
-				Cost[index] = CostRoadMap[index];
-			}
-
+			ControllerManager.GetInstance().LV[index] += 1;
+			ControllerManager.GetInstance().PlayerExp -= Cost[index];
+			CostRoadMapIndex[index] += 1;
+			Cost[index] = CostRoadMap[CostRoadMapIndex[index]];
 		}
 	}
 }

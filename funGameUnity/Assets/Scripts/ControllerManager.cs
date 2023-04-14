@@ -18,6 +18,23 @@ public class ControllerManager
 		HPRegenSize
 	}
 
+	public enum Player_Pattern
+	{
+		SingleOne
+	}
+
+	public enum Pattern
+	{
+		SingleOne,
+		SingleTwo,
+		SingleFour,
+		Screw,
+		DelayScrew,
+		Twist, ShotGun,
+		Explosion,
+		GuideBullet
+	}
+
 	private static ControllerManager Instance = null;
 
 	//List<List<int>> LVTable = new List<List<int>>();
@@ -52,7 +69,7 @@ public class ControllerManager
 	public float Player_HPRegenSize = 0.0f;
 	public float Player_BulletMileage = 5.0f;
 
-	public int PlayerExp = 0;
+	public int PlayerExp = 3;
 	public int HitShock = 0;
 
 	public float BulletSpeed = 10.0f;
@@ -60,6 +77,8 @@ public class ControllerManager
 	public bool DirRight;
 
 	public float[] DangerPercent = { 10.0f, 20.0f, 40.0f };
+
+	public float Scroll = 0;
 
 	private ControllerManager()
 	{
@@ -137,7 +156,7 @@ public class ControllerManager
 	{
 		Trial[LVIndex] = true;
 		TrialTimer[LVIndex] = t;
-		if (NowLV[LVIndex] < MaxPureLV)
+		if (NowLV[LVIndex] <= MaxPureLV)
 		{
 			TrialLV[LVIndex] = NowLV[LVIndex] + 1;
 		}

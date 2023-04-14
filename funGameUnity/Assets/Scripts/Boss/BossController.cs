@@ -147,8 +147,8 @@ public class BossController : MonoBehaviour
 		// * 1 : 이동         STATE_WALK
 		// * 2 : 공격         STATE_ATTACK
 		// * 3 : 슬라이딩     STATE_SLIDE
-		
-		return Random.Range(STATE_WALK, STATE_SLIDE + 1);
+
+		return Random.Range(STATE_WALK, STATE_SLIDE + 1); ;
 		//print("1:이동 2:공격 3:슬라이딩"+c.ToString());
 	}
 

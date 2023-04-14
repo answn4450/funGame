@@ -14,6 +14,7 @@ public class EnemyGizmo : MonoBehaviour
 
 	void Update()
 	{
+		//if ()
 		float distance = Vector3.Distance(player.transform.position, test.transform.position);
 
 		if (distance > 1.5f)
