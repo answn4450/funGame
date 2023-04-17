@@ -383,7 +383,7 @@ GameObject:
   - component: {fileID: 898917992}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: wall
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -774,6 +774,7 @@ GameObject:
   - component: {fileID: 2113509505}
   - component: {fileID: 2113509504}
   - component: {fileID: 2113509507}
+  - component: {fileID: 2113509508}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -868,11 +869,28 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113509502}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f0a227f243559f4ab28c7ea5ce493b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pattern: 3
-  sprite: {fileID: 0}
   Target: {fileID: 0}
+  TargetDir: {x: 0, y: 0, z: 0}
+  BulletPrefab: {fileID: 7108071387673635303, guid: ac6b42fa143f80441afe5b27e322b8f1, type: 3}
+  ShotEnd: 1
+  ScrewLV: 11
+--- !u!114 &2113509508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113509502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b9cb071520c8af428d5f29620210924, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 0}
+  pattern2: 0

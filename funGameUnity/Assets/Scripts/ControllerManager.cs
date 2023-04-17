@@ -18,23 +18,6 @@ public class ControllerManager
 		HPRegenSize
 	}
 
-	public enum Player_Pattern
-	{
-		SingleOne
-	}
-
-	public enum Pattern
-	{
-		SingleOne,
-		SingleTwo,
-		SingleFour,
-		Screw,
-		DelayScrew,
-		Twist, ShotGun,
-		Explosion,
-		GuideBullet
-	}
-
 	private static ControllerManager Instance = null;
 
 	//List<List<int>> LVTable = new List<List<int>>();
@@ -68,7 +51,8 @@ public class ControllerManager
 	public float Player_ImmortalChance = 0.0f;
 	public float Player_HPRegenSize = 0.0f;
 	public float Player_BulletMileage = 5.0f;
-
+	//public List<BulletPattern.Pattern> Player_Pattern = BulletPattern.print;
+	
 	public int PlayerExp = 3;
 	public int HitShock = 0;
 

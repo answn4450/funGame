@@ -2551,7 +2551,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 21.71346, y: 0}
+  m_Offset: {x: 24.8, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2577,7 +2577,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -21.692627, y: 0}
+  m_Offset: {x: -26, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2618,7 +2618,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 11.695396}
+  m_Offset: {x: 0, y: 14.4}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2644,7 +2644,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -11.879395}
+  m_Offset: {x: 0, y: -14.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2934,7 +2934,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 337537654}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b04376a2b06e4a41a6a188113045606, type: 3}
   m_Name: 
@@ -3998,6 +3998,7 @@ GameObject:
   - component: {fileID: 772909126}
   - component: {fileID: 772909125}
   - component: {fileID: 772909124}
+  - component: {fileID: 772909127}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -4144,6 +4145,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &772909127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772909120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f0a227f243559f4ab28c7ea5ce493b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pattern: 0
+  Target: {fileID: 0}
+  TargetDir: {x: 0, y: 0, z: 0}
+  BulletPrefab: {fileID: 7108071387673635303, guid: ac6b42fa143f80441afe5b27e322b8f1, type: 3}
+  ShotEnd: 0
+  ScrewLV: 3
 --- !u!1 &807377930
 GameObject:
   m_ObjectHideFlags: 0

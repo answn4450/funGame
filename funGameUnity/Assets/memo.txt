@@ -4,7 +4,8 @@
 재미가 없음
 
 해야 하는 것:
-보스 hp 확인, bulletpattern 플레이어도 사용가능하게 떼어놓기
+보스 hp 확인, 마우스 스크롤로 플레이어 쏘는 bulletpattern 교체, 보스 처치
+하면 bulletpattern 획득
 
 또 해야 하는거:
 텍스트 효과, 계절 타입 공격 타입 추가, 보라 enemy 교체

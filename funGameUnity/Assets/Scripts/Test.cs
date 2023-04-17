@@ -6,7 +6,5 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-	void Update()
-    {
-    }
+	public int a = 2;
 }

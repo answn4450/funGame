@@ -5,66 +5,37 @@ using UnityEngine.UI;
 
 public class BulletPattern : MonoBehaviour
 {
-	private static BulletPattern Instance = null;
-	
-	public static BulletPattern GetInstance()
-	{
-		if (Instance == null)
-		{
-			Instance = new BulletPattern();
-		}
-		return Instance;
-	}
-
 	public enum Pattern
 	{
-		SingleOne,
-		SingleTwo,
-		SingleFour,
 		Screw,
 		DelayScrew,
-		Twist, ShotGun,
+		ShotGun,
 		Explosion,
 		GuideBullet
 	};
 
 	public Pattern pattern = Pattern.Screw;
-	public Sprite sprite;
+
 	public GameObject Target;
+	public Vector3 TargetDir;
+	public GameObject BulletPrefab;
+	public bool ShotEnd = true;
+	public int ScrewLV = 1;
 
 	private List<GameObject> BulletList = new List<GameObject>();
-	private GameObject BulletPrefab;
 
-	void Start()
-	{
-		//Target = new GameObject("Mouse");
-		//Target.AddComponent<MyGizmo>();
-		Target = GameObject.Find("Target");
-		BulletPrefab = Resources.Load("Prefabs/Boss/BossBullet") as GameObject;
-		ShotBullet();
-	}
-
-	private void Update()
-	{
-		//Target.transform.position = Input.mousePosition;
-		if (Input.GetKeyUp(KeyCode.Space))
-			ShotBullet();
-	}
 
 	public void ShotBullet()
 	{
+		ShotEnd = false;
 		switch (pattern)
 		{
 			case Pattern.Screw:
-				GetScrewPattern(20);
+				GetScrewPattern(ScrewLV);
 				break;
 
 			case Pattern.DelayScrew:
 				StartCoroutine(GetDelayScrewPattern());
-				break;
-
-			case Pattern.Twist:
-				StartCoroutine(TwistPattern());
 				break;
 
 			case Pattern.ShotGun:
@@ -83,7 +54,7 @@ public class BulletPattern : MonoBehaviour
 
 	public void GetShotGunPattern(int _count)
 	{
-		for (int i =0;i<_count;++i)
+		for (int i = 0; i < _count; ++i)
 		{
 			GameObject Obj = Instantiate(BulletPrefab);
 			BulletControll controller = Obj.GetComponent<BulletControll>();
@@ -91,12 +62,13 @@ public class BulletPattern : MonoBehaviour
 				Random.Range(-1.0f, 1.0f),
 				Random.Range(-1.0f, 1.0f),
 				0.0f
-				)*0.3f;
+				) * 0.3f;
 			float speed = Random.Range(10.0f, 20.0f);
-			controller.Direction = speed*(offSet+(Target.transform.position - transform.position).normalized);
+			controller.Direction = speed * (offSet + (Target.transform.position - transform.position).normalized);
 			Obj.transform.position = transform.position;
 			BulletList.Add(Obj);
 		}
+		ShotEnd = true;
 	}
 
 	public void GetScrewPattern(int _count, bool _option = false)
@@ -106,11 +78,9 @@ public class BulletPattern : MonoBehaviour
 		{
 			GameObject Obj = Instantiate(BulletPrefab);
 			BulletControll controller = Obj.GetComponent<BulletControll>();
-
 			controller.Option = _option;
 
-			_angle += 360.0f/_count;
-
+			_angle += 360.0f / _count;
 			controller.Direction = new Vector3(
 				Mathf.Cos(_angle * 3.141592f / 180),
 				Mathf.Sin(_angle * 3.141592f / 180),
@@ -120,6 +90,7 @@ public class BulletPattern : MonoBehaviour
 
 			BulletList.Add(Obj);
 		}
+		ShotEnd = true;
 	}
 
 
@@ -151,6 +122,7 @@ public class BulletPattern : MonoBehaviour
 			++i;
 			yield return new WaitForSeconds(0.25f);
 		}
+		ShotEnd = true;
 	}
 
 
@@ -166,31 +138,36 @@ public class BulletPattern : MonoBehaviour
 
 			yield return null;
 		}
+		ShotEnd = true;
 	}
 
 
 	public IEnumerator ExplosionPattern(int _count, bool _option = false)
 	{
+
 		float _angle = 0.0f;
 		GameObject ParentObj = new GameObject("Bullet");
 
 		SpriteRenderer renderer = ParentObj.AddComponent<SpriteRenderer>();
-		renderer.sprite = sprite;
+		renderer.sprite = BulletPrefab.GetComponent<SpriteRenderer>().sprite;
 
 		BulletControll controll = ParentObj.AddComponent<BulletControll>();
 
 		controll.Option = false;
 
-		controll.Direction = Target.transform.position - transform.position;
+		if (Target != null)
+			controll.Direction = Target.transform.position - transform.position;
+		else
+			controll.Direction = TargetDir;
 
 		ParentObj.transform.position = transform.position;
+		ParentObj.transform.localScale = new Vector3(2.0f, 2.0f);
 
 		yield return new WaitForSeconds(1.5f);
 
 		Vector3 pos = ParentObj.transform.position;
 
 		Destroy(ParentObj);
-
 		for (int i = 0; i < _count; ++i)
 		{
 			GameObject Obj = Instantiate(BulletPrefab);
@@ -199,17 +176,18 @@ public class BulletPattern : MonoBehaviour
 
 			controller.Option = _option;
 
-			_angle += 360.0f/_count;
+			_angle += 360.0f / _count;
 
 			controller.Direction = new Vector3(
-				Mathf.Cos(_angle * 3.141592f / 180),
-				Mathf.Sin(_angle * 3.141592f / 180),
+				Mathf.Cos(_angle * Mathf.Deg2Rad),
+				Mathf.Sin(_angle * Mathf.Deg2Rad),
 				0.0f) * 5 + transform.position;
 
 			Obj.transform.position = pos;
 
 			BulletList.Add(Obj);
 		}
+		ShotEnd = true;
 	}
 
 	public void GuideBulletPattern()
@@ -221,5 +199,6 @@ public class BulletPattern : MonoBehaviour
 		controller.Option = true;
 
 		Obj.transform.position = transform.position;
+		ShotEnd = true;
 	}
 }

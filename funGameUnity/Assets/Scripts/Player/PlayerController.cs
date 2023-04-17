@@ -104,19 +104,11 @@ public class PlayerController : MonoBehaviour
 		AutoAttack();
 		Climate.GetInstance().PlayerBreakWind = BreakWind;
 		GameStatus.GetInstance().RunDistance+= (BreakWind + Climate.GetInstance().Wind).x * Time.deltaTime;
-		if (Input.GetKey(KeyCode.Space))
-			Shot();
 
 		// ** 좌측 쉬프트키를 입력한다면.....
 		if (Input.GetKey(KeyCode.LeftShift))
 			// ** 피격
 			OnHit();
-	}
-
-	private void Shot()
-	{
-		
-		BulletPattern.GetInstance().ShotBullet();
 	}
 
 	private void PatternScroll()
@@ -127,43 +119,16 @@ public class PlayerController : MonoBehaviour
 	private void AutoAttack()
 	{
 		// ** 자동 공격 
+		// GetComponent<BulletPattern>().ShotEnd 반영 수정 예정
 		if (BulletTimer > ControllerManager.GetInstance().Player_BulletTerm)
 		{
 			BulletTimer = 0.0f;
 			// ** 공격
 			OnAttack();
-			ThrowBullet(new Vector3(Direction, 0.0f, 0.0f));
-			ThrowBullet(new Vector3(0.0f, 1.0f, 0.0f));
-			ThrowBullet(new Vector3(0.0f, -1.0f, 0.0f));
+			GetComponent<BulletPattern>().ShotBullet();
 		}
 	}
 
-	private void ThrowBullet(Vector3 dir)
-	{
-		// ** 총알원본을 본제한다.
-		GameObject Obj = Instantiate(BulletPrefab);
-
-		// ** 복제된 총알의 위치를 현재 플레이어의 위치로 초기화한다.
-		Obj.transform.position = transform.position;
-
-		// ** 총알의 BullerController 스크립트를 받아온다.
-		BulletController Controller = Obj.AddComponent<BulletController>();
-
-		// ** 총알 스크립트내부의 방향 변수를 현재 플레이어의 방향 변수로 설정 한다.
-		Controller.Direction = dir;
-		Obj.transform.rotation = Quaternion.Euler(dir);
-		// ** 총알 스크립트내부의 FX Prefab을 설정한다.
-		Controller.fxPrefab = fxPrefab;
-
-		// ** 총알의 SpriteRenderer를 받아온다.
-		SpriteRenderer bulletRenderer = Obj.GetComponent<SpriteRenderer>();
-
-		// ** 총알의 이미지 반전 상태를 플레이어의 이미지 반전 상태로 설정한다.
-		bulletRenderer.flipY = playerRenderer.flipX;
-
-		// ** 모든 설정이 종료되었다면 저장소에 보관한다.
-		Bullets.Add(Obj);
-	}
 
 	private void Move()
 	{

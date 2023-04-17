@@ -56,12 +56,12 @@ public class BulletControll : MonoBehaviour
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		// ** collision = 충돌한 대상.
-		// ** 충돌한 대상을 삭제한다.
 		if (collision.transform.tag==MasterTag)
 		{
 			return;
 		}
-		if (collision.transform.tag == "wall")
+		// ** 충돌한 대상을 삭제한다.
+		else if (collision.transform.tag == "wall")
 		{
 			GameObject Obj = Instantiate(fxPrefab);
 			Obj.transform.position = transform.position;
