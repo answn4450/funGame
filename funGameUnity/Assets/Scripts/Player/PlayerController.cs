@@ -48,8 +48,6 @@ public class PlayerController : MonoBehaviour
 	private Vector3 BreakWind = new Vector3(0.0f, 0.0f, 0.0f);
 	private GameObject gameStatus;
 
-	private BulletPattern Pattern;
-	
 	[Header("방향")]
 	// ** 플레이어가 바라보는 방향
 
@@ -65,18 +63,13 @@ public class PlayerController : MonoBehaviour
 
 		// ** player 의 SpriteRenderer를 받아온다.
 		playerRenderer = this.GetComponent<SpriteRenderer>();
-
-		// ** [Resources] 폴더에서 사용할 리소스를 들고온다.
-		BulletPrefab = Resources.Load("Prefabs/Bullet") as GameObject;
-		//fxPrefab = Resources.Load("Prefabs/FX/Smoke") as GameObject;
-		fxPrefab = Resources.Load("Prefabs/FX/Hit") as GameObject;
-
 	}
 
 	// ** 유니티 기본 제공 함수
 	// ** 초기값을 설정할 때 사용
 	void Start()
 	{
+		GetComponent<BulletPattern>().Speed = 3.0f;
 		gameStatus = GameObject.Find("GameStauts");
 		// ** 속도를 초기화.
 		Speed = 5.0f;
@@ -99,7 +92,6 @@ public class PlayerController : MonoBehaviour
 	void Update()
 	{
 		BulletTimer += Time.deltaTime;
-		PatternScroll();
 		Move();
 		AutoAttack();
 		Climate.GetInstance().PlayerBreakWind = BreakWind;
@@ -111,20 +103,15 @@ public class PlayerController : MonoBehaviour
 			OnHit();
 	}
 
-	private void PatternScroll()
-	{
-		ControllerManager.GetInstance().Scroll += Input.mouseScrollDelta.y;
-	}
-
 	private void AutoAttack()
 	{
 		// ** 자동 공격 
-		// GetComponent<BulletPattern>().ShotEnd 반영 수정 예정
-		if (BulletTimer > ControllerManager.GetInstance().Player_BulletTerm)
+		if (BulletTimer > ControllerManager.GetInstance().Player_BulletTerm && GetComponent<BulletPattern>().ShotEnd)
 		{
 			BulletTimer = 0.0f;
 			// ** 공격
 			OnAttack();
+			GetComponent<BulletPattern>().pattern = ControllerManager.GetInstance().Player_Pattern;
 			GetComponent<BulletPattern>().ShotBullet();
 		}
 	}

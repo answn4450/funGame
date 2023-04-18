@@ -17,13 +17,18 @@ public class BulletPattern : MonoBehaviour
 	public Pattern pattern = Pattern.Screw;
 
 	public GameObject Target;
-	public Vector3 TargetDir;
 	public GameObject BulletPrefab;
+	public Vector3 TargetDir;
 	public bool ShotEnd = true;
 	public int ScrewLV = 1;
-
+	public float Speed = 1;
 	private List<GameObject> BulletList = new List<GameObject>();
 
+
+	private void Awake()
+	{
+		ShotEnd = true;
+	}
 
 	public void ShotBullet()
 	{
@@ -85,7 +90,6 @@ public class BulletPattern : MonoBehaviour
 				Mathf.Cos(_angle * 3.141592f / 180),
 				Mathf.Sin(_angle * 3.141592f / 180),
 				0.0f) * 5 + transform.position;
-
 			Obj.transform.position = transform.position;
 
 			BulletList.Add(Obj);
@@ -114,7 +118,7 @@ public class BulletPattern : MonoBehaviour
 			controller.Direction = new Vector3(
 				Mathf.Cos(fAngle * Mathf.Deg2Rad),
 				Mathf.Sin(fAngle * Mathf.Deg2Rad),
-				0.0f) * 5 + transform.position;
+				0.0f) * Speed + transform.position;
 
 			Obj.transform.position = transform.position;
 
@@ -181,7 +185,7 @@ public class BulletPattern : MonoBehaviour
 			controller.Direction = new Vector3(
 				Mathf.Cos(_angle * Mathf.Deg2Rad),
 				Mathf.Sin(_angle * Mathf.Deg2Rad),
-				0.0f) * 5 + transform.position;
+				0.0f) * Speed + transform.position;
 
 			Obj.transform.position = pos;
 

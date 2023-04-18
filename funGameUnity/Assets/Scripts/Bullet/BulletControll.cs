@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BulletControll : MonoBehaviour
 {
@@ -12,19 +13,27 @@ public class BulletControll : MonoBehaviour
 	public int HP = 5;
 	public bool Option;
 	public float Angnle;
+	// ** 총알이 움직인 거리
+	public Vector3 Mileage;
 
 	// ** 이펙트효과 원본
 	public GameObject fxPrefab;
 
+	private GameObject Text;
+
 	// ** 총알이 날아가야할 방향
 	public Vector3 Direction { get; set; }
 
-	private void Start()
+	private void Awake()
 	{
 		// ** 속도 초기값
-		//Speed = ControllerManager.GetInstance().BulletSpeed;
-		Speed = Option ? 0.35f : 1.0f;
+		Speed = Option ? 0.35f : 0.8f;
+		Text = Resources.Load("Prefabs/Text1") as GameObject;
+	}
 
+
+	private void Start()
+	{
 		// ** 벡터의 정규화
 		//Direction=(Target.transform.position - transform.position).normalized;
 		Direction.Normalize();
@@ -49,7 +58,7 @@ public class BulletControll : MonoBehaviour
 		0.0f, 0.0f, fAngle);
 		// ** 방향으로 속도만큼 위치를 변경
 		transform.position += Direction * Speed * Time.deltaTime;
-
+		Mileage += Direction * Speed * Time.deltaTime;
 	}
 
 	// ** 충돌체와 물리엔진이 포함된 오브젝트가 다른 충돌체와 충돌한다면 실행되는 함수. 
@@ -71,6 +80,16 @@ public class BulletControll : MonoBehaviour
 		{
 			ControllerManager.GetInstance().CommonHit(1);
 			Destroy(this.gameObject);
+		}
+		else if (collision.tag == "Boss")
+		{
+			string str = collision.GetComponent<BossController>().HP.ToString();
+			GameObject a = Instantiate(Text) as GameObject;
+			a.transform.position = Input.mousePosition;
+			a.transform.position = transform.position;
+			
+			print(Input.mousePosition);
+			a.GetComponent<Text>().text = str;
 		}
 		else if(collision.tag=="Bullet")
 		{

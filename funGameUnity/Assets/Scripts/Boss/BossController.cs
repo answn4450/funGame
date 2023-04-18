@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static BulletPattern;
@@ -10,6 +11,7 @@ public class BossController : MonoBehaviour
 	public int HP = 300;
 
 	public Sprite sprite;
+	private BulletPattern.Pattern Pattern = BulletPattern.Pattern.ShotGun;
 
 	private List<GameObject> BulletList = new List<GameObject>();
 	private GameObject BulletPrefab;
@@ -38,8 +40,7 @@ public class BossController : MonoBehaviour
 
 	private void Awake()
 	{
-		GetComponent<BulletPattern>().Target = GameObject.Find("Player");
-
+		Target = GameObject.Find("Player");
 		Anim = GetComponent<Animator>();
 
 		renderer = GetComponent<SpriteRenderer>();
@@ -135,7 +136,7 @@ public class BossController : MonoBehaviour
 		// * 1 : 이동         STATE_WALK
 		// * 2 : 공격         STATE_ATTACK
 		// * 3 : 슬라이딩     STATE_SLIDE
-
+		
 		return Random.Range(STATE_WALK, STATE_SLIDE + 1); ;
 		//print("1:이동 2:공격 3:슬라이딩"+c.ToString());
 	}
@@ -207,6 +208,8 @@ public class BossController : MonoBehaviour
 		if (collision.tag == "Bullet")
 		{
 			HP -= (int)ControllerManager.GetInstance().Player_BulletPower;
+			if (HP <= 0)
+				ControllerManager.GetInstance().Player_Patterns.Add(Pattern);
 		}
 		else if (collision.tag=="Player")
 		{
@@ -217,5 +220,7 @@ public class BossController : MonoBehaviour
 	public void ShotBullet()
 	{
 		GetComponent<BulletPattern>().pattern = (BulletPattern.Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
+		GetComponent<BulletPattern>().Target = GameObject.Find("Player");
+		GetComponent<BulletPattern>().ShotBullet();
 	}
 }

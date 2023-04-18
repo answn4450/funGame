@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -13,7 +14,10 @@ public class GameStatusDraw : MonoBehaviour
     private Transform UIPlayerHP;
     private Transform UICourse;
     private Transform UIBulletPattern;
+    private Transform UIBulletPatternPick;
+    
     private float UICourseStartX = 480.0f, UICourseEndX = 1457.0f;
+    private int PatternIndex = 0;
 
     private void Awake()
 	{
@@ -23,6 +27,7 @@ public class GameStatusDraw : MonoBehaviour
         UIPlayerExp = this.transform.GetChild(3);
         UIPlayerHP = this.transform.GetChild(4);
         UIBulletPattern = this.transform.GetChild(5);
+        UIBulletPatternPick = this.transform.GetChild(6);
     }
 
     void Update()
@@ -33,11 +38,7 @@ public class GameStatusDraw : MonoBehaviour
         DrawPlayerExp();
         DrawPlayerHP();
         DrawBulletPattern();
-    }
-
-    private void DrawBulletPattern()
-    {
-        UIBulletPattern.GetComponent<Text>().text = ControllerManager.GetInstance().Scroll.ToString();
+        DrawPickBulletPattern();
     }
 
     private void DrawPlayerLV()
@@ -92,5 +93,29 @@ public class GameStatusDraw : MonoBehaviour
     private void DrawPlayerHP()
     {
 		UIPlayerHP.GetChild(0).GetComponent<Text>().text =  ((int)GameStatus.GetInstance().PlayerHP).ToString();
+	}
+
+    private void DrawBulletPattern()
+    {
+        BulletPattern.Pattern pattern = ControllerManager.GetInstance().Player_Pattern;
+		UIBulletPattern.GetComponent<Text>().text = pattern.ToString();
+    }
+
+	public void PatternButton()
+    {
+		ControllerManager.GetInstance().SetPlayerPattern(PatternIndex);
+	}
+    
+    private void DrawPickBulletPattern()
+    {
+		int absScroll = Mathf.Abs((int)(Input.mouseScrollDelta.y));
+		PatternIndex += absScroll;
+
+		PatternIndex %= ControllerManager.GetInstance().Player_Patterns.Count;
+
+		BulletPattern.Pattern pattern = ControllerManager.GetInstance().Player_Patterns[PatternIndex];
+		string patternInfo = PatternIndex.ToString() + "¹øÂ° ";
+		patternInfo += pattern.ToString();
+		UIBulletPatternPick.GetComponent<Text>().text = patternInfo;
 	}
 }

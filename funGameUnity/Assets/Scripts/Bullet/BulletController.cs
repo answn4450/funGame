@@ -10,9 +10,6 @@ public class BulletController : MonoBehaviour
 	// ** 총알이 충돌한 횟수
 	private int hp;
 
-	// ** 총알이 움직인 거리
-	private Vector3 Mileage;
-
 	// ** 이펙트효과 원본
 	public GameObject fxPrefab;
 
@@ -24,18 +21,16 @@ public class BulletController : MonoBehaviour
 	{
 		// ** 속도 초기값
 		Speed = ControllerManager.GetInstance().BulletSpeed;
-
+		
 		// ** 충돌 횟수를 3으로 지정한다.
 		hp = 3;
 	}
 
 	void Update()
 	{
-		// ** 방향으로 속도만큼 위치를 변경
-		transform.position += Direction * Speed * Time.deltaTime;
-		Mileage += Direction * Speed * Time.deltaTime;
+		GetComponent<BulletControll>().Speed = Speed;
 
-		if (Mileage.magnitude>ControllerManager.GetInstance().Player_BulletMileage)
+		if (GetComponent<BulletControll>().Mileage.magnitude>ControllerManager.GetInstance().Player_BulletMileage)
 		{
 			transform.gameObject.GetComponent<SpriteRenderer>().color += Time.deltaTime*FadeOutColor;
 			if (transform.gameObject.GetComponent<SpriteRenderer>().color.a<=0)

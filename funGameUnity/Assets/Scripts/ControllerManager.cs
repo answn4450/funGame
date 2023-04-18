@@ -45,18 +45,23 @@ public class ControllerManager
 	public int[] NowLV = { 0, 0, 0, 0, 0 };
 	public int[] LV = { 0, 0, 0, 0, 0 };
 
-	public float Player_BulletPower = 0.0f;
+	public float Player_BulletPower = 1.0f;
 	public float Player_Defence = 0.0f;
-	public float Player_BulletTerm = 0.0f;
-	public float Player_ImmortalChance = 0.0f;
+	public float Player_BulletTerm = 2.0f;
+	public float Player_ImmortalChance = 1.0f;
 	public float Player_HPRegenSize = 0.0f;
 	public float Player_BulletMileage = 5.0f;
-	//public List<BulletPattern.Pattern> Player_Pattern = BulletPattern.print;
+	public List<BulletPattern.Pattern> Player_Patterns = new List<BulletPattern.Pattern> 
+		{
+			BulletPattern.Pattern.Screw
+		};
+	
+	public BulletPattern.Pattern Player_Pattern = BulletPattern.Pattern.Screw;
 	
 	public int PlayerExp = 3;
 	public int HitShock = 0;
 
-	public float BulletSpeed = 10.0f;
+	public float BulletSpeed = 1.0f;
 	public bool DirLeft;
 	public bool DirRight;
 
@@ -154,5 +159,10 @@ public class ControllerManager
 		{
 			GameStatus.GetInstance().PlayerHP -= damage;
 		}
+	}
+
+	public void SetPlayerPattern(int index)
+	{
+		Player_Pattern = Player_Patterns[index];
 	}
 }
