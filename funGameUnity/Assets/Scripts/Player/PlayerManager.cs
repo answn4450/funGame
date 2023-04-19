@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
 	{
 		//print(ControllerManager.GetInstance().BulletTermTable[0]);
 	}
-
+	
 	void Update()
     {
 		ControllerManager.GetInstance().Update();

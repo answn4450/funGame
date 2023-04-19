@@ -9,6 +9,9 @@ public class DisplayUser : MonoBehaviour
     
     void Update()
     {
-        ProgressText.text = "ÂÍ ´Þ¸®´Â " + GameStatus.GetInstance().Nickname;
+        ProgressText.text = "";
+        ProgressText.text += UserController.GetInstance().HighScore.ToString();
+        ProgressText.text += "% ´Þ·È´ø ";
+        ProgressText.text += UserController.GetInstance().Nickname;
     }
 }

@@ -25,8 +25,6 @@ public class Test : MonoBehaviour
 			a.transform.position = mouse;
 			a.GetComponent<Text>().text = pos();
 		}
-
-		print(pos());
 	}
 
 	private string pos()

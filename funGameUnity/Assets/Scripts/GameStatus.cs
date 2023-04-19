@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class GameStatus
 {
-	public string Nickname = "guest";
 	public string GameEndComment;
 	public List<int> LV = Enumerable.Repeat(0,5).ToList();
 	public int MaxPlayerHP = 100;

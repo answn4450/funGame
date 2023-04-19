@@ -6753,6 +6753,8 @@ GameObject:
   - component: {fileID: 1376241111}
   - component: {fileID: 1376241110}
   - component: {fileID: 1376241112}
+  - component: {fileID: 1376241113}
+  - component: {fileID: 1376241114}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -6820,6 +6822,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouse: {x: 0, y: 0}
+--- !u!114 &1376241113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376241107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da23a838cab726d40badbd1558b2df79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1376241114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376241107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0965cf214a5515b42a82079951e3df60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1391613065
 GameObject:
   m_ObjectHideFlags: 0
