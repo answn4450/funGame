@@ -83,12 +83,13 @@ public class BulletControll : MonoBehaviour
 		}
 		else if (collision.tag == "Boss")
 		{
+			// 남은 체력 잠깐 띄우는 효과
 			string str = collision.GetComponent<BossController>().HP.ToString();
 			GameObject a = Instantiate(Text) as GameObject;
 			a.transform.position = Input.mousePosition;
 			a.transform.position = transform.position;
 			
-			print(Input.mousePosition);
+			//print(Input.mousePosition);
 			a.GetComponent<Text>().text = str;
 		}
 		else if(collision.tag=="Bullet")

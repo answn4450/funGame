@@ -8,6 +8,8 @@ using UnityEngine.UIElements;
 
 public class GameStatusDraw : MonoBehaviour
 {
+    public GameObject Player;
+
     private Transform UITravelDistance;
     private Transform UIPlayerLV;
     private Transform UIPlayerExp;
@@ -15,12 +17,15 @@ public class GameStatusDraw : MonoBehaviour
     private Transform UICourse;
     private Transform UIBulletPattern;
     private Transform UIBulletPatternPick;
+    private Transform UITarget;
     
     private float UICourseStartX = 480.0f, UICourseEndX = 1457.0f;
     private int PatternIndex = 0;
 
     private void Awake()
 	{
+        Player = GameObject.Find("Player");
+
 		UITravelDistance = this.transform.GetChild(0);
 		UIPlayerLV = this.transform.GetChild(1);
         UICourse = this.transform.GetChild(2);
@@ -28,6 +33,7 @@ public class GameStatusDraw : MonoBehaviour
         UIPlayerHP = this.transform.GetChild(4);
         UIBulletPattern = this.transform.GetChild(5);
         UIBulletPatternPick = this.transform.GetChild(6);
+        UITarget = this.transform.GetChild(7);
     }
 
     void Update()
@@ -39,6 +45,7 @@ public class GameStatusDraw : MonoBehaviour
         DrawPlayerHP();
         DrawBulletPattern();
         DrawPickBulletPattern();
+        DrawTarget();
     }
 
     private void DrawPlayerLV()
@@ -100,11 +107,6 @@ public class GameStatusDraw : MonoBehaviour
         BulletPattern.Pattern pattern = ControllerManager.GetInstance().Player_Pattern;
 		UIBulletPattern.GetComponent<Text>().text = pattern.ToString();
     }
-
-	public void PatternButton()
-    {
-		ControllerManager.GetInstance().SetPlayerPattern(PatternIndex);
-	}
     
     private void DrawPickBulletPattern()
     {
@@ -117,5 +119,15 @@ public class GameStatusDraw : MonoBehaviour
 		string patternInfo = PatternIndex.ToString() + "¹øÂ° ";
 		patternInfo += pattern.ToString();
 		UIBulletPatternPick.GetComponent<Text>().text = patternInfo;
+	}
+
+    private void DrawTarget()
+    {
+        UITarget.position = Player.GetComponent<BulletPattern>().Target.transform.position;
+    }
+
+	public void PatternButton()
+    {
+		ControllerManager.GetInstance().SetPlayerPattern(PatternIndex);
 	}
 }

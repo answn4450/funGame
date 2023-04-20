@@ -12,6 +12,7 @@ public class Popping : MonoBehaviour
 	private void Awake()
 	{
 		Canvas = GameObject.Find("EffectCanvas");
+		transform.position = Input.mousePosition;
 		Destroy(gameObject, 1f);
 		gameObject.layer = 5;
 		transform.SetParent(Canvas.transform);

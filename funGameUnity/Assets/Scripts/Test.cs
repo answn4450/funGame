@@ -22,7 +22,7 @@ public class Test : MonoBehaviour
 		if (Input.GetKeyUp(KeyCode.Space))
 		{
 			GameObject a = Instantiate(Text) as GameObject;
-			a.transform.position = mouse;
+			//a.transform.position = mouse;
 			a.GetComponent<Text>().text = pos();
 		}
 	}

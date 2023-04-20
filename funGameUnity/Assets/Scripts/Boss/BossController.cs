@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -48,6 +49,8 @@ public class BossController : MonoBehaviour
 
 	void Start()
 	{
+		GameObject.Find("Player").GetComponent<BulletPattern>().Target = gameObject;
+		
 		CoolDown = 1.5f;
 		Speed = 1.3f;
 
@@ -57,6 +60,7 @@ public class BossController : MonoBehaviour
 
 		Attack = false;
 		Walk = false;
+
 	}
 
 	void Update()
@@ -208,7 +212,8 @@ public class BossController : MonoBehaviour
 		if (collision.tag == "Bullet")
 		{
 			HP -= (int)ControllerManager.GetInstance().Player_BulletPower;
-			if (HP <= 0)
+			// 플레이어가 보스를 죽였고 보스 패턴을 안갖고 있으면 패턴 선물
+			if (HP <= 0 && !ControllerManager.GetInstance().Player_Patterns.Contains(Pattern))
 				ControllerManager.GetInstance().Player_Patterns.Add(Pattern);
 		}
 		else if (collision.tag=="Player")
@@ -219,8 +224,9 @@ public class BossController : MonoBehaviour
 
 	public void ShotBullet()
 	{
-		GetComponent<BulletPattern>().pattern = (BulletPattern.Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
-		GetComponent<BulletPattern>().Target = GameObject.Find("Player");
+		Pattern = (BulletPattern.Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
+		GetComponent<BulletPattern>().pattern = Pattern;
+		GetComponent<BulletPattern>().Target = Target;
 		GetComponent<BulletPattern>().ShotBullet();
 	}
 }

@@ -52,13 +52,15 @@ public class ControllerManager
 	public float Player_ImmortalChance = 1.0f;
 	public float Player_HPRegenSize = 0.0f;
 	public float Player_BulletMileage = 5.0f;
+
 	public List<BulletPattern.Pattern> Player_Patterns = new List<BulletPattern.Pattern> 
 		{
-			BulletPattern.Pattern.Screw
+			BulletPattern.Pattern.Screw,
+			BulletPattern.Pattern.ShotGun
 		};
-	
-	public BulletPattern.Pattern Player_Pattern = BulletPattern.Pattern.Screw;
-	
+
+	public BulletPattern.Pattern Player_Pattern = BulletPattern.Pattern.ShotGun;
+
 	public int PlayerExp = 3;
 	public int HitShock = 0;
 
@@ -67,8 +69,6 @@ public class ControllerManager
 	public bool DirRight;
 
 	public float[] DangerPercent = { 10.0f, 20.0f, 40.0f };
-
-	public float Scroll = 0;
 
 	private ControllerManager()
 	{
@@ -144,6 +144,7 @@ public class ControllerManager
 		}
 	}
 
+	
 	public void SetPlayerPattern(int index)
 	{
 		Player_Pattern = Player_Patterns[index];

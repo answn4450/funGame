@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class BulletPattern : MonoBehaviour
 {
@@ -27,7 +29,14 @@ public class BulletPattern : MonoBehaviour
 
 	private void Awake()
 	{
+		Target = GameObject.Find("Cursor");
 		ShotEnd = true;
+	}
+
+	private void Update()
+	{
+		if (Target == null)
+			Target = GameObject.Find("Cursor");
 	}
 
 	public void ShotBullet()
@@ -70,6 +79,7 @@ public class BulletPattern : MonoBehaviour
 				) * 0.3f;
 			float speed = Random.Range(10.0f, 20.0f);
 			controller.Direction = speed * (offSet + (Target.transform.position - transform.position).normalized);
+			
 			Obj.transform.position = transform.position;
 			BulletList.Add(Obj);
 		}

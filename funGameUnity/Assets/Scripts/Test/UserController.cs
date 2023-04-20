@@ -15,7 +15,7 @@ public class UserController
 	public string Nickname = "guest";
 	public float HighScore = 0.0f;
 
-	enum want
+	enum order
 	{
 		login
 	}
@@ -24,7 +24,7 @@ public class UserController
 	{
 		public string id;
 		public string password;
-		public string want;
+		public string order;
 		public string nickname;
 		public string highScore;
 
@@ -35,7 +35,7 @@ public class UserController
 		}
 	}
 
-	private MemberForm UserForm;
+	private MemberForm UserForm = new MemberForm("guest", "1234");
 	public static UserController Instance;
 
 	public static UserController GetInstance()
@@ -57,7 +57,7 @@ public class UserController
 		WWWForm form = new WWWForm();
 		form.AddField(nameof(UserForm.id), UserForm.id);
 		form.AddField(nameof(UserForm.password), UserForm.password);
-		form.AddField(nameof(UserForm.want), UserForm.want);
+		form.AddField(nameof(UserForm.order), UserForm.order);
 		form.AddField(nameof(UserForm.highScore), UserForm.highScore);
 
 		return form;
@@ -65,7 +65,7 @@ public class UserController
 
 	public IEnumerator SetHighScore(float score)
 	{
-		UserForm.want = "setHighScore";
+		UserForm.order = "setHighScore";
 		UserForm.highScore = score.ToString();
 		WWWForm form = GetUserWWWForm();
 		using (UnityWebRequest request = UnityWebRequest.Post(URL, form))

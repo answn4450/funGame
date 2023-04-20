@@ -8,6 +8,10 @@ using Unity.VisualScripting;
 using UnityEngine.SocialPlatforms.Impl;
 using JetBrains.Annotations;
 using System.Threading;
+using System.Text.RegularExpressions;
+using UnityEditor.VersionControl;
+using System.Text;
+using System.Security.Cryptography;
 
 enum LoginStatus
 {
@@ -21,15 +25,15 @@ public class MemberForm
 {
 	public string id;
 	public string password;
-	public string want;
+	public string order;
 	public string nickname;
 	public string highScore;
 
-	public MemberForm(string id, string password, string want)
+	public MemberForm(string id, string password, string order)
 	{
 		this.id = id;
 		this.password = password;
-		this.want = want;
+		this.order = order;
 		this.highScore = "0";
 	}
 }
@@ -38,14 +42,16 @@ public class MemberForm
 // 로그인
 
 
-public class LogInManager : MonoBehaviour
+public class LoginManager : MonoBehaviour
 {
-	public InputField IdInput;
+	private string emailPattern = @"^[\w-.]+@([\w-]+.)+[\w-]{2,4}$";
+
+	public InputField EmailInput;
 	public InputField PasswordInput;
 	public Button MainMenuButton;
 	public Button LogInButton;
 	public Button RegisterButton;
-	public Text TryStatusText;
+	public Text Message;
 
 	string URL = "https://script.google.com/macros/s/AKfycbzgvSq1CkKXmBN7sBrnt-e3GrXxjNe8yHR17gJ-gNL5ueT8IoVafJZ2fvh2y_DPshex/exec";
 
@@ -61,12 +67,12 @@ public class LogInManager : MonoBehaviour
 			if (EndGetNumber < MaxGetNumber)
 			{
 				BlockInput(true);
-				TryStatusText.text = EndGetNumber.ToString() + "/" + MaxGetNumber.ToString() + "정보 오는 중..";
+				Message.text = EndGetNumber.ToString() + "/" + MaxGetNumber.ToString() + "정보 오는 중..";
 			}
 			else
 			{
 				BlockInput(false);
-				TryStatusText.text = "환영!" + UserController.GetInstance().Nickname.ToString();
+				Message.text = "환영!" + UserController.GetInstance().Nickname.ToString();
 				TryGet= false;
 				EndGetNumber = 0;
 			}
@@ -74,38 +80,90 @@ public class LogInManager : MonoBehaviour
 	}
 
 
-	public void PressLogIn()
+	public void PressLogin()
+	{
+		string email = EmailInput.text;
+
+		if (Regex.IsMatch(email, emailPattern))
+		{
+			// ** true
+			string password = Security(PasswordInput.text);
+
+			// ** login
+			if (string.IsNullOrEmpty(password))
+			{
+				// ** true
+				Message.text = "password는 필수 입력 값입니다.";
+			}
+			else
+			{
+				// ** 진입.(login)
+				Login();
+			}
+		}
+		else
+		{
+			// ** false
+			Message.text = "email 형식을 다시 확인하세요!";
+		}
+	}
+
+	string Security(string password)
+	{
+		if (string.IsNullOrEmpty(password))
+		{
+			// ** true
+			Message.text = "password는 필수 입력 값 입니다.";
+			return "null";
+		}
+		else
+		{
+			// ** 암호화 & 복호화
+			// ** false
+			SHA256 sha = new SHA256Managed();
+			byte[] hash = sha.ComputeHash(Encoding.ASCII.GetBytes(password));
+			StringBuilder stringBuilder = new StringBuilder();
+
+			foreach (byte b in hash)
+			{
+				stringBuilder.AppendFormat("{0:x2}", b);
+			}
+			return stringBuilder.ToString();
+		}
+	}
+
+	private void Login()
 	{
 		BlockInput(true);
 
-		string id = IdInput.text;
+		string id = EmailInput.text;
 		string password = PasswordInput.text;
-		string want = "logIn";
+		string order = "login";
 
-		MemberForm member = new MemberForm(id, password, want);
+		MemberForm member = new MemberForm(id, password, order);
 
 		WWWForm form = new WWWForm();
 		form.AddField(nameof(member.id), member.id);
 		form.AddField(nameof(member.password), member.password);
-		form.AddField(nameof(member.want), member.want);
+		form.AddField(nameof(member.order), member.order);
 		
-		StartCoroutine(TryLogIn(form, id, password));
+		StartCoroutine(TryLogin(form, id, password));
 	}
 	
 	public void PressRegister()
 	{
 		BlockInput(true);
 
-		string id = IdInput.text;
-		string password = PasswordInput.text;
-		string want = "register";
+		string id = EmailInput.text;
+		string password = Security(PasswordInput.text);
+		string order = "register";
 
-		MemberForm member = new MemberForm(id, password, want);
+		MemberForm member = new MemberForm(id, password, order);
 
 		WWWForm form = new WWWForm();
 		form.AddField(nameof(member.id), member.id);
 		form.AddField(nameof(member.password), member.password);
-		form.AddField(nameof(member.want), member.want);
+		form.AddField(nameof(member.order), member.order);
 
 		StartCoroutine(TryRegister(form));
 	}
@@ -113,50 +171,50 @@ public class LogInManager : MonoBehaviour
 
 	public void GetNickname()
 	{
-		string want = "getNickname";
+		string order = "getNickname";
 
 		MemberForm member = new MemberForm(
 			UserController.GetInstance().Id, 
 			UserController.GetInstance().Password, 
-			want);
+			order);
 
 		WWWForm form = new WWWForm();
 		form.AddField(nameof(member.id), member.id);
 		form.AddField(nameof(member.password), member.password);
-		form.AddField(nameof(member.want), member.want);
+		form.AddField(nameof(member.order), member.order);
 
 		StartCoroutine(TryGetNickName(form));
 	}
 
 	public void GetHighScore()
 	{
-		string want = "getHighScore";
+		string order = "getHighScore";
 
 		MemberForm member = new MemberForm(
 			UserController.GetInstance().Id, 
 			UserController.GetInstance().Password, 
-			want);
+			order);
 
 		WWWForm form = new WWWForm();
 		form.AddField(nameof(member.id), member.id);
 		form.AddField(nameof(member.password), member.password);
-		form.AddField(nameof(member.want), member.want);
+		form.AddField(nameof(member.order), member.order);
 
 		StartCoroutine(TryGetHighScore(form));
 	}
 
 
-	public IEnumerator TryLogIn(WWWForm form, string id, string password)
+	public IEnumerator TryLogin(WWWForm form, string id, string password)
 	{
 		using (UnityWebRequest request = UnityWebRequest.Post(URL, form))
 		{
-			TryStatusText.text = "로그인 시도 중...";
+			Message.text = "로그인 시도 중...";
 
 			yield return request.SendWebRequest();
 			BlockInput(false);
 			if (request.downloadHandler.text == "true")
 			{
-				TryStatusText.text = "로그인 완료";
+				Message.text = "로그인 완료";
 				UserController.GetInstance().Id = id;
 				UserController.GetInstance().Password = password;
 
@@ -168,7 +226,7 @@ public class LogInManager : MonoBehaviour
 			}
 			else
 			{
-				TryStatusText.text = "계정 불일치";
+				Message.text = "계정 불일치";
 			}
 		}
 	}
@@ -178,17 +236,17 @@ public class LogInManager : MonoBehaviour
 	{
 		using (UnityWebRequest request = UnityWebRequest.Post(URL, form))
 		{
-			TryStatusText.text = "계정 생성 시도 중...";
+			Message.text = "계정 생성 시도 중...";
 
 			yield return request.SendWebRequest();
 			BlockInput(false);
 			if (request.downloadHandler.text == "true")
 			{
-				TryStatusText.text = "계정 생성 완료";
+				Message.text = "계정 생성 완료";
 			}
 			else
 			{
-				TryStatusText.text = "이미 존재하는 계정 id";
+				Message.text = "이미 존재하는 계정 id";
 			}
 		}
 	}
@@ -221,7 +279,7 @@ public class LogInManager : MonoBehaviour
 	{
 		LogInButton.enabled = !block;
 		RegisterButton.enabled = !block;
-		IdInput.GetComponent<InputField>().interactable = !block;
+		EmailInput.GetComponent<InputField>().interactable = !block;
 		PasswordInput.GetComponent<InputField>().interactable = !block;
 	}
 
