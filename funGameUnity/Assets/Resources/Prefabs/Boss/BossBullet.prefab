@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7897020455267281267}
   m_Layer: 0
   m_Name: BossBullet
-  m_TagString: Untagged
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,7 +96,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7897020455267281273}
   m_BodyType: 0
-  m_Simulated: 0
+  m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
@@ -136,11 +136,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb376440245bf9458d39768b402b13c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MasterTag: 
+  MasterTag: Boss
   Speed: 0
   Target: {fileID: 0}
   HP: 5
   Option: 0
-  Angnle: 0
   Mileage: {x: 0, y: 0, z: 0}
   fxPrefab: {fileID: 100008, guid: 1ca16f2a31fb6a548ad8954bed1d321f, type: 3}

@@ -17,57 +17,70 @@ public class BulletPattern : MonoBehaviour
 	};
 
 	public Pattern pattern = Pattern.Screw;
+	public Dictionary<Pattern, List<int>> LVTable = new Dictionary<Pattern, List<int>>();
+	public Dictionary<Pattern, int> LVT = new Dictionary<Pattern, int>();
 
 	public GameObject Target;
 	public GameObject BulletPrefab;
 	public Vector3 TargetDir;
 	public bool ShotEnd = true;
-	public int ScrewLV = 1;
-	public float Speed = 1;
+	public float Speed = 3.0f;
+	public float ReloadTerm = 2.0f;
 	private List<GameObject> BulletList = new List<GameObject>();
 
 
 	private void Awake()
 	{
+		LVTable.Add(Pattern.Screw, new List<int> { 3,4,8,11,15,30});
+		LVTable.Add(Pattern.DelayScrew, new List<int> { 3,4,8,11,15,30});
+		LVTable.Add(Pattern.ShotGun, new List<int> { 1, 4, 8, 11, 15, 30 });
+		LVTable.Add(Pattern.Explosion, new List<int> { 1, 4, 8, 11, 15, 30 });
+		LVTable.Add(Pattern.GuideBullet, new List<int> { 1, 4, 8, 11, 15, 30 });
 		Target = GameObject.Find("Cursor");
 		ShotEnd = true;
+		Speed = 3.0f;
 	}
 
 	private void Update()
 	{
+		Speed = 4.0f;
 		if (Target == null)
 			Target = GameObject.Find("Cursor");
 	}
 
-	public void ShotBullet()
+	public void ShotBullet(int _lv)
 	{
-		ShotEnd = false;
-		switch (pattern)
+		if (ShotEnd)
 		{
-			case Pattern.Screw:
-				GetScrewPattern(ScrewLV);
-				break;
+			ShotEnd = false;
+			switch (pattern)
+			{
+				case Pattern.Screw:
+					GetScrewPattern(_lv);
+					break;
 
-			case Pattern.DelayScrew:
-				StartCoroutine(GetDelayScrewPattern());
-				break;
+				case Pattern.DelayScrew:
+					StartCoroutine(GetDelayScrewPattern(_lv));
+					break;
 
-			case Pattern.ShotGun:
-				GetShotGunPattern(15);
-				break;
+				case Pattern.ShotGun:
+					GetShotGunPattern(_lv);
+					break;
 
-			case Pattern.Explosion:
-				StartCoroutine(ExplosionPattern(10));
-				break;
+				case Pattern.Explosion:
+					StartCoroutine(ExplosionPattern(_lv));
+					break;
 
-			case Pattern.GuideBullet:
-				GuideBulletPattern();
-				break;
+				case Pattern.GuideBullet:
+					GuideBulletPattern(_lv);
+					break;
+			}
 		}
 	}
 
-	public void GetShotGunPattern(int _count)
+	public void GetShotGunPattern(int _lv)
 	{
+		int _count = LVTable[Pattern.ShotGun][_lv];
 		for (int i = 0; i < _count; ++i)
 		{
 			GameObject Obj = Instantiate(BulletPrefab);
@@ -83,11 +96,12 @@ public class BulletPattern : MonoBehaviour
 			Obj.transform.position = transform.position;
 			BulletList.Add(Obj);
 		}
-		ShotEnd = true;
+		StartCoroutine(DelayShotEnd(ReloadTerm));
 	}
 
-	public void GetScrewPattern(int _count, bool _option = false)
+	public void GetScrewPattern(int _lv, bool _option = false)
 	{
+		int _count = LVTable[Pattern.Screw][_lv];
 		float _angle = 0.0f;
 		for (int i = 0; i < _count; ++i)
 		{
@@ -99,20 +113,20 @@ public class BulletPattern : MonoBehaviour
 			controller.Direction = new Vector3(
 				Mathf.Cos(_angle * 3.141592f / 180),
 				Mathf.Sin(_angle * 3.141592f / 180),
-				0.0f) * 5 + transform.position;
+				0.0f) * Speed;
 			Obj.transform.position = transform.position;
 
 			BulletList.Add(Obj);
 		}
-		ShotEnd = true;
+		StartCoroutine(DelayShotEnd(ReloadTerm));
 	}
 
 
-	public IEnumerator GetDelayScrewPattern()
+	public IEnumerator GetDelayScrewPattern(int _lv)
 	{
-		int iCount = 12;
+		int iCount = LVTable[Pattern.DelayScrew][_lv];
 
-		float fAngle = 360.0f / iCount;
+		float fAngle = 0.0f;
 
 		int i = 0;
 
@@ -123,12 +137,11 @@ public class BulletPattern : MonoBehaviour
 
 			controller.Option = false;
 
-			fAngle += 30.0f;
-
+			fAngle += 360.0f / iCount;
 			controller.Direction = new Vector3(
 				Mathf.Cos(fAngle * Mathf.Deg2Rad),
 				Mathf.Sin(fAngle * Mathf.Deg2Rad),
-				0.0f) * Speed + transform.position;
+				0.0f) * Speed;
 
 			Obj.transform.position = transform.position;
 
@@ -156,9 +169,9 @@ public class BulletPattern : MonoBehaviour
 	}
 
 
-	public IEnumerator ExplosionPattern(int _count, bool _option = false)
+	public IEnumerator ExplosionPattern(int _lv, bool _option = false)
 	{
-
+		int _count = LVTable[Pattern.Explosion][_lv];
 		float _angle = 0.0f;
 		GameObject ParentObj = new GameObject("Bullet");
 
@@ -204,7 +217,7 @@ public class BulletPattern : MonoBehaviour
 		ShotEnd = true;
 	}
 
-	public void GuideBulletPattern()
+	public void GuideBulletPattern(int _lv)
 	{
 		GameObject Obj = Instantiate(BulletPrefab);
 		BulletControll controller = Obj.GetComponent<BulletControll>();
@@ -213,6 +226,12 @@ public class BulletPattern : MonoBehaviour
 		controller.Option = true;
 
 		Obj.transform.position = transform.position;
+		StartCoroutine(DelayShotEnd(1.5f));
+	}
+
+	private IEnumerator DelayShotEnd(float t)
+	{
+		yield return new WaitForSeconds(t);
 		ShotEnd = true;
 	}
 }

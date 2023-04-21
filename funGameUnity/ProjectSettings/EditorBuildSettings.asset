@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/ProgressScene.unity
     guid: feea6bf43edb3734e940ddd495ca669d
   - enabled: 1
-    path: Assets/Scenes/LogIn 2.unity
+    path: Assets/Scenes/LogIn2.unity
     guid: d112099b299984f4c948a57c229212f5
+  - enabled: 1
+    path: Assets/Scenes/LogIn.unity
+    guid: 89e6fe6c20cd63f4186f2281fc0ee2cb
   m_configObjects: {}

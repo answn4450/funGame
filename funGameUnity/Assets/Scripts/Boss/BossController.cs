@@ -140,9 +140,9 @@ public class BossController : MonoBehaviour
 		// * 1 : 이동         STATE_WALK
 		// * 2 : 공격         STATE_ATTACK
 		// * 3 : 슬라이딩     STATE_SLIDE
-		
-		return Random.Range(STATE_WALK, STATE_SLIDE + 1); ;
-		//print("1:이동 2:공격 3:슬라이딩"+c.ToString());
+
+		//return Random.Range(STATE_WALK, STATE_SLIDE + 1); ;
+		return 2;
 	}
 
 
@@ -225,8 +225,9 @@ public class BossController : MonoBehaviour
 	public void ShotBullet()
 	{
 		Pattern = (BulletPattern.Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
+		Pattern = Pattern.ShotGun;
 		GetComponent<BulletPattern>().pattern = Pattern;
 		GetComponent<BulletPattern>().Target = Target;
-		GetComponent<BulletPattern>().ShotBullet();
+		GetComponent<BulletPattern>().ShotBullet(2);
 	}
 }

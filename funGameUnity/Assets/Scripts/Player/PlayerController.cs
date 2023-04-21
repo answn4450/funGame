@@ -15,6 +15,8 @@ enum ObjectID
 
 public class PlayerController : MonoBehaviour
 {
+	public int testLV=3;
+
 	// ** 움직이는 속도
 	private float Speed;
 
@@ -44,7 +46,6 @@ public class PlayerController : MonoBehaviour
 
 	// ** 플레이어가 마지막으로 바라본 방향.
 	private float Direction;
-	private float BulletTimer;
 	private Vector3 BreakWind = new Vector3(0.0f, 0.0f, 0.0f);
 	private GameObject gameStatus;
 
@@ -69,13 +70,10 @@ public class PlayerController : MonoBehaviour
 	// ** 초기값을 설정할 때 사용
 	void Start()
 	{
-		GetComponent<BulletPattern>().Speed = 3.0f;
+		GetComponent<BulletPattern>().Speed = 0.1f;
 		gameStatus = GameObject.Find("GameStauts");
 		// ** 속도를 초기화.
 		Speed = 5.0f;
-
-		// ** 자동 공격할 때 쓰는 불렛 타이머 초기화
-		BulletTimer = 0.0f;
 
 		// ** 초기값 셋팅
 		onAttack = false;
@@ -91,11 +89,11 @@ public class PlayerController : MonoBehaviour
 	// ** 프레임마다 반복적으로 실행되는 함수.
 	void Update()
 	{
-		BulletTimer += Time.deltaTime;
+		GetComponent<BulletPattern>().ReloadTerm = ControllerManager.GetInstance().Player_BulletTerm;
 		Move();
 		AutoAttack();
 		Climate.GetInstance().PlayerBreakWind = BreakWind;
-		GameStatus.GetInstance().RunDistance+= (BreakWind + Climate.GetInstance().Wind).x * Time.deltaTime;
+		GameStatus.GetInstance().RunDistance += (BreakWind + Climate.GetInstance().Wind).x * Time.deltaTime;
 
 		// ** 좌측 쉬프트키를 입력한다면.....
 		if (Input.GetKey(KeyCode.LeftShift))
@@ -103,16 +101,17 @@ public class PlayerController : MonoBehaviour
 			OnHit();
 	}
 
+
 	private void AutoAttack()
 	{
 		// ** 자동 공격 
-		if (BulletTimer > ControllerManager.GetInstance().Player_BulletTerm && GetComponent<BulletPattern>().ShotEnd)
+		if (GetComponent<BulletPattern>().ShotEnd)
 		{
-			BulletTimer = 0.0f;
 			// ** 공격
 			OnAttack();
-			GetComponent<BulletPattern>().pattern = ControllerManager.GetInstance().Player_Pattern;
-			GetComponent<BulletPattern>().ShotBullet();
+			BulletPattern.Pattern pattern = ControllerManager.GetInstance().Player_Pattern;
+			GetComponent<BulletPattern>().pattern = pattern;
+			GetComponent<BulletPattern>().ShotBullet(ControllerManager.GetInstance().PatternLV[pattern]);
 		}
 	}
 

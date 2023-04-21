@@ -8,8 +8,5 @@ public class Test2 : MonoBehaviour
 	private float a = 0;
     void Update()
     {
-		a += Time.deltaTime;
-		print(a);
-		print(SceneManager.GetActiveScene().name);
 	}
 }

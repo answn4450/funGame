@@ -7,7 +7,7 @@ public class GoToScene : MonoBehaviour
 {
     public void LogIn()
     {
-        SceneManager.LoadScene("LogIn");
+        SceneManager.LoadScene("LogIn2");
     }
 
     public void MainMenu()

@@ -12,7 +12,7 @@ public class BulletControll : MonoBehaviour
 
 	public int HP = 5;
 	public bool Option;
-	public float Angnle;
+
 	// ** 총알이 움직인 거리
 	public Vector3 Mileage;
 
@@ -61,12 +61,14 @@ public class BulletControll : MonoBehaviour
 		Mileage += Direction * Speed * Time.deltaTime;
 	}
 
+
 	// ** 충돌체와 물리엔진이 포함된 오브젝트가 다른 충돌체와 충돌한다면 실행되는 함수. 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		// ** collision = 충돌한 대상.
 		if (collision.transform.tag==MasterTag)
 		{
+			print("master: "+MasterTag);
 			return;
 		}
 		// ** 충돌한 대상을 삭제한다.
@@ -92,7 +94,8 @@ public class BulletControll : MonoBehaviour
 			//print(Input.mousePosition);
 			a.GetComponent<Text>().text = str;
 		}
-		else if(collision.tag=="Bullet")
+		else if(collision.tag == "Bullet"
+			&& MasterTag != collision.GetComponent<BulletControll>().MasterTag)
 		{
 			HP -= 1;
 		}

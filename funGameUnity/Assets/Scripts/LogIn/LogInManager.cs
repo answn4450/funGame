@@ -23,15 +23,15 @@ enum LoginStatus
 [System.Serializable]
 public class MemberForm
 {
-	public string id;
+	public string email;
 	public string password;
 	public string order;
 	public string nickname;
 	public string highScore;
 
-	public MemberForm(string id, string password, string order)
+	public MemberForm(string email, string password, string order)
 	{
-		this.id = id;
+		this.email = email;
 		this.password = password;
 		this.order = order;
 		this.highScore = "0";
@@ -107,28 +107,31 @@ public class LoginManager : MonoBehaviour
 			Message.text = "email 형식을 다시 확인하세요!";
 		}
 	}
-
-	string Security(string password)
+	
+	public void PressRegister()
 	{
-		if (string.IsNullOrEmpty(password))
+		string email = EmailInput.text;
+		if (Regex.IsMatch(email, emailPattern))
 		{
+
 			// ** true
-			Message.text = "password는 필수 입력 값 입니다.";
-			return "null";
+			string password = Security(PasswordInput.text);
+
+			// ** login
+			if (string.IsNullOrEmpty(password))
+			{
+				// ** true
+				Message.text = "password는 필수 입력 값입니다.";
+			}
+			else
+			{
+				Register();
+			}
 		}
 		else
 		{
-			// ** 암호화 & 복호화
 			// ** false
-			SHA256 sha = new SHA256Managed();
-			byte[] hash = sha.ComputeHash(Encoding.ASCII.GetBytes(password));
-			StringBuilder stringBuilder = new StringBuilder();
-
-			foreach (byte b in hash)
-			{
-				stringBuilder.AppendFormat("{0:x2}", b);
-			}
-			return stringBuilder.ToString();
+			Message.text = "email 형식을 다시 확인하세요!";
 		}
 	}
 
@@ -136,50 +139,50 @@ public class LoginManager : MonoBehaviour
 	{
 		BlockInput(true);
 
-		string id = EmailInput.text;
+		string email = EmailInput.text;
 		string password = PasswordInput.text;
 		string order = "login";
 
-		MemberForm member = new MemberForm(id, password, order);
+		MemberForm member = new MemberForm(email, Security(password), order);
 
 		WWWForm form = new WWWForm();
-		form.AddField(nameof(member.id), member.id);
+		form.AddField(nameof(member.email), member.email);
 		form.AddField(nameof(member.password), member.password);
 		form.AddField(nameof(member.order), member.order);
 		
-		StartCoroutine(TryLogin(form, id, password));
+		StartCoroutine(TryLogin(form, email, password));
 	}
-	
-	public void PressRegister()
+
+
+	private void Register()
 	{
 		BlockInput(true);
 
-		string id = EmailInput.text;
+		string email = EmailInput.text;
 		string password = Security(PasswordInput.text);
 		string order = "register";
 
-		MemberForm member = new MemberForm(id, password, order);
+		MemberForm member = new MemberForm(email, password, order);
 
 		WWWForm form = new WWWForm();
-		form.AddField(nameof(member.id), member.id);
+		form.AddField(nameof(member.email), member.email);
 		form.AddField(nameof(member.password), member.password);
 		form.AddField(nameof(member.order), member.order);
 
 		StartCoroutine(TryRegister(form));
 	}
 
-
 	public void GetNickname()
 	{
 		string order = "getNickname";
 
 		MemberForm member = new MemberForm(
-			UserController.GetInstance().Id, 
-			UserController.GetInstance().Password, 
+			UserController.GetInstance().Email, 
+			Security(UserController.GetInstance().Password), 
 			order);
 
 		WWWForm form = new WWWForm();
-		form.AddField(nameof(member.id), member.id);
+		form.AddField(nameof(member.email), member.email);
 		form.AddField(nameof(member.password), member.password);
 		form.AddField(nameof(member.order), member.order);
 
@@ -191,12 +194,12 @@ public class LoginManager : MonoBehaviour
 		string order = "getHighScore";
 
 		MemberForm member = new MemberForm(
-			UserController.GetInstance().Id, 
-			UserController.GetInstance().Password, 
+			UserController.GetInstance().Email, 
+			Security(UserController.GetInstance().Password), 
 			order);
 
 		WWWForm form = new WWWForm();
-		form.AddField(nameof(member.id), member.id);
+		form.AddField(nameof(member.email), member.email);
 		form.AddField(nameof(member.password), member.password);
 		form.AddField(nameof(member.order), member.order);
 
@@ -204,7 +207,7 @@ public class LoginManager : MonoBehaviour
 	}
 
 
-	public IEnumerator TryLogin(WWWForm form, string id, string password)
+	public IEnumerator TryLogin(WWWForm form, string email, string password)
 	{
 		using (UnityWebRequest request = UnityWebRequest.Post(URL, form))
 		{
@@ -215,7 +218,7 @@ public class LoginManager : MonoBehaviour
 			if (request.downloadHandler.text == "true")
 			{
 				Message.text = "로그인 완료";
-				UserController.GetInstance().Id = id;
+				UserController.GetInstance().Email = email;
 				UserController.GetInstance().Password = password;
 
 				TryGet = true;
@@ -226,6 +229,7 @@ public class LoginManager : MonoBehaviour
 			}
 			else
 			{
+				print(request.downloadHandler.text);
 				Message.text = "계정 불일치";
 			}
 		}
@@ -246,7 +250,8 @@ public class LoginManager : MonoBehaviour
 			}
 			else
 			{
-				Message.text = "이미 존재하는 계정 id";
+				print(request.downloadHandler.text);
+				Message.text = "이미 존재하는 계정 email";
 			}
 		}
 	}
@@ -286,5 +291,29 @@ public class LoginManager : MonoBehaviour
 	public void NextScene()
 	{
 		SceneManager.LoadScene("progressScene");
+	}
+
+	string Security(string password)
+	{
+		if (string.IsNullOrEmpty(password))
+		{
+			// ** true
+			Message.text = "password는 필수 입력 값 입니다.";
+			return "null";
+		}
+		else
+		{
+			// ** 암호화 & 복호화
+			// ** false
+			SHA256 sha = new SHA256Managed();
+			byte[] hash = sha.ComputeHash(Encoding.ASCII.GetBytes(password));
+			StringBuilder stringBuilder = new StringBuilder();
+
+			foreach (byte b in hash)
+			{
+				stringBuilder.AppendFormat("{0:x2}", b);
+			}
+			return stringBuilder.ToString();
+		}
 	}
 }

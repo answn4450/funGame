@@ -10,7 +10,7 @@ public class UserController
 {
 	private string URL = "https://script.google.com/macros/s/AKfycbzgvSq1CkKXmBN7sBrnt-e3GrXxjNe8yHR17gJ-gNL5ueT8IoVafJZ2fvh2y_DPshex/exec";
 
-	public string Id = "guest";
+	public string Email = "guest@funGame";
 	public string Password = "1234";
 	public string Nickname = "guest";
 	public float HighScore = 0.0f;
@@ -19,23 +19,24 @@ public class UserController
 	{
 		login
 	}
+
 	[System.Serializable]
 	public class MemberForm
 	{
-		public string id;
+		public string email;
 		public string password;
 		public string order;
 		public string nickname;
 		public string highScore;
 
-		public MemberForm(string id, string password)
+		public MemberForm(string email, string password)
 		{
-			this.id = id;
+			this.email = email;
 			this.password = password;
 		}
 	}
 
-	private MemberForm UserForm = new MemberForm("guest", "1234");
+	private MemberForm UserForm = new MemberForm("guest@funGame", "1234");
 	public static UserController Instance;
 
 	public static UserController GetInstance()
@@ -47,27 +48,16 @@ public class UserController
 		return Instance;
 	}
 
-	public void Login(string id, string password)
-	{
-		UserForm = new MemberForm(id, password);
-	}
-
-	public WWWForm GetUserWWWForm()
-	{
-		WWWForm form = new WWWForm();
-		form.AddField(nameof(UserForm.id), UserForm.id);
-		form.AddField(nameof(UserForm.password), UserForm.password);
-		form.AddField(nameof(UserForm.order), UserForm.order);
-		form.AddField(nameof(UserForm.highScore), UserForm.highScore);
-
-		return form;
-	}
-
 	public IEnumerator SetHighScore(float score)
 	{
 		UserForm.order = "setHighScore";
 		UserForm.highScore = score.ToString();
-		WWWForm form = GetUserWWWForm();
+		WWWForm form = new WWWForm();
+		form.AddField(nameof(UserForm.email), UserForm.email);
+		form.AddField(nameof(UserForm.password), UserForm.password);
+		form.AddField(nameof(UserForm.order), UserForm.order);
+		form.AddField(nameof(UserForm.highScore), UserForm.highScore);
+
 		using (UnityWebRequest request = UnityWebRequest.Post(URL, form))
 		{
 			yield return request.SendWebRequest();

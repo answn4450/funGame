@@ -19,6 +19,8 @@ public class ControllerManager
 		HPRegenSize
 	}
 
+	public BulletPattern.Pattern Pattern;
+
 	private static ControllerManager Instance = null;
 
 	//List<List<int>> LVTable = new List<List<int>>();
@@ -53,10 +55,21 @@ public class ControllerManager
 	public float Player_HPRegenSize = 0.0f;
 	public float Player_BulletMileage = 5.0f;
 
+	public Dictionary<BulletPattern.Pattern, int> PatternLV = new Dictionary<BulletPattern.Pattern, int>
+	{
+		{ BulletPattern.Pattern.ShotGun, 0 },
+		{ BulletPattern.Pattern.Screw, 0 },
+		{ BulletPattern.Pattern.DelayScrew, 0 },
+		{ BulletPattern.Pattern.GuideBullet, 0 },
+		{ BulletPattern.Pattern.Explosion, 0 }
+	};
+
+
 	public List<BulletPattern.Pattern> Player_Patterns = new List<BulletPattern.Pattern> 
 		{
 			BulletPattern.Pattern.Screw,
-			BulletPattern.Pattern.ShotGun
+			BulletPattern.Pattern.DelayScrew,
+			BulletPattern.Pattern.GuideBullet
 		};
 
 	public BulletPattern.Pattern Player_Pattern = BulletPattern.Pattern.ShotGun;
