@@ -7,7 +7,7 @@ public class CurrentPatternLVUp : MonoBehaviour
 {
     public void PressPatternLVUp()
     {
-        BulletPattern.Pattern pattern = ControllerManager.GetInstance().Pattern;
+        BulletPattern.Pattern pattern = ControllerManager.GetInstance().Player_Pattern;
         int lv = ControllerManager.GetInstance().Player_PatternLV[pattern];
         if (lv < 5 && ControllerManager.GetInstance().Player_Exp>0)
         {

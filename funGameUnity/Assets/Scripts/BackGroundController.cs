@@ -29,10 +29,8 @@ public class BackGroundController : MonoBehaviour
 	// ** 움직임 정보
 	private Vector3 movemane;
 
-	// ** 이미지가 중앙 위치에 정상적으로 노출될 수 있도록 하기 위한 완충역할.
-	private Vector3 offset = new Vector3(0.0f, 5.0f, 0.0f);
-
-	private GameObject Test;
+	// ** 뒤에 있는지 여부
+	private bool Tail = true;
 
 	private void Awake()
 	{
@@ -54,36 +52,32 @@ public class BackGroundController : MonoBehaviour
 		// ** 구성요소에 포함된 이미지를 받아온다.
 		sprite = spriteRenderer.sprite;
 
-		// ** 시작지점을 설정.
-		endPoint = sprite.bounds.size.x * 0.5f + transform.position.x;
-
-		// ** 종료지점을 설정.
-		exitPoint = -(sprite.bounds.size.x * 0.5f) + player.transform.position.x;
+		// ** 시작지점과 종료 지점을 설정. 최초 sprite의 x가 0 이라 가정.  
+		endPoint = sprite.bounds.size.x * 0.5f;
+		exitPoint = -sprite.bounds.size.x * 0.5f;
 	}
 
 	void Update()
 	{
 		// ** 이동정보 셋팅
 		movemane = new Vector3(
-			Input.GetAxisRaw("Horizontal") * Time.deltaTime * Speed + offset.x,
+			Input.GetAxisRaw("Horizontal") * Time.deltaTime * Speed,
 			0.0f, 0.0f);
 
 		// ** singleton
 		if (ControllerManager.GetInstance().DirRight)
 		{
 			transform.position -= movemane;
-			endPoint -= movemane.x;
 		}
 
 		if (transform.gameObject.name=="Sky")
 		{
 			Vector3 wind = Climate.GetInstance().Wind;
 			transform.position -= wind * Time.deltaTime;
-			endPoint -= wind.x * Time.deltaTime;
 		}
 
 		// ** 동일한 이미지 복사
-		if (player.transform.position.x + (sprite.bounds.size.x * 0.5f) + 1 > endPoint)
+		if (Tail && transform.position.x + (sprite.bounds.size.x * 0.5f) <= endPoint)
 		{
 			// ** 이미지를 복제한다.
 			GameObject Obj = Instantiate(this.gameObject);
@@ -95,19 +89,14 @@ public class BackGroundController : MonoBehaviour
 			Obj.transform.name = transform.name;
 
 			// ** 복제된 이미지의 위치를 설정한다.
-			//Obj.transform.position = new Vector3(
-			//	endPoint + 20.0f,
-				//0.0f, 0.0f);
 			Obj.transform.position = transform.position + new Vector3(
-				20.0f,0.0f,0.0f		
-			);
-
-			// ** 시작지점을 변경한다.
-			endPoint += endPoint + 20.0f;
+				sprite.bounds.size.x, 0.0f, 0.0f
+				);
+			Tail = false;
 		}
 
 		// ** 종료지점에 도달하면 삭제한다.
-		if (transform.position.x + (sprite.bounds.size.x * 0.5f) - 2 < exitPoint)
+		if (transform.position.x + (sprite.bounds.size.x * 0.5f) <= exitPoint)
 			Destroy(this.gameObject);
 	}
 }

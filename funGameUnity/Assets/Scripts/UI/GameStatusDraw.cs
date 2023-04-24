@@ -18,6 +18,7 @@ public class GameStatusDraw : MonoBehaviour
     private Transform UIBulletPattern;
     private Transform UIBulletPatternPick;
     private Transform UITarget;
+    private Transform UIExp;
     
     private float UICourseStartX = 480.0f, UICourseEndX = 1457.0f;
     private int PatternIndex = 0;
@@ -34,6 +35,7 @@ public class GameStatusDraw : MonoBehaviour
         UIBulletPattern = this.transform.GetChild(5);
         UIBulletPatternPick = this.transform.GetChild(6);
         UITarget = this.transform.GetChild(7);
+        UIExp = this.transform.GetChild(8);
     }
 
     void Update()
@@ -46,6 +48,7 @@ public class GameStatusDraw : MonoBehaviour
         DrawBulletPattern();
         DrawPickBulletPattern();
         DrawTarget();
+        DrawExp();
     }
 
     private void DrawPlayerLV()
@@ -126,8 +129,14 @@ public class GameStatusDraw : MonoBehaviour
         UITarget.position = Player.GetComponent<BulletPattern>().Target.transform.position;
     }
 
+    private void DrawExp()
+	{
+        Text textExp = UIExp.GetChild(0).GetComponent<Text>();
+        textExp.text = ControllerManager.GetInstance().Player_Exp.ToString();
+	}
+
 	public void PatternButton()
     {
 		ControllerManager.GetInstance().SetPlayerPattern(PatternIndex);
-	}
+    }
 }

@@ -20,8 +20,6 @@ public class ControllerManager
 		HPRegenSize
 	}
 
-	public BulletPattern.Pattern Pattern;
-
 	private static ControllerManager Instance = null;
 
 	//List<List<int>> LVTable = new List<List<int>>();
