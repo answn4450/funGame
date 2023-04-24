@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using static BulletPattern;
@@ -10,6 +11,7 @@ public class BossController : MonoBehaviour
 {
 	public int MaxHP = 300;
 	public int HP = 300;
+	public int PatternLV = 2;
 
 	public Sprite sprite;
 	private BulletPattern.Pattern Pattern = BulletPattern.Pattern.ShotGun;
@@ -89,8 +91,24 @@ public class BossController : MonoBehaviour
 
 		if (active)
 		{
-			active = false;
-			choice = onController();
+			// sprite를 예상할 수 없는 각도로 돌게 만든 행동이었으면 rotation 초기화와 슬라이딩 
+			if (choice == STATE_ATTACK && Pattern == BulletPattern.Pattern.DelayScrew)
+			{
+				if (GetComponent<BulletPattern>().ShotEnd)
+				{
+					transform.rotation = new Quaternion();
+					active = false;
+					choice = STATE_SLIDE;
+				}
+				else
+					transform.Rotate(0.0f, 0.0f, Time.deltaTime * 160, Space.Self);
+			}
+			else
+			{
+				active = false;
+				choice = onController();
+			}
+
 			StartCoroutine(onCooldown());
 		}
 		else
@@ -141,8 +159,7 @@ public class BossController : MonoBehaviour
 		// * 2 : 공격         STATE_ATTACK
 		// * 3 : 슬라이딩     STATE_SLIDE
 
-		//return Random.Range(STATE_WALK, STATE_SLIDE + 1); ;
-		return 2;
+		return Random.Range(STATE_WALK, STATE_SLIDE + 1);
 	}
 
 
@@ -212,22 +229,26 @@ public class BossController : MonoBehaviour
 		if (collision.tag == "Bullet")
 		{
 			HP -= (int)ControllerManager.GetInstance().Player_BulletPower;
+			Pattern = BulletPattern.Pattern.Explosion;
 			// 플레이어가 보스를 죽였고 보스 패턴을 안갖고 있으면 패턴 선물
 			if (HP <= 0 && !ControllerManager.GetInstance().Player_Patterns.Contains(Pattern))
-				ControllerManager.GetInstance().Player_Patterns.Add(Pattern);
+			{
+				ControllerManager.GetInstance().AddPlayerPattern(Pattern);
+				ControllerManager.GetInstance().Player_Exp += 1;
+			}
 		}
 		else if (collision.tag=="Player")
 		{
 			ControllerManager.GetInstance().CommonHit(10);
 		}
 	}
-
+	
 	public void ShotBullet()
 	{
 		Pattern = (BulletPattern.Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
-		Pattern = Pattern.ShotGun;
+		Pattern = BulletPattern.Pattern.DelayScrew;
 		GetComponent<BulletPattern>().pattern = Pattern;
 		GetComponent<BulletPattern>().Target = Target;
-		GetComponent<BulletPattern>().ShotBullet(2);
+		GetComponent<BulletPattern>().ShotBullet(PatternLV);
 	}
 }

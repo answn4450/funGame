@@ -7,6 +7,6 @@ public class CursorController : MonoBehaviour
 {
     void Update()
     {
-        transform.position = Input.mousePosition;
+		transform.position = Input.mousePosition;
 	}
 }

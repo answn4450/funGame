@@ -35,19 +35,12 @@ public class PlayerController : MonoBehaviour
 	private bool onAttack; // 공격상태
 	private bool onHit; // 피격상태
 
-	// ** 복제할 총알 원본
-	private GameObject BulletPrefab;
-
-	// ** 복제할 FX 원본
-	private GameObject fxPrefab;
-
 	// ** 복제된 총알의 저장공간.
 	private List<GameObject> Bullets = new List<GameObject>();
 
 	// ** 플레이어가 마지막으로 바라본 방향.
 	private float Direction;
 	private Vector3 BreakWind = new Vector3(0.0f, 0.0f, 0.0f);
-	private GameObject gameStatus;
 
 	[Header("방향")]
 	// ** 플레이어가 바라보는 방향
@@ -71,7 +64,6 @@ public class PlayerController : MonoBehaviour
 	void Start()
 	{
 		GetComponent<BulletPattern>().Speed = 0.1f;
-		gameStatus = GameObject.Find("GameStauts");
 		// ** 속도를 초기화.
 		Speed = 5.0f;
 
@@ -111,7 +103,7 @@ public class PlayerController : MonoBehaviour
 			OnAttack();
 			BulletPattern.Pattern pattern = ControllerManager.GetInstance().Player_Pattern;
 			GetComponent<BulletPattern>().pattern = pattern;
-			GetComponent<BulletPattern>().ShotBullet(ControllerManager.GetInstance().PatternLV[pattern]);
+			GetComponent<BulletPattern>().ShotBullet(ControllerManager.GetInstance().Player_PatternLV[pattern]);
 		}
 	}
 

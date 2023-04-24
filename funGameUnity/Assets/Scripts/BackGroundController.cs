@@ -57,13 +57,6 @@ public class BackGroundController : MonoBehaviour
 		// ** 시작지점을 설정.
 		endPoint = sprite.bounds.size.x * 0.5f + transform.position.x;
 
-		/*
-        Test = new GameObject("Gozmo");
-        Test.AddComponent<MyGizmo>();
-        Test.transform.position = new Vector3(endPoint, 0.0f, 0.0f);
-         */
-
-
 		// ** 종료지점을 설정.
 		exitPoint = -(sprite.bounds.size.x * 0.5f) + player.transform.position.x;
 	}

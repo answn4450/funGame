@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +20,7 @@ public class BulletControll : MonoBehaviour
 	// ** 이펙트효과 원본
 	public GameObject fxPrefab;
 
-	private GameObject Text;
+	private GameObject PopText;
 
 	// ** 총알이 날아가야할 방향
 	public Vector3 Direction { get; set; }
@@ -28,7 +29,7 @@ public class BulletControll : MonoBehaviour
 	{
 		// ** 속도 초기값
 		Speed = Option ? 0.35f : 0.8f;
-		Text = Resources.Load("Prefabs/Text1") as GameObject;
+		PopText = Resources.Load("Prefabs/PopText") as GameObject;
 	}
 
 
@@ -51,7 +52,12 @@ public class BulletControll : MonoBehaviour
 		// ** 실시간으로 타겟의 위치를 확인하고 방향을 갱신한다.
 		if (Option && Target)
 		{
-			Direction = (Target.transform.position - transform.position).normalized;
+			// 스크린에서 비춰지는 transform의 위치를 구한다. 
+			Vector3 ScreenTransformPosition=Camera.main.WorldToScreenPoint(transform.position);
+			if(Target.name == "Cursor")
+				Direction = (Target.transform.position - ScreenTransformPosition).normalized;
+			else
+				Direction = (Target.transform.position - transform.position).normalized;
 		}
 		float fAngle = getAngle(Vector3.down, Direction);
 		transform.eulerAngles = new Vector3(
@@ -68,7 +74,7 @@ public class BulletControll : MonoBehaviour
 		// ** collision = 충돌한 대상.
 		if (collision.transform.tag==MasterTag)
 		{
-			print("master: "+MasterTag);
+			//print("master: "+MasterTag);
 			return;
 		}
 		// ** 충돌한 대상을 삭제한다.
@@ -85,14 +91,14 @@ public class BulletControll : MonoBehaviour
 		}
 		else if (collision.tag == "Boss")
 		{
-			// 남은 체력 잠깐 띄우는 효과
+			// 맞은 Boss의 남은 체력 잠깐 띄우는 효과
 			string str = collision.GetComponent<BossController>().HP.ToString();
-			GameObject a = Instantiate(Text) as GameObject;
-			a.transform.position = Input.mousePosition;
-			a.transform.position = transform.position;
+			GameObject popText = Instantiate(PopText) as GameObject;
+			popText.transform.position = Input.mousePosition;
+			popText.transform.position = Camera.main.WorldToScreenPoint(transform.position);
 			
 			//print(Input.mousePosition);
-			a.GetComponent<Text>().text = str;
+			popText.GetComponent<Text>().text = str;
 		}
 		else if(collision.tag == "Bullet"
 			&& MasterTag != collision.GetComponent<BulletControll>().MasterTag)

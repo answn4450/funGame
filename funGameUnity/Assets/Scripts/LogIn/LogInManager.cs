@@ -45,7 +45,7 @@ public class MemberForm
 public class LoginManager : MonoBehaviour
 {
 	private string emailPattern = @"^[\w-.]+@([\w-]+.)+[\w-]{2,4}$";
-
+	private string passwordPattern = @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
 	public InputField EmailInput;
 	public InputField PasswordInput;
 	public Button MainMenuButton;
@@ -122,6 +122,10 @@ public class LoginManager : MonoBehaviour
 			{
 				// ** true
 				Message.text = "password는 필수 입력 값입니다.";
+			}
+			else if (!Regex.IsMatch(PasswordInput.text, passwordPattern))
+			{
+				Message.text = "비밀번호는 숫자,특수문자,대소문자를 8자 이상 조합해야 합니다";
 			}
 			else
 			{

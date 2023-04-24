@@ -382,6 +382,7 @@
 "Assets/Scripts/ClimateManager.cs"
 "Assets/Scripts/CollisionTest.cs"
 "Assets/Scripts/ControllerManager.cs"
+"Assets/Scripts/CurrentPatternLVUp.cs"
 "Assets/Scripts/CursorController.cs"
 "Assets/Scripts/DisplayUser.cs"
 "Assets/Scripts/DontDestroyOnLoad.cs"

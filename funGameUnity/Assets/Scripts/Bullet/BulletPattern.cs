@@ -183,7 +183,16 @@ public class BulletPattern : MonoBehaviour
 		controll.Option = false;
 
 		if (Target != null)
+		{
+			if (Target.name=="Cursor")
+			{
+				Vector3 GameTargetPosition = Camera.main.ScreenToWorldPoint(Target.transform.position);
+				Vector3 ScreenTransformPosition = Camera.main.WorldToScreenPoint(transform.position);
+				controll.Direction = (Target.transform.position - ScreenTransformPosition).normalized;
+			}
+			else
 			controll.Direction = Target.transform.position - transform.position;
+		}
 		else
 			controll.Direction = TargetDir;
 

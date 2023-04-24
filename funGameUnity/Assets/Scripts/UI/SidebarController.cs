@@ -74,12 +74,12 @@ public class SidebarController : MonoBehaviour
 
 	public void BuyStatLV(int index)
 	{
-		int exp = ControllerManager.GetInstance().PlayerExp;
+		int money = ControllerManager.GetInstance().Player_Money;
 
-		if (Cost[index] <= exp && CostRoadMapIndex[index] < MaxPureLV)
+		if (Cost[index] <= money && CostRoadMapIndex[index] < MaxPureLV)
 		{
 			ControllerManager.GetInstance().LV[index] += 1;
-			ControllerManager.GetInstance().PlayerExp -= Cost[index];
+			ControllerManager.GetInstance().Player_Money -= Cost[index];
 			CostRoadMapIndex[index] += 1;
 			Cost[index] = CostRoadMap[CostRoadMapIndex[index]];
 		}

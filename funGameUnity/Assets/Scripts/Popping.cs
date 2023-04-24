@@ -7,20 +7,22 @@ using UnityEngine.UI;
 public class Popping : MonoBehaviour
 {
 	private GameObject Canvas;
-    private Vector3 dir = new Vector3(0.0f, 1.0f);
 	private Color FadeOutColor = new Color(0.0f, 0.0f, 0.0f, -3f);
+
 	private void Awake()
 	{
 		Canvas = GameObject.Find("EffectCanvas");
-		transform.position = Input.mousePosition;
-		Destroy(gameObject, 1f);
+		//Destroy(gameObject, Time.deltaTime*20);
 		gameObject.layer = 5;
+	}
+
+	private void Start()
+	{
 		transform.SetParent(Canvas.transform);
 	}
 
 	void Update()
     {
-		transform.GetComponent<Text>().color += Time.deltaTime*FadeOutColor;
-		transform.position += dir;    
+		transform.GetComponent<Text>().color += Time.deltaTime*FadeOutColor; 
     }
 }

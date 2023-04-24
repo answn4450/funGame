@@ -8,7 +8,19 @@ public class Climate
 	public Vector3 PlayerBreakWind = new Vector3(0.5f, 0.0f, 0.0f);
 	public Vector3 BossBreakWind = new Vector3(1.5f, 0.0f, 0.0f);
 	public Vector3 Wind = new Vector3(1.0f, 0.0f, 0.0f);
-	//public Vector3 Wind = new Vector3(0.0f, 0.0f, 0.0f);
+	public List<string> Seasons = new List<string>
+	{
+		"!_Mountain",
+		"2_Desert",
+		"3_Graveyard",
+		"4_Snow"
+	};
+	public List<string> Climates = new List<string>
+	{
+		"Windy",
+		"Normal",
+		"Rainy"
+	};
 
 	private static Climate Instance = null;
 

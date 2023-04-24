@@ -8,6 +8,7 @@ using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
+using System.Linq;
 
 public class ControllerManager
 {
@@ -41,7 +42,7 @@ public class ControllerManager
 		{ 0.0f, 1.0f, 2.0f, 2.5f, 3.0f, 4.0f}
 	};
 
-	public bool[] Trial = { false, false, false, false, false };
+	public bool[] DoTrial = { false, false, false, false, false };
 	public float[] TrialTimer = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
 
 	public int[] TrialLV = { 0, 0, 0, 0, 0 };
@@ -54,14 +55,14 @@ public class ControllerManager
 	public float Player_ImmortalChance = 1.0f;
 	public float Player_HPRegenSize = 0.0f;
 	public float Player_BulletMileage = 5.0f;
+	public int Player_Money = 3;
+	public int Player_Exp = 0;
 
-	public Dictionary<BulletPattern.Pattern, int> PatternLV = new Dictionary<BulletPattern.Pattern, int>
+	public Dictionary<BulletPattern.Pattern, int> Player_PatternLV = new Dictionary<BulletPattern.Pattern, int>
 	{
-		{ BulletPattern.Pattern.ShotGun, 0 },
 		{ BulletPattern.Pattern.Screw, 0 },
 		{ BulletPattern.Pattern.DelayScrew, 0 },
 		{ BulletPattern.Pattern.GuideBullet, 0 },
-		{ BulletPattern.Pattern.Explosion, 0 }
 	};
 
 
@@ -72,9 +73,8 @@ public class ControllerManager
 			BulletPattern.Pattern.GuideBullet
 		};
 
-	public BulletPattern.Pattern Player_Pattern = BulletPattern.Pattern.ShotGun;
+	public BulletPattern.Pattern Player_Pattern = BulletPattern.Pattern.GuideBullet;
 
-	public int PlayerExp = 3;
 	public int HitShock = 0;
 
 	public float BulletSpeed = 1.0f;
@@ -116,13 +116,13 @@ public class ControllerManager
 	{
 		for (int i = 0; i < 5; ++i)
 		{
-			if (Trial[i])
+			if (DoTrial[i])
 			{
 				NowLV[i] = TrialLV[i];
 				TrialTimer[i] -= Time.deltaTime;
 				if (TrialTimer[i] <= 0.0f)
 				{
-					Trial[i] = false;
+					DoTrial[i] = false;
 				}
 			}
 			else
@@ -139,11 +139,11 @@ public class ControllerManager
 
 	public void GoTrial(int LVIndex, float t)
 	{
-		Trial[LVIndex] = true;
+		DoTrial[LVIndex] = true;
 		TrialTimer[LVIndex] = t;
 		if (NowLV[LVIndex] <= MaxPureLV)
 		{
-			TrialLV[LVIndex] = NowLV[LVIndex] + 1;
+			TrialLV[LVIndex] = LV[LVIndex] + 1;
 		}
 	}
 
@@ -161,5 +161,12 @@ public class ControllerManager
 	public void SetPlayerPattern(int index)
 	{
 		Player_Pattern = Player_Patterns[index];
+	}
+
+
+	public void AddPlayerPattern(BulletPattern.Pattern pattern)
+	{
+		ControllerManager.GetInstance().Player_Patterns.Add(pattern);
+		ControllerManager.GetInstance().Player_PatternLV[pattern] = 2;
 	}
 }

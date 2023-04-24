@@ -134,7 +134,7 @@ public class EnemyController : MonoBehaviour
 
 	private void DestroyEnemy()
 	{
-		ControllerManager.GetInstance().PlayerExp += (int)(float)(MaxHP/5.0f)+1;
+		ControllerManager.GetInstance().Player_Money += (int)(float)(MaxHP/5.0f)+1;
 		Destroy(gameObject, 0.016f);
 		//Canvas dropItemCanvas = Canvas.find Find("DropItemCanvas");
 	}

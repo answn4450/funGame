@@ -12,7 +12,7 @@ public class GameStatusDraw : MonoBehaviour
 
     private Transform UITravelDistance;
     private Transform UIPlayerLV;
-    private Transform UIPlayerExp;
+    private Transform UIPlayerMoney;
     private Transform UIPlayerHP;
     private Transform UICourse;
     private Transform UIBulletPattern;
@@ -29,7 +29,7 @@ public class GameStatusDraw : MonoBehaviour
 		UITravelDistance = this.transform.GetChild(0);
 		UIPlayerLV = this.transform.GetChild(1);
         UICourse = this.transform.GetChild(2);
-        UIPlayerExp = this.transform.GetChild(3);
+        UIPlayerMoney = this.transform.GetChild(3);
         UIPlayerHP = this.transform.GetChild(4);
         UIBulletPattern = this.transform.GetChild(5);
         UIBulletPatternPick = this.transform.GetChild(6);
@@ -41,7 +41,7 @@ public class GameStatusDraw : MonoBehaviour
         UITravelDistance.GetComponent<Text>().text = ((int)GameStatus.GetInstance().RunDistance).ToString();
         DrawPlayerLV();
         DrawCourseUI();
-        DrawPlayerExp();
+        DrawPlayerMoney();
         DrawPlayerHP();
         DrawBulletPattern();
         DrawPickBulletPattern();
@@ -92,9 +92,9 @@ public class GameStatusDraw : MonoBehaviour
         }
     }
 
-    private void DrawPlayerExp()
+    private void DrawPlayerMoney()
 	{
-        UIPlayerExp.GetChild(0).GetComponent<Text>().text = ControllerManager.GetInstance().PlayerExp.ToString();
+        UIPlayerMoney.GetChild(0).GetComponent<Text>().text = ControllerManager.GetInstance().Player_Money.ToString();
     }
 
     private void DrawPlayerHP()
@@ -106,15 +106,15 @@ public class GameStatusDraw : MonoBehaviour
     {
         BulletPattern.Pattern pattern = ControllerManager.GetInstance().Player_Pattern;
 		UIBulletPattern.GetComponent<Text>().text = pattern.ToString();
+        int lv = ControllerManager.GetInstance().Player_PatternLV[pattern];
+		UIBulletPattern.GetComponent<Text>().text += " - " + lv.ToString();
     }
     
     private void DrawPickBulletPattern()
     {
-		int absScroll = Mathf.Abs((int)(Input.mouseScrollDelta.y));
-		PatternIndex += absScroll;
-
-		PatternIndex %= ControllerManager.GetInstance().Player_Patterns.Count;
-
+        int scroll = (int)(Input.mouseScrollDelta.y);
+        int patternNumber = ControllerManager.GetInstance().Player_Patterns.Count;
+		PatternIndex = (PatternIndex+scroll+patternNumber) % patternNumber;
 		BulletPattern.Pattern pattern = ControllerManager.GetInstance().Player_Patterns[PatternIndex];
 		string patternInfo = PatternIndex.ToString() + "¹øÂ° ";
 		patternInfo += pattern.ToString();
