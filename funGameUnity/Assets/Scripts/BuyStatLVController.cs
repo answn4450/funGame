@@ -18,7 +18,6 @@ public class BuyStatLVController : MonoBehaviour
 		HPRegenSize
 	}
 
-	private int MaxPureLV;
 	// 레벨업 할 수 있는 가짓수
 	int Size = 5;
 	int[] CostRoadMap = { 3, 5, 15, 27, 40, 80 };
@@ -31,7 +30,6 @@ public class BuyStatLVController : MonoBehaviour
 	void Start()
 	{
 		CostMother = transform.GetChild(1);
-		MaxPureLV = ControllerManager.GetInstance().MaxPureLV;
 		for (int b = 0; b < Size; ++b)
 		{
 			CostRoadMapIndex[b] = 0;
@@ -56,7 +54,7 @@ public class BuyStatLVController : MonoBehaviour
 	{
 		int money = ControllerManager.GetInstance().Player_Money;
 
-		if (Cost[index] <= money && CostRoadMapIndex[index] < MaxPureLV)
+		if (Cost[index] <= money && CostRoadMapIndex[index] < Manual.MaxStatsLV)
 		{
 			ControllerManager.GetInstance().LV[index] += 1;
 			ControllerManager.GetInstance().Player_Money -= Cost[index];

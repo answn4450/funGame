@@ -15,10 +15,6 @@ public class ControllerManager
 
 	private static ControllerManager Instance = null;
 
-	//List<List<int>> LVTable = new List<List<int>>();
-	//플레이어가 스킬 없이 이룰 수 있는 LV 제한. 레벨은 0부터 MaxLV까지
-	public int MaxPureLV = 4;
-	//크기는 MaxPureLV + 1
 	public float[,] LVTable =
 	{
 		//BulletPower int로 바꿔서 써야 함
@@ -134,7 +130,7 @@ public class ControllerManager
 	{
 		DoTrial[LVIndex] = true;
 		TrialTimer[LVIndex] = t;
-		if (NowLV[LVIndex] <= MaxPureLV)
+		if (NowLV[LVIndex] <= Manual.MaxStatsLV)
 		{
 			TrialLV[LVIndex] = LV[LVIndex] + 1;
 		}

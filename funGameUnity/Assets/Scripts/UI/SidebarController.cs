@@ -22,7 +22,6 @@ public class SidebarController : MonoBehaviour
 
     private Animator Anim;
 
-	private int MaxPureLV;
 	int StatNumber;
 	// 스킬들 중 앞 5개만 스킬로 적용
 	public GameObject[] StatButton = new GameObject[1000];
@@ -41,7 +40,6 @@ public class SidebarController : MonoBehaviour
 	void Start()
     {
         check= false;
-		MaxPureLV = ControllerManager.GetInstance().MaxPureLV;
 		//X 버튼 포함 안함
 		//위에 있는 버튼 5개는 고정임.
 		StatNumber = sidebar.transform.childCount-1;
@@ -76,7 +74,7 @@ public class SidebarController : MonoBehaviour
 	{
 		int money = ControllerManager.GetInstance().Player_Money;
 
-		if (Cost[index] <= money && CostRoadMapIndex[index] < MaxPureLV)
+		if (Cost[index] <= money && CostRoadMapIndex[index] < Manual.MaxStatsLV)
 		{
 			ControllerManager.GetInstance().LV[index] += 1;
 			ControllerManager.GetInstance().Player_Money -= Cost[index];
