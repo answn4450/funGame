@@ -28,7 +28,9 @@ public class BulletControll : MonoBehaviour
 	private void Awake()
 	{
 		// ** 속도 초기값
-		Speed = Option ? 0.35f : 0.8f;
+		if (Speed == 0)
+			Speed = Option ? 0.7f : 1.6f;
+		
 		PopText = Resources.Load("Prefabs/PopText") as GameObject;
 	}
 
@@ -36,8 +38,7 @@ public class BulletControll : MonoBehaviour
 	private void Start()
 	{
 		// ** 벡터의 정규화
-		//Direction=(Target.transform.position - transform.position).normalized;
-		Direction.Normalize();
+		Direction = Direction.normalized;
 
 		float fAngle = getAngle(Vector3.down, Direction);
 
@@ -59,6 +60,7 @@ public class BulletControll : MonoBehaviour
 			else
 				Direction = (Target.transform.position - transform.position).normalized;
 		}
+		print(Speed);
 		float fAngle = getAngle(Vector3.down, Direction);
 		transform.eulerAngles = new Vector3(
 		0.0f, 0.0f, fAngle);
@@ -74,7 +76,6 @@ public class BulletControll : MonoBehaviour
 		// ** collision = 충돌한 대상.
 		if (collision.transform.tag==MasterTag)
 		{
-			//print("master: "+MasterTag);
 			return;
 		}
 		// ** 충돌한 대상을 삭제한다.
@@ -100,8 +101,7 @@ public class BulletControll : MonoBehaviour
 			//print(Input.mousePosition);
 			popText.GetComponent<Text>().text = str;
 		}
-		else if(collision.tag == "Bullet"
-			&& MasterTag != collision.GetComponent<BulletControll>().MasterTag)
+		else if(collision.tag == "Bullet")
 		{
 			HP -= 1;
 		}

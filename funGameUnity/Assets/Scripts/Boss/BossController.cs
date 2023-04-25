@@ -159,7 +159,8 @@ public class BossController : MonoBehaviour
 		// * 2 : 공격         STATE_ATTACK
 		// * 3 : 슬라이딩     STATE_SLIDE
 
-		return Random.Range(STATE_WALK, STATE_SLIDE + 1);
+		//return Random.Range(STATE_WALK, STATE_SLIDE + 1);
+		return STATE_ATTACK;
 	}
 
 
@@ -226,15 +227,19 @@ public class BossController : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.tag == "Bullet")
+		if (collision.tag == "Bullet" 
+			&& collision.GetComponent<BulletControll>().MasterTag!="Boss")
 		{
 			HP -= (int)ControllerManager.GetInstance().Player_BulletPower;
 			Pattern = BulletPattern.Pattern.Explosion;
 			// 플레이어가 보스를 죽였고 보스 패턴을 안갖고 있으면 패턴 선물
-			if (HP <= 0 && !ControllerManager.GetInstance().Player_Patterns.Contains(Pattern))
+			if (HP <= 0)
 			{
-				ControllerManager.GetInstance().AddPlayerPattern(Pattern);
 				ControllerManager.GetInstance().Player_Exp += 1;
+				if (!ControllerManager.GetInstance().Player_Patterns.Contains(Pattern))
+				{
+					ControllerManager.GetInstance().AddPlayerPattern(Pattern);
+				}
 			}
 		}
 		else if (collision.tag=="Player")

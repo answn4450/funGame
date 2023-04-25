@@ -188,7 +188,7 @@ public class BulletPattern : MonoBehaviour
 			{
 				Vector3 GameTargetPosition = Camera.main.ScreenToWorldPoint(Target.transform.position);
 				Vector3 ScreenTransformPosition = Camera.main.WorldToScreenPoint(transform.position);
-				controll.Direction = (Target.transform.position - ScreenTransformPosition).normalized;
+				controll.Direction = Target.transform.position - ScreenTransformPosition;
 			}
 			else
 			controll.Direction = Target.transform.position - transform.position;
@@ -196,6 +196,7 @@ public class BulletPattern : MonoBehaviour
 		else
 			controll.Direction = TargetDir;
 
+		controll.Speed = 3.3f;
 		ParentObj.transform.position = transform.position;
 		ParentObj.transform.localScale = new Vector3(2.0f, 2.0f);
 
@@ -206,18 +207,18 @@ public class BulletPattern : MonoBehaviour
 		Destroy(ParentObj);
 		for (int i = 0; i < _count; ++i)
 		{
+			controll.Speed = 13.0f;
 			GameObject Obj = Instantiate(BulletPrefab);
 
 			BulletControll controller = Obj.GetComponent<BulletControll>();
 
 			controller.Option = _option;
-
+			controller.Speed = 13.0f;
 			_angle += 360.0f / _count;
-
 			controller.Direction = new Vector3(
 				Mathf.Cos(_angle * Mathf.Deg2Rad),
 				Mathf.Sin(_angle * Mathf.Deg2Rad),
-				0.0f) * Speed + transform.position;
+				0.0f);
 
 			Obj.transform.position = pos;
 

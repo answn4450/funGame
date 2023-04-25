@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
 	// ** 플레이어가 마지막으로 바라본 방향.
 	private float Direction;
 	private Vector3 BreakWind = new Vector3(0.0f, 0.0f, 0.0f);
+	private Vector3 Gravity = new Vector3(0.0f, -1.0f, 0.0f);
 
 	[Header("방향")]
 	// ** 플레이어가 바라보는 방향
@@ -81,6 +82,7 @@ public class PlayerController : MonoBehaviour
 	// ** 프레임마다 반복적으로 실행되는 함수.
 	void Update()
 	{
+		transform.position += Gravity * Time.deltaTime;
 		GetComponent<BulletPattern>().ReloadTerm = ControllerManager.GetInstance().Player_BulletTerm;
 		Move();
 		AutoAttack();

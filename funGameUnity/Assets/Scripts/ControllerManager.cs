@@ -1,14 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Networking;
-using System.Linq;
 
 public class ControllerManager
 {
@@ -61,6 +54,7 @@ public class ControllerManager
 		{ BulletPattern.Pattern.Screw, 0 },
 		{ BulletPattern.Pattern.DelayScrew, 0 },
 		{ BulletPattern.Pattern.GuideBullet, 0 },
+		{ BulletPattern.Pattern.Explosion, 0 },
 	};
 
 
@@ -68,10 +62,11 @@ public class ControllerManager
 		{
 			BulletPattern.Pattern.Screw,
 			BulletPattern.Pattern.DelayScrew,
-			BulletPattern.Pattern.GuideBullet
+			BulletPattern.Pattern.GuideBullet,
+			BulletPattern.Pattern.Explosion
 		};
 
-	public BulletPattern.Pattern Player_Pattern = BulletPattern.Pattern.GuideBullet;
+	public BulletPattern.Pattern Player_Pattern = BulletPattern.Pattern.Explosion;
 
 	public int HitShock = 0;
 
@@ -165,6 +160,6 @@ public class ControllerManager
 	public void AddPlayerPattern(BulletPattern.Pattern pattern)
 	{
 		ControllerManager.GetInstance().Player_Patterns.Add(pattern);
-		ControllerManager.GetInstance().Player_PatternLV[pattern] = 2;
+		ControllerManager.GetInstance().Player_PatternLV[pattern] = 0;
 	}
 }

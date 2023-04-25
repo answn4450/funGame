@@ -17,7 +17,13 @@ public class BulletController : MonoBehaviour
 	public Vector3 Direction { get; set; }
 	private Color FadeOutColor = new Color(0.0f, 0.0f, 0.0f, -5f);
 
-	private void Start()
+	private void Awake()
+	{
+		// ** 속도 초기값
+		Speed = ControllerManager.GetInstance().BulletSpeed;
+	}
+
+		private void Start()
 	{
 		// ** 속도 초기값
 		Speed = ControllerManager.GetInstance().BulletSpeed;

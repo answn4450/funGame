@@ -240,11 +240,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MasterTag: 
-  Speed: 0
+  Speed: 5.73
   Target: {fileID: 0}
   HP: 5
   Option: 0
-  Angnle: 0
   Mileage: {x: 0, y: 0, z: 0}
   fxPrefab: {fileID: 3393722461886979353, guid: 38754defe110a6a419d4966fa350d3f6, type: 3}
 --- !u!114 &-6905417537173049246
