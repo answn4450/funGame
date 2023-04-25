@@ -13,9 +13,8 @@ public class GameStatus
 	public float DistanceLength = 300.0f;
 	private static GameStatus Instance;
 
-	public int CurrentWanveIndex = 0;
+	public int NextWanveIndex = 0;
 
-	public int WaveNumber = 6;
 	public float[] WavePoints = { 3.0f, 20.0f, 50.0f, 60.0f, 90.0f, 95.0f };
 
 	public static GameStatus GetInstance()
@@ -33,7 +32,7 @@ public class GameStatus
 		MaxPlayerHP = 100;
 		PlayerHP = 100;
 		RunDistance = 0.0f;
-		CurrentWanveIndex = 0;
+		NextWanveIndex = 0;
 		LV = Enumerable.Repeat(0, 5).ToList();
 	}
 

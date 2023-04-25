@@ -60,7 +60,6 @@ public class BulletControll : MonoBehaviour
 			else
 				Direction = (Target.transform.position - transform.position).normalized;
 		}
-		print(Speed);
 		float fAngle = getAngle(Vector3.down, Direction);
 		transform.eulerAngles = new Vector3(
 		0.0f, 0.0f, fAngle);

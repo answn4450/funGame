@@ -5,14 +5,12 @@ using UnityEngine;
 public class WaveManager : MonoBehaviour
 {
 	GameObject Boss;
-	int CurrentWaveIndex = GameStatus.GetInstance().CurrentWanveIndex;
-	public int WaveNumber = GameStatus.GetInstance().WaveNumber;
+	int NextWaveIndex = GameStatus.GetInstance().NextWanveIndex; 
 	public float[] WavePoints = GameStatus.GetInstance().WavePoints;
 	private GameObject Wave0, Wave1, Wave2, Wave3, Wave4, Wave5;
 	
 	private void Awake()
 	{
-		//Boss = Resources.Load("Prefabs/Enemy/Enemy") as GameObject;
 		Boss = Resources.Load("Prefabs/Boss/Boss") as GameObject;
 	}
 
@@ -29,9 +27,10 @@ public class WaveManager : MonoBehaviour
 	void Update()
     {
 		float percent = GameStatus.GetInstance().GetRunPercent();
-		if (percent >= WavePoints[CurrentWaveIndex])
+		if (percent >= WavePoints[NextWaveIndex] 
+			&& NextWaveIndex + 1 < Manual.WaveNumber)
 		{
-			switch(CurrentWaveIndex)
+			switch(NextWaveIndex)
 			{
 				case 0:
 					GenWave(Wave0);
@@ -53,10 +52,7 @@ public class WaveManager : MonoBehaviour
 					break;
 			}
 
-			if (CurrentWaveIndex+1< WaveNumber)
-			{
-				CurrentWaveIndex += 1;
-			}
+			NextWaveIndex += 1;
 		}
     }
 

@@ -85,7 +85,7 @@ public class GameStatusDraw : MonoBehaviour
         currentPoint.GetChild(0).GetComponent<Text>().text = GameStatus.GetInstance().GetRunPercent().ToString() + "%";
         currentPoint.GetChild(1).GetComponent<Text>().text = GameStatus.GetInstance().GetRunPercent().ToString() + "%";
 
-        for (int i =0;i<GameStatus.GetInstance().WaveNumber;++i)
+        for (int i =0; i<Manual.WaveNumber; ++i)
         {
             wavePoint.GetChild(i).transform.position = new Vector3(
                 UICourseStartX + width * GameStatus.GetInstance().WavePoints[i] / 100,

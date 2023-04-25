@@ -191,7 +191,9 @@ public class BulletPattern : MonoBehaviour
 				controll.Direction = Target.transform.position - ScreenTransformPosition;
 			}
 			else
-			controll.Direction = Target.transform.position - transform.position;
+			{
+				controll.Direction = Target.transform.position - transform.position;
+			}
 		}
 		else
 			controll.Direction = TargetDir;
@@ -207,13 +209,12 @@ public class BulletPattern : MonoBehaviour
 		Destroy(ParentObj);
 		for (int i = 0; i < _count; ++i)
 		{
-			controll.Speed = 13.0f;
 			GameObject Obj = Instantiate(BulletPrefab);
 
 			BulletControll controller = Obj.GetComponent<BulletControll>();
 
 			controller.Option = _option;
-			controller.Speed = 13.0f;
+			controller.Speed = 2.0f + _lv/2.0f;
 			_angle += 360.0f / _count;
 			controller.Direction = new Vector3(
 				Mathf.Cos(_angle * Mathf.Deg2Rad),

@@ -17,24 +17,15 @@ public class BulletController : MonoBehaviour
 	public Vector3 Direction { get; set; }
 	private Color FadeOutColor = new Color(0.0f, 0.0f, 0.0f, -5f);
 
-	private void Awake()
+	private void Start()
 	{
-		// ** 속도 초기값
-		Speed = ControllerManager.GetInstance().BulletSpeed;
-	}
-
-		private void Start()
-	{
-		// ** 속도 초기값
-		Speed = ControllerManager.GetInstance().BulletSpeed;
-		
 		// ** 충돌 횟수를 3으로 지정한다.
 		hp = 3;
 	}
 
 	void Update()
 	{
-		GetComponent<BulletControll>().Speed = Speed;
+		//GetComponent<BulletControll>().Speed = Speed;
 
 		if (GetComponent<BulletControll>().Mileage.magnitude>ControllerManager.GetInstance().Player_BulletMileage)
 		{

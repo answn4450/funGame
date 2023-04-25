@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class Aaf
+{
+
+}
 public class BuyStatLVController : MonoBehaviour
 {
 	public enum Status
@@ -50,7 +54,6 @@ public class BuyStatLVController : MonoBehaviour
 
 	public void BuyStatLV(int index)
 	{
-		print(index);
 		int money = ControllerManager.GetInstance().Player_Money;
 
 		if (Cost[index] <= money && CostRoadMapIndex[index] < MaxPureLV)

@@ -159,8 +159,7 @@ public class BossController : MonoBehaviour
 		// * 2 : 공격         STATE_ATTACK
 		// * 3 : 슬라이딩     STATE_SLIDE
 
-		//return Random.Range(STATE_WALK, STATE_SLIDE + 1);
-		return STATE_ATTACK;
+		return Random.Range(STATE_WALK, STATE_SLIDE + 1);
 	}
 
 
@@ -250,8 +249,7 @@ public class BossController : MonoBehaviour
 	
 	public void ShotBullet()
 	{
-		Pattern = (BulletPattern.Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
-		Pattern = BulletPattern.Pattern.DelayScrew;
+		Pattern = (Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
 		GetComponent<BulletPattern>().pattern = Pattern;
 		GetComponent<BulletPattern>().Target = Target;
 		GetComponent<BulletPattern>().ShotBullet(PatternLV);
