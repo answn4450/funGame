@@ -136,7 +136,7 @@ public class PlayerController : MonoBehaviour
 		if (Hor != 0)
 			Direction = Hor;
 
-		Climate.GetInstance().PlayerRunHard = false;
+		ControllerManager.GetInstance().PlayerRunHard = false;
 
 		if ((Ver > 0 && transform.position.y < 6.38f) ||
 			(Ver < 0 && transform.position.y > -8.38f))
@@ -159,7 +159,7 @@ public class PlayerController : MonoBehaviour
 			}
 			if (transform.position.x >= mazinoX)
 			{
-				Climate.GetInstance().PlayerRunHard = true;
+				ControllerManager.GetInstance().PlayerRunHard = true;
 				ControllerManager.GetInstance().DirRight = true;
 				ControllerManager.GetInstance().DirLeft = false;
 			}

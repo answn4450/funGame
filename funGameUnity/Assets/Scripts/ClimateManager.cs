@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Climate
 {
-	public bool PlayerRunHard = false;
 	public Vector3 PlayerBreakWind = new Vector3(0.5f, 0.0f, 0.0f);
 	public Vector3 BossBreakWind = new Vector3(1.5f, 0.0f, 0.0f);
 	public Vector3 Wind = new Vector3(1.0f, 0.0f, 0.0f);
@@ -35,6 +34,7 @@ public class Climate
 
 	public void Slide(GameObject gameObject)
 	{
+		bool playerRunHard = ControllerManager.GetInstance().PlayerRunHard;
 		if (gameObject.name == "Player")
 		{
 			gameObject.transform.position -= Wind * Time.deltaTime;
@@ -46,7 +46,7 @@ public class Climate
 		}
 		else if (gameObject.tag=="Enemy")
 		{
-			if (PlayerRunHard)
+			if (playerRunHard)
 				gameObject.transform.position -= (Wind + PlayerBreakWind) * Time.deltaTime;
 			else
 				gameObject.transform.position -= Wind * Time.deltaTime;

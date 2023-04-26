@@ -236,9 +236,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01dfe5dbbe322014c83aec1299f69f41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Angle: 0
-  Segments: 0
-  radius: 0.8
+  Angle: 96
+  PointList: []
+  Segments: 81
+  radius: 1
 --- !u!4 &1323218661
 Transform:
   m_ObjectHideFlags: 0

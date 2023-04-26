@@ -45,6 +45,8 @@ public class ControllerManager
 	public int Player_Money = 3;
 	public int Player_Exp = 0;
 
+	public bool PlayerRunHard = false;
+
 	public Dictionary<BulletPattern.Pattern, int> Player_PatternLV = new Dictionary<BulletPattern.Pattern, int>
 	{
 		{ BulletPattern.Pattern.Screw, 0 },
