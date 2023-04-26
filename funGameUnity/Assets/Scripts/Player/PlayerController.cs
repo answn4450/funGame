@@ -17,57 +17,57 @@ public class PlayerController : MonoBehaviour
 {
 	public int testLV=3;
 
-	// ** ¿òÁ÷ÀÌ´Â ¼Óµµ
+	// ** ì›€ì§ì´ëŠ” ì†ë„
 	private float Speed;
 
-	// ** °¡·Î ¿òÁ÷ÀÓÀ» ÀúÀåÇÏ´Â º¤ÅÍ
+	// ** ê°€ë¡œ ì›€ì§ì„ì„ ì €ì¥í•˜ëŠ” ë²¡í„°
 	private Vector3 HorMovement;
-	// ** ¼¼·Î ¿òÁ÷ÀÓÀ» ÀúÀåÇÏ´Â º¤ÅÍ
+	// ** ì„¸ë¡œ ì›€ì§ì„ì„ ì €ì¥í•˜ëŠ” ë²¡í„°
 	private Vector3 VerMovement;
 
-	// ** ÇÃ·¹ÀÌ¾îÀÇ Animator ±¸¼º¿ä¼Ò¸¦ ¹Ş¾Æ¿À±âÀ§ÇØ...
+	// ** í”Œë ˆì´ì–´ì˜ Animator êµ¬ì„±ìš”ì†Œë¥¼ ë°›ì•„ì˜¤ê¸°ìœ„í•´...
 	private Animator animator;
 
-	// ** ÇÃ·¹ÀÌ¾îÀÇ SpriteRenderer ±¸¼º¿ä¼Ò¸¦ ¹Ş¾Æ¿À±âÀ§ÇØ...
+	// ** í”Œë ˆì´ì–´ì˜ SpriteRenderer êµ¬ì„±ìš”ì†Œë¥¼ ë°›ì•„ì˜¤ê¸°ìœ„í•´...
 	private SpriteRenderer playerRenderer;
 
-	// ** [»óÅÂÃ¼Å©]
-	private bool onAttack; // °ø°İ»óÅÂ
-	private bool onHit; // ÇÇ°İ»óÅÂ
+	// ** [ìƒíƒœì²´í¬]
+	private bool onAttack; // ê³µê²©ìƒíƒœ
+	private bool onHit; // í”¼ê²©ìƒíƒœ
 
-	// ** º¹Á¦µÈ ÃÑ¾ËÀÇ ÀúÀå°ø°£.
+	// ** ë³µì œëœ ì´ì•Œì˜ ì €ì¥ê³µê°„.
 	private List<GameObject> Bullets = new List<GameObject>();
 
-	// ** ÇÃ·¹ÀÌ¾î°¡ ¸¶Áö¸·À¸·Î ¹Ù¶óº» ¹æÇâ.
+	// ** í”Œë ˆì´ì–´ê°€ ë§ˆì§€ë§‰ìœ¼ë¡œ ë°”ë¼ë³¸ ë°©í–¥.
 	private float Direction;
 	private Vector3 BreakWind = new Vector3(0.0f, 0.0f, 0.0f);
 
-	[Header("¹æÇâ")]
-	// ** ÇÃ·¹ÀÌ¾î°¡ ¹Ù¶óº¸´Â ¹æÇâ
+	[Header("ë°©í–¥")]
+	// ** í”Œë ˆì´ì–´ê°€ ë°”ë¼ë³´ëŠ” ë°©í–¥
 
-	[Tooltip("¿ŞÂÊ")]
+	[Tooltip("ì™¼ìª½")]
 	public bool DirLeft;
-	[Tooltip("¿À¸¥ÂÊ")]
+	[Tooltip("ì˜¤ë¥¸ìª½")]
 	public bool DirRight;
 
 	private void Awake()
 	{
-		// ** player ÀÇ Animator¸¦ ¹Ş¾Æ¿Â´Ù.
+		// ** player ì˜ Animatorë¥¼ ë°›ì•„ì˜¨ë‹¤.
 		animator = this.GetComponent<Animator>();
 
-		// ** player ÀÇ SpriteRenderer¸¦ ¹Ş¾Æ¿Â´Ù.
+		// ** player ì˜ SpriteRendererë¥¼ ë°›ì•„ì˜¨ë‹¤.
 		playerRenderer = this.GetComponent<SpriteRenderer>();
 	}
 
-	// ** À¯´ÏÆ¼ ±âº» Á¦°ø ÇÔ¼ö
-	// ** ÃÊ±â°ªÀ» ¼³Á¤ÇÒ ¶§ »ç¿ë
+	// ** ìœ ë‹ˆí‹° ê¸°ë³¸ ì œê³µ í•¨ìˆ˜
+	// ** ì´ˆê¸°ê°’ì„ ì„¤ì •í•  ë•Œ ì‚¬ìš©
 	void Start()
 	{
 		GetComponent<BulletPattern>().Speed = 0.1f;
-		// ** ¼Óµµ¸¦ ÃÊ±âÈ­.
+		// ** ì†ë„ë¥¼ ì´ˆê¸°í™”.
 		Speed = 5.0f;
 
-		// ** ÃÊ±â°ª ¼ÂÆÃ
+		// ** ì´ˆê¸°ê°’ ì…‹íŒ…
 		onAttack = false;
 		onHit = false;
 		Direction = 1.0f;
@@ -77,29 +77,30 @@ public class PlayerController : MonoBehaviour
 
 	}
 
-	// ** À¯´ÏÆ¼ ±âº» Á¦°ø ÇÔ¼ö
-	// ** ÇÁ·¹ÀÓ¸¶´Ù ¹İº¹ÀûÀ¸·Î ½ÇÇàµÇ´Â ÇÔ¼ö.
+	// ** ìœ ë‹ˆí‹° ê¸°ë³¸ ì œê³µ í•¨ìˆ˜
+	// ** í”„ë ˆì„ë§ˆë‹¤ ë°˜ë³µì ìœ¼ë¡œ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜.
 	void Update()
 	{
 		GetComponent<BulletPattern>().ReloadTerm = ControllerManager.GetInstance().Player_BulletTerm;
 		Move();
 		AutoAttack();
 		Climate.GetInstance().PlayerBreakWind = BreakWind;
-		GameStatus.GetInstance().RunDistance += (BreakWind + Climate.GetInstance().Wind).x * Time.deltaTime;
-
-		// ** ÁÂÃø ½¬ÇÁÆ®Å°¸¦ ÀÔ·ÂÇÑ´Ù¸é.....
-		if (Input.GetKey(KeyCode.LeftShift))
-			// ** ÇÇ°İ
+        if (ControllerManager.GetInstance().PlayerRunHard)
+            GameStatus.GetInstance().RunDistance += (BreakWind + Climate.GetInstance().Wind).x * Time.deltaTime;
+        
+        // ** ì¢Œì¸¡ ì‰¬í”„íŠ¸í‚¤ë¥¼ ì…ë ¥í•œë‹¤ë©´.....
+        if (Input.GetKey(KeyCode.LeftShift))
+			// ** í”¼ê²©
 			OnHit();
 	}
 
 
 	private void AutoAttack()
 	{
-		// ** ÀÚµ¿ °ø°İ 
+		// ** ìë™ ê³µê²© 
 		if (GetComponent<BulletPattern>().ShotEnd)
 		{
-			// ** °ø°İ
+			// ** ê³µê²©
 			OnAttack();
 			BulletPattern.Pattern pattern = ControllerManager.GetInstance().Player_Pattern;
 			GetComponent<BulletPattern>().pattern = pattern;
@@ -113,26 +114,26 @@ public class PlayerController : MonoBehaviour
 		float mazinoX = 0.1f;
 		Climate.GetInstance().Slide(gameObject);
 
-		// **  Input.GetAxis =     -1 ~ 1 »çÀÌÀÇ °ªÀ» ¹İÈ¯ÇÔ. 
-		float Hor = Input.GetAxisRaw("Horizontal"); // -1 or 0 or 1 ¼ÂÁß¿¡ ÇÏ³ª¸¦ ¹İÈ¯.
-		float Ver = Input.GetAxisRaw("Vertical"); // -1 or 0 or 1 ¼ÂÁß¿¡ ÇÏ³ª¸¦ ¹İÈ¯.
+		// **  Input.GetAxis =     -1 ~ 1 ì‚¬ì´ì˜ ê°’ì„ ë°˜í™˜í•¨. 
+		float Hor = Input.GetAxisRaw("Horizontal"); // -1 or 0 or 1 ì…‹ì¤‘ì— í•˜ë‚˜ë¥¼ ë°˜í™˜.
+		float Ver = Input.GetAxisRaw("Vertical"); // -1 or 0 or 1 ì…‹ì¤‘ì— í•˜ë‚˜ë¥¼ ë°˜í™˜.
 		
 		animator.SetBool("Jump Up", Ver==1);
 		animator.SetBool("Jump Down", Ver==-1);
 		
-		// ** ÀÔ·Â¹ŞÀº °ªÀ¸·Î ÇÃ·¹ÀÌ¾î¸¦ ¿òÁ÷ÀÎ´Ù.
+		// ** ì…ë ¥ë°›ì€ ê°’ìœ¼ë¡œ í”Œë ˆì´ì–´ë¥¼ ì›€ì§ì¸ë‹¤.
 		HorMovement = new Vector3(
 			Hor * Time.deltaTime * Speed,
 			0.0f,
 			0.0f);
 
-		// ** ÀÔ·Â¹ŞÀº °ªÀ¸·Î ÇÃ·¹ÀÌ¾î¸¦ ¿òÁ÷ÀÎ´Ù.
+		// ** ì…ë ¥ë°›ì€ ê°’ìœ¼ë¡œ í”Œë ˆì´ì–´ë¥¼ ì›€ì§ì¸ë‹¤.
 		VerMovement = new Vector3(
 			0.0f,
 			Ver * Time.deltaTime * Speed,
 			0.0f);
 
-		// ** HorÀÌ 0ÀÌ¶ó¸é ¸ØÃçÀÖ´Â »óÅÂÀÌ¹Ç·Î ¿¹¿ÜÃ³¸®¸¦ ÇØÁØ´Ù. 
+		// ** Horì´ 0ì´ë¼ë©´ ë©ˆì¶°ìˆëŠ” ìƒíƒœì´ë¯€ë¡œ ì˜ˆì™¸ì²˜ë¦¬ë¥¼ í•´ì¤€ë‹¤. 
 		if (Hor != 0)
 			Direction = Hor;
 
@@ -146,7 +147,7 @@ public class PlayerController : MonoBehaviour
 
 		if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
 		{
-			// ** ÇÃ·¹ÀÌ¾îÀÇ ÁÂÇ¥°¡ 0.0 º¸´Ù ÀÛÀ»¶§ ÇÃ·¹ÀÌ¾î¸¸ ¿òÁ÷ÀÎ´Ù.
+			// ** í”Œë ˆì´ì–´ì˜ ì¢Œí‘œê°€ 0.0 ë³´ë‹¤ ì‘ì„ë•Œ í”Œë ˆì´ì–´ë§Œ ì›€ì§ì¸ë‹¤.
 			if (transform.position.x < mazinoX)
 			{ 
 				transform.position += HorMovement;
@@ -170,9 +171,9 @@ public class PlayerController : MonoBehaviour
 			ControllerManager.GetInstance().DirRight = false;
 			ControllerManager.GetInstance().DirLeft = true;
 			
-			// ** ÇÃ·¹ÀÌ¾îÀÇ ÁÂÇ¥°¡ -15.0 º¸´Ù Å¬¶§ ÇÃ·¹ÀÌ¾î¸¸ ¿òÁ÷ÀÎ´Ù.
+			// ** í”Œë ˆì´ì–´ì˜ ì¢Œí‘œê°€ -15.0 ë³´ë‹¤ í´ë•Œ í”Œë ˆì´ì–´ë§Œ ì›€ì§ì¸ë‹¤.
 			if (transform.position.x > -10.0f)
-				// ** ½ÇÁ¦ ÇÃ·¹ÀÌ¾î¸¦ ¿òÁ÷ÀÎ´Ù.
+				// ** ì‹¤ì œ í”Œë ˆì´ì–´ë¥¼ ì›€ì§ì¸ë‹¤.
 				transform.position += HorMovement;
 		}
 
@@ -184,7 +185,7 @@ public class PlayerController : MonoBehaviour
 		}
 
 
-		// ** ÇÃ·¹ÀÌ¾î°¡ ¹Ù¶óº¸°íÀÖ´Â ¹æÇâ¿¡ µû¶ó ÀÌ¹ÌÁö ¹İÀü ¼³Á¤.
+		// ** í”Œë ˆì´ì–´ê°€ ë°”ë¼ë³´ê³ ìˆëŠ” ë°©í–¥ì— ë”°ë¼ ì´ë¯¸ì§€ ë°˜ì „ ì„¤ì •.
 		if (Direction < 0)
 		{
 			playerRenderer.flipX = DirLeft = true;
@@ -195,51 +196,51 @@ public class PlayerController : MonoBehaviour
 			DirRight = true;
 		}
 
-		// ** ÇÃ·¹ÀÌÀÇ ¿òÁ÷ÀÓ¿¡ µû¶ó ÀÌµ¿ ¸ğ¼ÇÀ» ½ÇÇà ÇÑ´Ù.
+		// ** í”Œë ˆì´ì˜ ì›€ì§ì„ì— ë”°ë¼ ì´ë™ ëª¨ì…˜ì„ ì‹¤í–‰ í•œë‹¤.
 		animator.SetFloat("Speed", Hor);
 	}
 
 	private void OnAttack()
 	{
-		// ** ÀÌ¹Ì °ø°İ¸ğ¼ÇÀÌ ÁøÇàÁßÀÌ¶ó¸é
+		// ** ì´ë¯¸ ê³µê²©ëª¨ì…˜ì´ ì§„í–‰ì¤‘ì´ë¼ë©´
 		if (onAttack)
-			// ** ÇÔ¼ö¸¦ Á¾·á½ÃÅ²´Ù.
+			// ** í•¨ìˆ˜ë¥¼ ì¢…ë£Œì‹œí‚¨ë‹¤.
 			return;
 
-		// ** ÇÔ¼ö°¡ Á¾·áµÇÁö ¾Ê¾Ò´Ù¸é...
-		// ** °ø°İ»óÅÂ¸¦ È°¼ºÈ­ ÇÏ°í.
+		// ** í•¨ìˆ˜ê°€ ì¢…ë£Œë˜ì§€ ì•Šì•˜ë‹¤ë©´...
+		// ** ê³µê²©ìƒíƒœë¥¼ í™œì„±í™” í•˜ê³ .
 		onAttack = true;
 
-		// ** °ø°İ¸ğ¼ÇÀ» ½ÇÇà ½ÃÅ²´Ù.
+		// ** ê³µê²©ëª¨ì…˜ì„ ì‹¤í–‰ ì‹œí‚¨ë‹¤.
 		animator.SetTrigger("Attack");
 	}
 
 	private void SetAttack()
 	{
-		// ** ÇÔ¼ö°¡ ½ÇÇàµÇ¸é °ø°İ¸ğ¼ÇÀÌ ºñÈ°¼ºÈ­ µÈ´Ù.
-		// ** ÇÔ¼ö´Â ¾Ö´Ï¸ÅÀÌ¼Ç Å¬¸³ÀÇ ÀÌº¥Æ® ÇÁ·¹ÀÓÀ¸·Î »ğÀÔµÊ.
+		// ** í•¨ìˆ˜ê°€ ì‹¤í–‰ë˜ë©´ ê³µê²©ëª¨ì…˜ì´ ë¹„í™œì„±í™” ëœë‹¤.
+		// ** í•¨ìˆ˜ëŠ” ì• ë‹ˆë§¤ì´ì…˜ í´ë¦½ì˜ ì´ë²¤íŠ¸ í”„ë ˆì„ìœ¼ë¡œ ì‚½ì…ë¨.
 		onAttack = false;
 	}
 
 	private void OnHit()
 	{
-		// ** ÀÌ¹Ì ÇÇ°İ¸ğ¼ÇÀÌ ÁøÇàÁßÀÌ¶ó¸é
+		// ** ì´ë¯¸ í”¼ê²©ëª¨ì…˜ì´ ì§„í–‰ì¤‘ì´ë¼ë©´
 		if (onHit)
-			// ** ÇÔ¼ö¸¦ Á¾·á½ÃÅ²´Ù.
+			// ** í•¨ìˆ˜ë¥¼ ì¢…ë£Œì‹œí‚¨ë‹¤.
 			return;
 
-		// ** ÇÔ¼ö°¡ Á¾·áµÇÁö ¾Ê¾Ò´Ù¸é...
-		// ** ÇÇ°İ»óÅÂ¸¦ È°¼ºÈ­ ÇÏ°í.
+		// ** í•¨ìˆ˜ê°€ ì¢…ë£Œë˜ì§€ ì•Šì•˜ë‹¤ë©´...
+		// ** í”¼ê²©ìƒíƒœë¥¼ í™œì„±í™” í•˜ê³ .
 		onHit = true;
 
-		// ** ÇÇ°İ¸ğ¼ÇÀ» ½ÇÇà ½ÃÅ²´Ù.
+		// ** í”¼ê²©ëª¨ì…˜ì„ ì‹¤í–‰ ì‹œí‚¨ë‹¤.
 		animator.SetTrigger("Hit");
 	}
 
 	private void SetHit()
 	{
-		// ** ÇÔ¼ö°¡ ½ÇÇàµÇ¸é ÇÇ°İ¸ğ¼ÇÀÌ ºñÈ°¼ºÈ­ µÈ´Ù.
-		// ** ÇÔ¼ö´Â ¾Ö´Ï¸ÅÀÌ¼Ç Å¬¸³ÀÇ ÀÌº¥Æ® ÇÁ·¹ÀÓÀ¸·Î »ğÀÔµÊ.
+		// ** í•¨ìˆ˜ê°€ ì‹¤í–‰ë˜ë©´ í”¼ê²©ëª¨ì…˜ì´ ë¹„í™œì„±í™” ëœë‹¤.
+		// ** í•¨ìˆ˜ëŠ” ì• ë‹ˆë§¤ì´ì…˜ í´ë¦½ì˜ ì´ë²¤íŠ¸ í”„ë ˆì„ìœ¼ë¡œ ì‚½ì…ë¨.
 		onHit = false;
 	}
 

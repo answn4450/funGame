@@ -4,29 +4,24 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
-	// ** ÃÑ¾ËÀÌ ³¯¾Æ°¡´Â ¼Óµµ
-	public float Speed;
-
-	// ** ÃÑ¾ËÀÌ Ãæµ¹ÇÑ È½¼ö
+	// ** ì´ì•Œì´ ì¶©ëŒí•œ íšŸìˆ˜
 	private int hp;
 
-	// ** ÀÌÆåÆ®È¿°ú ¿øº»
+	// ** ì´í™íŠ¸íš¨ê³¼ ì›ë³¸
 	public GameObject fxPrefab;
 
-	// ** ÃÑ¾ËÀÌ ³¯¾Æ°¡¾ßÇÒ ¹æÇâ
+	// ** ì´ì•Œì´ ë‚ ì•„ê°€ì•¼í•  ë°©í–¥
 	public Vector3 Direction { get; set; }
 	private Color FadeOutColor = new Color(0.0f, 0.0f, 0.0f, -5f);
 
 	private void Start()
 	{
-		// ** Ãæµ¹ È½¼ö¸¦ 3À¸·Î ÁöÁ¤ÇÑ´Ù.
+		// ** ì¶©ëŒ íšŸìˆ˜ë¥¼ 3ìœ¼ë¡œ ì§€ì •í•œë‹¤.
 		hp = 3;
 	}
 
 	void Update()
 	{
-		//GetComponent<BulletControll>().Speed = Speed;
-
 		if (GetComponent<BulletControll>().Mileage.magnitude>ControllerManager.GetInstance().Player_BulletMileage)
 		{
 			transform.gameObject.GetComponent<SpriteRenderer>().color += Time.deltaTime*FadeOutColor;
@@ -35,31 +30,31 @@ public class BulletController : MonoBehaviour
 		}
 	}
 
-	// ** Ãæµ¹Ã¼¿Í ¹°¸®¿£ÁøÀÌ Æ÷ÇÔµÈ ¿ÀºêÁ§Æ®°¡ ´Ù¸¥ Ãæµ¹Ã¼¿Í Ãæµ¹ÇÑ´Ù¸é ½ÇÇàµÇ´Â ÇÔ¼ö. 
+	// ** ì¶©ëŒì²´ì™€ ë¬¼ë¦¬ì—”ì§„ì´ í¬í•¨ëœ ì˜¤ë¸Œì íŠ¸ê°€ ë‹¤ë¥¸ ì¶©ëŒì²´ì™€ ì¶©ëŒí•œë‹¤ë©´ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜. 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		// ** Ãæµ¹È½¼ö Â÷°¨.
+		// ** ì¶©ëŒíšŸìˆ˜ ì°¨ê°.
 		--hp;
-		// ** collision = Ãæµ¹ÇÑ ´ë»ó.
-		// ** Ãæµ¹ÇÑ ´ë»óÀ» »èÁ¦ÇÑ´Ù. 
+		// ** collision = ì¶©ëŒí•œ ëŒ€ìƒ.
+		// ** ì¶©ëŒí•œ ëŒ€ìƒì„ ì‚­ì œí•œë‹¤. 
 		if (collision.transform.tag == "wall")
 			Destroy(this.gameObject);
 		else
 		{
-			// ** Áøµ¿È¿°ú¸¦ »ı¼ºÇÒ °ü¸®ÀÚ »ı¼º.
+			// ** ì§„ë™íš¨ê³¼ë¥¼ ìƒì„±í•  ê´€ë¦¬ì ìƒì„±.
 			GameObject camera = new GameObject("Camera Test");
 
-			// ** Áøµ¿ È¿°ú ÄÁÆ®·Ñ·¯ »ı¼º.
+			// ** ì§„ë™ íš¨ê³¼ ì»¨íŠ¸ë¡¤ëŸ¬ ìƒì„±.
 			camera.AddComponent<CameraShake>();
 
-			// ** ÀÌÆåÆ®È¿°ú º¹Á¦.
+			// ** ì´í™íŠ¸íš¨ê³¼ ë³µì œ.
 			GameObject Obj = Instantiate(fxPrefab);
 
-			// ** ÀÌÆåÆ®È¿°úÀÇ À§Ä¡¸¦ ÁöÁ¤
+			// ** ì´í™íŠ¸íš¨ê³¼ì˜ ìœ„ì¹˜ë¥¼ ì§€ì •
 			Obj.transform.position = transform.position;
 		}
 
-		// ** ÃÑ¾ËÀÇ Ãæµ¹ È½¼ö°¡ 0ÀÌ µÇ¸é ÃÑ¾Ë »èÁ¦.
+		// ** ì´ì•Œì˜ ì¶©ëŒ íšŸìˆ˜ê°€ 0ì´ ë˜ë©´ ì´ì•Œ ì‚­ì œ.
 		if (hp == 0)
 			Destroy(this.gameObject, 0.016f);
 	}

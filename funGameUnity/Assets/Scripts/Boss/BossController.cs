@@ -16,9 +16,6 @@ public class BossController : MonoBehaviour
 	public Sprite sprite;
 	private BulletPattern.Pattern Pattern = BulletPattern.Pattern.ShotGun;
 
-	private List<GameObject> BulletList = new List<GameObject>();
-	private GameObject BulletPrefab;
-
 	const int STATE_WALK = 1;
 	const int STATE_ATTACK = 2;
 	const int STATE_SLIDE = 3;
@@ -35,7 +32,6 @@ public class BossController : MonoBehaviour
 	private float CoolDown;
 	private float Speed;
 
-	private bool Attack;
 	private bool Walk;
 	private bool active;
 
@@ -46,7 +42,7 @@ public class BossController : MonoBehaviour
 		Target = GameObject.Find("Player");
 		Anim = GetComponent<Animator>();
 
-		renderer = GetComponent<SpriteRenderer>();
+		renderer = GetComponent<SpriteRenderer>(); 
 	}
 
 	void Start()
@@ -56,16 +52,13 @@ public class BossController : MonoBehaviour
 		CoolDown = 1.5f;
 		Speed = 1.3f;
 
-		Attack = false;
-
 		active = true;
 
-		Attack = false;
 		Walk = false;
 
 	}
 
-	void Update()
+	private void Update()
 	{
 		if (HP <= 0)
 		{
@@ -74,8 +67,8 @@ public class BossController : MonoBehaviour
 			Destroy(gameObject);
 		}
 
-		//Ã¼·Â¿¡ ºñ·ÊÇØ¼­ ¾îµÓ°Ô->¿øº»À¸·Î »öÀ» ¹Ù²Ş.
-		//¸·Èû rgb »ó¼ö°¡ Àß Àû¿ë ¾ÈµÊ
+		//ì²´ë ¥ì— ë¹„ë¡€í•´ì„œ ì–´ë‘¡ê²Œ->ì›ë³¸ìœ¼ë¡œ ìƒ‰ì„ ë°”ê¿ˆ.
+		//ë§‰í˜ rgb ìƒìˆ˜ê°€ ì˜ ì ìš© ì•ˆë¨
 		float rgb = (1.0f - (float)HP/MaxHP) * 255.0f;
 		//print(rgb);
 		//print(transform.GetComponent<SpriteRenderer>().color);
@@ -91,25 +84,30 @@ public class BossController : MonoBehaviour
 
 		if (active)
 		{
-			// sprite¸¦ ¿¹»óÇÒ ¼ö ¾ø´Â °¢µµ·Î µ¹°Ô ¸¸µç Çàµ¿ÀÌ¾úÀ¸¸é rotation ÃÊ±âÈ­¿Í ½½¶óÀÌµù 
+			// spriteë¥¼ ì˜ˆìƒí•  ìˆ˜ ì—†ëŠ” ê°ë„ë¡œ ëŒê²Œ ë§Œë“  í–‰ë™ì´ì—ˆìœ¼ë©´ rotation ì´ˆê¸°í™”ì™€ ìŠ¬ë¼ì´ë”© 
 			if (choice == STATE_ATTACK && Pattern == BulletPattern.Pattern.DelayScrew)
 			{
 				if (GetComponent<BulletPattern>().ShotEnd)
 				{
+                    print("call");
 					transform.rotation = new Quaternion();
 					active = false;
 					choice = STATE_SLIDE;
+                    choice = STATE_WALK;
+                    choice = STATE_ATTACK;
 				}
 				else
+                {
+                    print("B");
 					transform.Rotate(0.0f, 0.0f, Time.deltaTime * 160, Space.Self);
+                }
 			}
 			else
 			{
 				active = false;
 				choice = onController();
+                choice = STATE_ATTACK;
 			}
-
-			StartCoroutine(onCooldown());
 		}
 		else
 		{
@@ -132,52 +130,38 @@ public class BossController : MonoBehaviour
 
 	private int onController()
 	{
-		// ** Çàµ¿ ÆĞÅÏ¿¡ ´ëÇÑ ³»¿ëÀ» Ãß°¡ ÇÕ´Ï´Ù.
+		// ** í–‰ë™ íŒ¨í„´ì— ëŒ€í•œ ë‚´ìš©ì„ ì¶”ê°€ í•©ë‹ˆë‹¤.
 
 		{
-			// ** ÃÊ±âÈ­
+			// ** ì´ˆê¸°í™”
 			if (Walk)
 			{
 				Movement = new Vector3(0.0f, 0.0f, 0.0f);
 				Anim.SetFloat("Speed", Movement.x);
 				Walk = false;
 			}
-
-			if (Attack)
-			{
-				Attack = false;
-			}
 		}
 
-		// ** ·ÎÁ÷
+		// ** ë¡œì§
 
-		// ** ¾îµğ·Î ¿òÁ÷ÀÏÁö Á¤ÇÏ´Â ½ÃÁ¡¿¡ ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡¸¦ µµÂøÁöÁ¡À¸·Î ¼ÂÆÃ.
+		// ** ì–´ë””ë¡œ ì›€ì§ì¼ì§€ ì •í•˜ëŠ” ì‹œì ì— í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ë¥¼ ë„ì°©ì§€ì ìœ¼ë¡œ ì…‹íŒ….
 		EndPoint = Target.transform.position;
 
-		// * [return]
-		// * 1 : ÀÌµ¿         STATE_WALK
-		// * 2 : °ø°İ         STATE_ATTACK
-		// * 3 : ½½¶óÀÌµù     STATE_SLIDE
+        // * [return]
+        // * 1 : ì´ë™         STATE_WALK
+        // * 2 : ê³µê²©         STATE_ATTACK
+        // * 3 : ìŠ¬ë¼ì´ë”©     STATE_SLIDE
 
-		return Random.Range(STATE_WALK, STATE_SLIDE + 1);
+		//return Random.Range(STATE_WALK, STATE_SLIDE + 1);
+        return STATE_ATTACK;
 	}
 
-
-	private IEnumerator onCooldown()
-	{
-		float fTime = CoolDown;
-
-		while (fTime > 0.0f)
-		{
-			fTime -= Time.deltaTime;
-			yield return null;
-		}
-	}
 
 	private void onAttack()
 	{
+        print("asdf");
 		Anim.SetTrigger("Attack");
-		//¾Ö´Ï·Î ShotBullet
+		//ì• ë‹ˆë¡œ AttackShot
 		active = true;
 	}
 
@@ -185,7 +169,7 @@ public class BossController : MonoBehaviour
 	{
 		Walk = true;
 
-		// ** ¸ñÀûÁö¿¡ µµÂøÇÒ ¶§±îÁö......
+		// ** ëª©ì ì§€ì— ë„ì°©í•  ë•Œê¹Œì§€......
 		float Distance = Vector3.Distance(EndPoint, transform.position);
 
 		if (Distance > 0.5f)
@@ -198,7 +182,7 @@ public class BossController : MonoBehaviour
 				0.0f);
 
 			transform.position += Movement * Time.deltaTime;
-			Anim.SetFloat("Speed", Mathf.Abs(Movement.x));
+			Anim.SetFloat("Speed", Movement.magnitude);
 		}
 		else
 			active = true;
@@ -231,7 +215,7 @@ public class BossController : MonoBehaviour
 		{
 			HP -= (int)ControllerManager.GetInstance().Player_BulletPower;
 			Pattern = BulletPattern.Pattern.Explosion;
-			// ÇÃ·¹ÀÌ¾î°¡ º¸½º¸¦ Á×¿´°í º¸½º ÆĞÅÏÀ» ¾È°®°í ÀÖÀ¸¸é ÆĞÅÏ ¼±¹°
+			// í”Œë ˆì´ì–´ê°€ ë³´ìŠ¤ë¥¼ ì£½ì˜€ê³  ë³´ìŠ¤ íŒ¨í„´ì„ ì•ˆê°–ê³  ìˆìœ¼ë©´ íŒ¨í„´ ì„ ë¬¼
 			if (HP <= 0)
 			{
 				ControllerManager.GetInstance().Player_Exp += 1;
@@ -247,11 +231,13 @@ public class BossController : MonoBehaviour
 		}
 	}
 	
-	public void ShotBullet()
+	public void AttackShot()
 	{
-		Pattern = (Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
-		GetComponent<BulletPattern>().pattern = Pattern;
+        //Pattern = (Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
+        Pattern = Pattern.DelayScrew;
+        GetComponent<BulletPattern>().pattern = Pattern;
 		GetComponent<BulletPattern>().Target = Target;
 		GetComponent<BulletPattern>().ShotBullet(PatternLV);
+        print("asdfdddddddddddd");
 	}
 }

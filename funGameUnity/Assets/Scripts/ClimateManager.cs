@@ -51,9 +51,10 @@ public class Climate
 			else
 				gameObject.transform.position -= Wind * Time.deltaTime;
 		}
-		else
+        else
 		{
-			gameObject.transform.position -= (Wind + PlayerBreakWind) * Time.deltaTime;
+            
+            gameObject.transform.position -= (Wind + PlayerBreakWind) * Time.deltaTime;
 		}
 	}
 

@@ -17,13 +17,13 @@ public class ControllerManager
 
 	public float[,] LVTable =
 	{
-		//BulletPower int∑Œ πŸ≤„º≠ Ω·æﬂ «‘
+		//BulletPower intÎ°ú Î∞îÍøîÏÑú Ïç®Ïïº Ìï®
 		{ 1.0f, 2.0f, 4.0f, 6.0f, 10.0f, 20.0f},
 		//Defence 
 		{ 0.0f, 1.0f, 4.0f, 9.0f, 10.0f, 20.0f},
 		//BulletTerm
 		{ 2.0f, 1.0f, 0.5f, 0.3f, 0.2f, 0.1f},
-		//ImmortalChance πÈ∫–¿ß
+		//ImmortalChance Î∞±Î∂ÑÏúÑ
 		{ 1.0f, 3.0f, 5.0f, 7.0f, 8.0f, 9.0f},
 		//HPRegenSize
 		{ 0.0f, 1.0f, 2.0f, 2.5f, 3.0f, 4.0f}
@@ -64,7 +64,7 @@ public class ControllerManager
 			BulletPattern.Pattern.Explosion
 		};
 
-	public BulletPattern.Pattern Player_Pattern = BulletPattern.Pattern.Explosion;
+	public BulletPattern.Pattern Player_Pattern = BulletPattern.Pattern.Screw;
 
 	public int HitShock = 0;
 

@@ -7,27 +7,28 @@ using UnityEngine.UI;
 public class BulletControll : MonoBehaviour
 {
 	public string MasterTag;
-	// ** ÃÑ¾ËÀÌ ³¯¾Æ°¡´Â ¼Óµµ
+	// ** ì´ì•Œì´ ë‚ ì•„ê°€ëŠ” ì†ë„
 	public float Speed;
 	public GameObject Target;
 
 	public int HP = 5;
 	public bool Option;
 
-	// ** ÃÑ¾ËÀÌ ¿òÁ÷ÀÎ °Å¸®
+	// ** ì´ì•Œì´ ì›€ì§ì¸ ê±°ë¦¬
 	public Vector3 Mileage;
 
-	// ** ÀÌÆåÆ®È¿°ú ¿øº»
+	// ** ì´í™íŠ¸íš¨ê³¼ ì›ë³¸
 	public GameObject fxPrefab;
 
 	private GameObject PopText;
 
-	// ** ÃÑ¾ËÀÌ ³¯¾Æ°¡¾ßÇÒ ¹æÇâ
+	// ** ì´ì•Œì´ ë‚ ì•„ê°€ì•¼í•  ë°©í–¥
 	public Vector3 Direction { get; set; }
+    public Canvas Canvas;
 
 	private void Awake()
 	{
-		// ** ¼Óµµ ÃÊ±â°ª
+		// ** ì†ë„ ì´ˆê¸°ê°’
 		if (Speed == 0)
 			Speed = Option ? 0.7f : 1.6f;
 		
@@ -37,7 +38,7 @@ public class BulletControll : MonoBehaviour
 
 	private void Start()
 	{
-		// ** º¤ÅÍÀÇ Á¤±ÔÈ­
+		// ** ë²¡í„°ì˜ ì •ê·œí™”
 		Direction = Direction.normalized;
 
 		float fAngle = getAngle(Vector3.down, Direction);
@@ -50,10 +51,10 @@ public class BulletControll : MonoBehaviour
 	{
 		if (HP<=0)
 			Destroy(this.gameObject);
-		// ** ½Ç½Ã°£À¸·Î Å¸°ÙÀÇ À§Ä¡¸¦ È®ÀÎÇÏ°í ¹æÇâÀ» °»½ÅÇÑ´Ù.
+		// ** ì‹¤ì‹œê°„ìœ¼ë¡œ íƒ€ê²Ÿì˜ ìœ„ì¹˜ë¥¼ í™•ì¸í•˜ê³  ë°©í–¥ì„ ê°±ì‹ í•œë‹¤.
 		if (Option && Target)
 		{
-			// ½ºÅ©¸°¿¡¼­ ºñÃçÁö´Â transformÀÇ À§Ä¡¸¦ ±¸ÇÑ´Ù. 
+			// ìŠ¤í¬ë¦°ì—ì„œ ë¹„ì¶°ì§€ëŠ” transformì˜ ìœ„ì¹˜ë¥¼ êµ¬í•œë‹¤. 
 			Vector3 ScreenTransformPosition=Camera.main.WorldToScreenPoint(transform.position);
 			if(Target.name == "Cursor")
 				Direction = (Target.transform.position - ScreenTransformPosition).normalized;
@@ -63,25 +64,27 @@ public class BulletControll : MonoBehaviour
 		float fAngle = getAngle(Vector3.down, Direction);
 		transform.eulerAngles = new Vector3(
 		0.0f, 0.0f, fAngle);
-		// ** ¹æÇâÀ¸·Î ¼Óµµ¸¸Å­ À§Ä¡¸¦ º¯°æ
+		// ** ë°©í–¥ìœ¼ë¡œ ì†ë„ë§Œí¼ ìœ„ì¹˜ë¥¼ ë³€ê²½
 		transform.position += Direction * Speed * Time.deltaTime;
 		Mileage += Direction * Speed * Time.deltaTime;
 	}
 
 
-	// ** Ãæµ¹Ã¼¿Í ¹°¸®¿£ÁøÀÌ Æ÷ÇÔµÈ ¿ÀºêÁ§Æ®°¡ ´Ù¸¥ Ãæµ¹Ã¼¿Í Ãæµ¹ÇÑ´Ù¸é ½ÇÇàµÇ´Â ÇÔ¼ö. 
+	// ** ì¶©ëŒì²´ì™€ ë¬¼ë¦¬ì—”ì§„ì´ í¬í•¨ëœ ì˜¤ë¸Œì íŠ¸ê°€ ë‹¤ë¥¸ ì¶©ëŒì²´ì™€ ì¶©ëŒí•œë‹¤ë©´ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜. 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		// ** collision = Ãæµ¹ÇÑ ´ë»ó.
+		// ** collision = ì¶©ëŒí•œ ëŒ€ìƒ.
 		if (collision.transform.tag==MasterTag)
 		{
 			return;
 		}
-		// ** Ãæµ¹ÇÑ ´ë»óÀ» »èÁ¦ÇÑ´Ù.
+		// ** ì¶©ëŒí•œ ëŒ€ìƒì„ ì‚­ì œí•œë‹¤.
 		else if (collision.transform.tag == "wall")
 		{
 			GameObject Obj = Instantiate(fxPrefab);
+            
 			Obj.transform.position = transform.position;
+
 			Destroy(this.gameObject);
 		}
 		else if(collision.tag=="Player")
@@ -91,7 +94,7 @@ public class BulletControll : MonoBehaviour
 		}
 		else if (collision.tag == "Boss")
 		{
-			// ¸ÂÀº BossÀÇ ³²Àº Ã¼·Â Àá±ñ ¶ç¿ì´Â È¿°ú
+			// ë§ì€ Bossì˜ ë‚¨ì€ ì²´ë ¥ ì ê¹ ë„ìš°ëŠ” íš¨ê³¼
 			string str = collision.GetComponent<BossController>().HP.ToString();
 			GameObject popText = Instantiate(PopText) as GameObject;
 			popText.transform.position = Input.mousePosition;
@@ -100,25 +103,40 @@ public class BulletControll : MonoBehaviour
 			//print(Input.mousePosition);
 			popText.GetComponent<Text>().text = str;
 		}
-		else if(collision.tag == "Bullet")
+		else if(collision.tag == "Bullet"
+            && collision.GetComponent<BulletControll>().MasterTag != MasterTag)
 		{
 			HP -= 1;
 		}
 		else
 		{
-			// ** Áøµ¿È¿°ú¸¦ »ı¼ºÇÒ °ü¸®ÀÚ »ı¼º.
+			// ** ì§„ë™íš¨ê³¼ë¥¼ ìƒì„±í•  ê´€ë¦¬ì ìƒì„±.
 			GameObject camera = new GameObject("Camera Test");
 
-			// ** Áøµ¿ È¿°ú ÄÁÆ®·Ñ·¯ »ı¼º.
+			// ** ì§„ë™ íš¨ê³¼ ì»¨íŠ¸ë¡¤ëŸ¬ ìƒì„±.
 			camera.AddComponent<CameraShake>();
 
-			// ** ÀÌÆåÆ®È¿°ú º¹Á¦.
+			// ** ì´í™íŠ¸íš¨ê³¼ ë³µì œ.
 			GameObject Obj = Instantiate(fxPrefab);
 
-			// ** ÀÌÆåÆ®È¿°úÀÇ À§Ä¡¸¦ ÁöÁ¤
-			Obj.transform.position = transform.position;
+            GameObject canvas = GameObject.Find("EffectCanvas");
+            Obj.transform.SetParent(canvas.transform);
+            // ** ì´í™íŠ¸íš¨ê³¼ì˜ ìœ„ì¹˜ë¥¼ ì§€ì •
+            Obj.transform.position = transform.position;
 		}
 	}
+
+    private GameObject CanvasFx(Vector3 _localPosition)
+    {
+        GameObject Obj = Instantiate(fxPrefab);
+        if (Canvas)
+        {
+            Obj.transform.position = Camera.main.WorldToScreenPoint(_localPosition);
+            Obj.transform.SetParent(Canvas.transform);
+        }
+
+        return Obj;
+    }
 
 	public float getAngle(Vector3 from, Vector3 to)
 	{

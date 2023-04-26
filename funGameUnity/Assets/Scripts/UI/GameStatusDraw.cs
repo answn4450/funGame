@@ -40,7 +40,7 @@ public class GameStatusDraw : MonoBehaviour
 
     void Update()
     {
-        UITravelDistance.GetComponent<Text>().text = ((int)GameStatus.GetInstance().RunDistance).ToString();
+        UITravelDistance.GetComponent<Text>().text = ((int)GameStatus.GetInstance().RunDistance).ToString()+" M";
         DrawPlayerLV();
         DrawCourseUI();
         DrawPlayerMoney();
@@ -66,7 +66,7 @@ public class GameStatusDraw : MonoBehaviour
     }
 
 
-    //¼öµ¿À¸·Î ½ÃÀÛÁ¡ÀÌ¶û ³¡Á¡À» Á¤ÇÑ ÈÄ ¿òÁ÷¿´À½.
+    //ìˆ˜ë™ìœ¼ë¡œ ì‹œì‘ì ì´ë‘ ëì ì„ ì •í•œ í›„ ì›€ì§ì˜€ìŒ.
     private void DrawCourseUI()
     {
 		Transform currentPoint=UICourse.Find("CurrentPoint");
@@ -81,7 +81,7 @@ public class GameStatusDraw : MonoBehaviour
             0.0f
             );
 
-        // run percent ±ÛÀÚ Ã¤¿ò
+        // run percent ê¸€ì ì±„ì›€
         currentPoint.GetChild(0).GetComponent<Text>().text = GameStatus.GetInstance().GetRunPercent().ToString() + "%";
         currentPoint.GetChild(1).GetComponent<Text>().text = GameStatus.GetInstance().GetRunPercent().ToString() + "%";
 
@@ -119,7 +119,7 @@ public class GameStatusDraw : MonoBehaviour
         int patternNumber = ControllerManager.GetInstance().Player_Patterns.Count;
 		PatternIndex = (PatternIndex+scroll+patternNumber) % patternNumber;
 		BulletPattern.Pattern pattern = ControllerManager.GetInstance().Player_Patterns[PatternIndex];
-		string patternInfo = PatternIndex.ToString() + "¹øÂ° ";
+		string patternInfo = PatternIndex.ToString() + "ë²ˆì§¸ ";
 		patternInfo += pattern.ToString();
 		UIBulletPatternPick.GetComponent<Text>().text = patternInfo;
 	}

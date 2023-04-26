@@ -186,7 +186,6 @@ public class BulletPattern : MonoBehaviour
 		{
 			if (Target.name=="Cursor")
 			{
-				Vector3 GameTargetPosition = Camera.main.ScreenToWorldPoint(Target.transform.position);
 				Vector3 ScreenTransformPosition = Camera.main.WorldToScreenPoint(transform.position);
 				controll.Direction = Target.transform.position - ScreenTransformPosition;
 			}
@@ -200,13 +199,13 @@ public class BulletPattern : MonoBehaviour
 
 		controll.Speed = 3.3f;
 		ParentObj.transform.position = transform.position;
-		ParentObj.transform.localScale = new Vector3(2.0f, 2.0f);
+        ParentObj.transform.localScale = BulletPrefab.transform.localScale * 2;
 
 		yield return new WaitForSeconds(1.5f);
-
 		Vector3 pos = ParentObj.transform.position;
-
 		Destroy(ParentObj);
+
+        _count = 10;
 		for (int i = 0; i < _count; ++i)
 		{
 			GameObject Obj = Instantiate(BulletPrefab);
@@ -214,7 +213,7 @@ public class BulletPattern : MonoBehaviour
 			BulletControll controller = Obj.GetComponent<BulletControll>();
 
 			controller.Option = _option;
-			controller.Speed = 2.0f + _lv/2.0f;
+			//controller.Speed = 2.0f + _lv/2.0f;
 			_angle += 360.0f / _count;
 			controller.Direction = new Vector3(
 				Mathf.Cos(_angle * Mathf.Deg2Rad),
