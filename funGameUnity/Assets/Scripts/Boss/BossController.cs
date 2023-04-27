@@ -25,13 +25,13 @@ public class BossController : MonoBehaviour
 	private Vector3 Movement;
 	private Vector3 EndPoint;
 
-	private float CoolDown;
 	private float Speed;
 
 	private bool Walk;
-	private bool active;
+	private bool active=false;
 
-	private int choice=STATE_ATTACK;
+    private bool WaitShot = true;
+    private int choice=STATE_ATTACK;
 
 	private void Awake()
 	{
@@ -45,7 +45,6 @@ public class BossController : MonoBehaviour
 	{
 		GameObject.Find("Player").GetComponent<BulletPattern>().Target = gameObject;
 		
-		CoolDown = 1.5f;
 		Speed = 1.3f;
 
 		active = true;
@@ -53,7 +52,7 @@ public class BossController : MonoBehaviour
 		Walk = false;
 
 	}
-
+    
 	private void Update()
 	{
 		if (HP <= 0)
@@ -63,8 +62,7 @@ public class BossController : MonoBehaviour
 			Destroy(gameObject);
 		}
 
-		//체력에 비례해서 어둡게->원본으로 색을 바꿈.
-		//막힘 rgb 상수가 잘 적용 안됨
+		//체력에 비례해서 어둡게->원본으로 색을 바꿈. 
 		float rgb = (1.0f - (float)HP/MaxHP) * 255.0f;
 		renderer.color = new Color(
 			rgb,rgb,rgb);
@@ -78,7 +76,6 @@ public class BossController : MonoBehaviour
 
 		if (active)
 		{
-            print("active");
             active = false;
             choice = onController();
 		}
@@ -92,8 +89,6 @@ public class BossController : MonoBehaviour
 
 				case STATE_ATTACK:
 					onAttack();
-                    if (GetComponent<BulletPattern>().ShotEnd)
-                        active = true;
                     break;
 
 				case STATE_SLIDE:
@@ -122,25 +117,33 @@ public class BossController : MonoBehaviour
 		// ** 어디로 움직일지 정하는 시점에 플레이어의 위치를 도착지점으로 셋팅.
 		EndPoint = Target.transform.position;
 
+        // ** 공격을 할지 정하는 시점에 공격 애니메이션 도중 공격 여부를 참으로 셋팅. 
+        WaitShot = true;
+
         // * [return]
         // * 1 : 이동         STATE_WALK
         // * 2 : 공격         STATE_ATTACK
         // * 3 : 슬라이딩     STATE_SLIDE
 
-		return Random.Range(STATE_WALK, STATE_SLIDE + 1);
+        return Random.Range(STATE_WALK, STATE_SLIDE + 1);
 	}
-
 
 	private void onAttack()
 	{
-        //애니로 AttackShot
-		Anim.SetTrigger("Attack");
-	}
+        if (!WaitShot && GetComponent<BulletPattern>().ShotEnd)
+        {
+            active = true;
+        }
+        else
+        {
+            //애니로 AttackShot
+            Anim.SetTrigger("Attack");
+        }
+    }
 
 	private void onWalk()
 	{
 		Walk = true;
-
 		// ** 목적지에 도착할 때까지......
 		float Distance = Vector3.Distance(EndPoint, transform.position);
 
@@ -205,13 +208,13 @@ public class BossController : MonoBehaviour
 
 	public void AttackShot()
 	{
-        //Pattern = (Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
-        Pattern = Pattern.DelayScrew;
-        GetComponent<BulletPattern>().pattern = Pattern;
-		GetComponent<BulletPattern>().Target = Target;
-
-		//GetComponent<BulletPattern>().ShotBullet(PatternLV);
-		GetComponent<BulletPattern>().ShotBullet(0);
-		//transform.Rotate(0.0f, 0.0f, Time.deltaTime * 160, Space.Self);
+        if (WaitShot && !active && choice == STATE_ATTACK)
+        {
+            Pattern = (Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
+            GetComponent<BulletPattern>().pattern = Pattern;
+            GetComponent<BulletPattern>().Target = Target;
+            GetComponent<BulletPattern>().ShotBullet(PatternLV);
+            WaitShot = false;
+        }
     }
 }

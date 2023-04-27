@@ -63,6 +63,8 @@ public class BulletControll : MonoBehaviour
 		// ** 방향으로 속도만큼 위치를 변경
 		transform.position += Direction * Speed * Time.deltaTime;
 		Mileage += Direction * Speed * Time.deltaTime;
+        if (transform.IsDestroyed())
+            print("asdfa");
 	}
 
 

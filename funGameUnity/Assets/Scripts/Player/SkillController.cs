@@ -32,7 +32,7 @@ public class SkillController: MonoBehaviour
 		cooldown = 0.0f;
 	}
 
-	//Å°º¸µå ¼ıÀÚ·Î ½ºÅ³ Àû¿ë
+	//í‚¤ë³´ë“œ ìˆ«ìë¡œ ìŠ¤í‚¬ ì ìš©
 	private void Update()
 	{
 		KeyboardSkill();

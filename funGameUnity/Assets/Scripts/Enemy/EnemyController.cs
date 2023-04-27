@@ -1,5 +1,5 @@
-//¹üÀ§ ¾È¿¡ µé¾î¿À¸é ÄğÅ¸ÀÓ °¡Áö°í ÀÏ¹İ°ø°İ ¸ğ¼Ç
-//¹üÀ§¿¡ »ó°ü¾øÀÌ ÀÏÁ¤ ½Ã°£ Áö³ª¸é ½ºÅ³(¿ø°Å¸®) °ø°İ
+//ë²”ìœ„ ì•ˆì— ë“¤ì–´ì˜¤ë©´ ì¿¨íƒ€ì„ ê°€ì§€ê³  ì¼ë°˜ê³µê²© ëª¨ì…˜
+//ë²”ìœ„ì— ìƒê´€ì—†ì´ ì¼ì • ì‹œê°„ ì§€ë‚˜ë©´ ìŠ¤í‚¬(ì›ê±°ë¦¬) ê³µê²©
 using System.Collections;
 using System.Collections.Generic;
 using TreeEditor;
@@ -47,7 +47,7 @@ public class EnemyController : MonoBehaviour
 		if (transform.position.x < -15.0f)
 			Destroy(gameObject);
 
-		//¾ğÁ¦³ª °Èµµ·Ï ¼öÁ¤
+		//ì–¸ì œë‚˜ ê±·ë„ë¡ ìˆ˜ì •
 		Anim.SetFloat("Speed", 1.0f);
 		
 		if (HP <= 0)
@@ -112,7 +112,7 @@ public class EnemyController : MonoBehaviour
 
 	private void Walk()
 	{
-		// ** ÀÌµ¿Á¤º¸ ¼ÂÆÃ
+		// ** ì´ë™ì •ë³´ ì…‹íŒ…
 		Climate.GetInstance().Slide(gameObject);
 	}
 

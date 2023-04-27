@@ -113,6 +113,12 @@ public class PlayerController : MonoBehaviour
 	{
 		float mazinoX = 0.1f;
 		Climate.GetInstance().Slide(gameObject);
+        if (transform.position.x < -13.0f)
+            transform.position = new Vector3(
+                -13.0f, 
+                transform.position.y, 
+                transform.position.z
+                );
 
 		// **  Input.GetAxis =     -1 ~ 1 사이의 값을 반환함. 
 		float Hor = Input.GetAxisRaw("Horizontal"); // -1 or 0 or 1 셋중에 하나를 반환.

@@ -35,7 +35,7 @@ public class BulletPattern : MonoBehaviour
 		LVTable.Add(Pattern.DelayScrew, new List<int> { 3,4,8,11,15,30});
 		LVTable.Add(Pattern.ShotGun, new List<int> { 1, 4, 8, 11, 15, 30 });
 		LVTable.Add(Pattern.Explosion, new List<int> { 1, 4, 8, 11, 15, 30 });
-		LVTable.Add(Pattern.GuideBullet, new List<int> { 1, 4, 8, 11, 15, 30 });
+		LVTable.Add(Pattern.GuideBullet, new List<int> { 2, 4, 4, 5, 6, 7 });
 		Target = GameObject.Find("Cursor");
 		ShotEnd = true;
 		Speed = 3.0f;
@@ -139,11 +139,11 @@ public class BulletPattern : MonoBehaviour
 
 		int i = 0;
 
-		while (i < (iCount) * 3)
+        while (i < (iCount) * 3)
 		{
 			GameObject Obj = Instantiate(BulletPrefab);
 			BulletControll controller = Obj.GetComponent<BulletControll>();
-
+            
 			controller.Option = false;
 
 			fAngle += 360.0f / iCount;
@@ -242,6 +242,7 @@ public class BulletPattern : MonoBehaviour
 
 		controller.Target = Target;
 		controller.Option = true;
+        controller.Speed = LVTable[Pattern.GuideBullet][_lv];
 
 		Obj.transform.position = transform.position;
 		StartCoroutine(DelayShotEnd(1.5f));
