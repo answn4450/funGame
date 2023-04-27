@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.UI;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.TerrainUtils;
 using static BulletPattern;
 
 public class BossController : MonoBehaviour
@@ -35,7 +31,7 @@ public class BossController : MonoBehaviour
 	private bool Walk;
 	private bool active;
 
-	private int choice;
+	private int choice=STATE_ATTACK;
 
 	private void Awake()
 	{
@@ -70,8 +66,6 @@ public class BossController : MonoBehaviour
 		//체력에 비례해서 어둡게->원본으로 색을 바꿈.
 		//막힘 rgb 상수가 잘 적용 안됨
 		float rgb = (1.0f - (float)HP/MaxHP) * 255.0f;
-		//print(rgb);
-		//print(transform.GetComponent<SpriteRenderer>().color);
 		renderer.color = new Color(
 			rgb,rgb,rgb);
 
@@ -84,30 +78,9 @@ public class BossController : MonoBehaviour
 
 		if (active)
 		{
-			// sprite를 예상할 수 없는 각도로 돌게 만든 행동이었으면 rotation 초기화와 슬라이딩 
-			if (choice == STATE_ATTACK && Pattern == BulletPattern.Pattern.DelayScrew)
-			{
-				if (GetComponent<BulletPattern>().ShotEnd)
-				{
-                    print("call");
-					transform.rotation = new Quaternion();
-					active = false;
-					choice = STATE_SLIDE;
-                    choice = STATE_WALK;
-                    choice = STATE_ATTACK;
-				}
-				else
-                {
-                    print("B");
-					transform.Rotate(0.0f, 0.0f, Time.deltaTime * 160, Space.Self);
-                }
-			}
-			else
-			{
-				active = false;
-				choice = onController();
-                choice = STATE_ATTACK;
-			}
+            print("active");
+            active = false;
+            choice = onController();
 		}
 		else
 		{
@@ -119,7 +92,9 @@ public class BossController : MonoBehaviour
 
 				case STATE_ATTACK:
 					onAttack();
-					break;
+                    if (GetComponent<BulletPattern>().ShotEnd)
+                        active = true;
+                    break;
 
 				case STATE_SLIDE:
 					onSlide();
@@ -152,17 +127,14 @@ public class BossController : MonoBehaviour
         // * 2 : 공격         STATE_ATTACK
         // * 3 : 슬라이딩     STATE_SLIDE
 
-		//return Random.Range(STATE_WALK, STATE_SLIDE + 1);
-        return STATE_ATTACK;
+		return Random.Range(STATE_WALK, STATE_SLIDE + 1);
 	}
 
 
 	private void onAttack()
 	{
-        print("asdf");
+        //애니로 AttackShot
 		Anim.SetTrigger("Attack");
-		//애니로 AttackShot
-		active = true;
 	}
 
 	private void onWalk()
@@ -230,14 +202,16 @@ public class BossController : MonoBehaviour
 			ControllerManager.GetInstance().CommonHit(10);
 		}
 	}
-	
+
 	public void AttackShot()
 	{
         //Pattern = (Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
         Pattern = Pattern.DelayScrew;
         GetComponent<BulletPattern>().pattern = Pattern;
 		GetComponent<BulletPattern>().Target = Target;
-		GetComponent<BulletPattern>().ShotBullet(PatternLV);
-        print("asdfdddddddddddd");
-	}
+
+		//GetComponent<BulletPattern>().ShotBullet(PatternLV);
+		GetComponent<BulletPattern>().ShotBullet(0);
+		//transform.Rotate(0.0f, 0.0f, Time.deltaTime * 160, Space.Self);
+    }
 }

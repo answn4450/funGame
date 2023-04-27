@@ -121,10 +121,19 @@ public class BulletPattern : MonoBehaviour
 		StartCoroutine(DelayShotEnd(ReloadTerm));
 	}
 
-
+    private int testCount = 0;
 	public IEnumerator GetDelayScrewPattern(int _lv)
 	{
-		int iCount = LVTable[Pattern.DelayScrew][_lv];
+        List<Color> colors = new List<Color>
+        {
+            Color.red,
+            Color.green,
+            Color.blue,
+        };
+        Color randColor = colors[testCount++ % 3];
+        BulletPrefab.GetComponent<SpriteRenderer>().color = randColor;
+
+        int iCount = LVTable[Pattern.DelayScrew][_lv];
 
 		float fAngle = 0.0f;
 
@@ -160,8 +169,7 @@ public class BulletPattern : MonoBehaviour
 		while (fTime > 0)
 		{
 			fTime -= Time.deltaTime;
-
-			GameObject obj = Instantiate(Resources.Load("Prefabs/Twist")) as GameObject;
+            GameObject obj = Instantiate(PrefabManager.Instance.GetPrefabByName("Twist"));
 
 			yield return null;
 		}

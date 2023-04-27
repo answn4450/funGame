@@ -64,7 +64,7 @@ public class ControllerManager
 			BulletPattern.Pattern.Explosion
 		};
 
-	public BulletPattern.Pattern Player_Pattern = BulletPattern.Pattern.Screw;
+	public BulletPattern.Pattern Player_Pattern = BulletPattern.Pattern.DelayScrew;
 
 	public int HitShock = 0;
 

@@ -6,7 +6,7 @@ public class FeelTset : MonoBehaviour
 {
 	public GameObject Player;
 
-	//¡¡æ∆«œ¥¬ FX
+	//Ïì∏ÎßåÌïú FX
 	private GameObject MagicPoof;
 	private GameObject FSmoke;
 	private GameObject Smoke;
@@ -15,19 +15,7 @@ public class FeelTset : MonoBehaviour
 	private GameObject SwordSpiral;
 	private GameObject SwordThinSpiral;
 
-	private void Awake()
-	{
-		MagicPoof = Resources.Load("Prefabs/FX/MagicPoof") as GameObject;
-		FSmoke = Resources.Load("Prefabs/FX/FSmoke") as GameObject;
-		Smoke = Resources.Load("Prefabs/FX/Smoke") as GameObject;
-		Hit = Resources.Load("Prefabs/FX/Hit") as GameObject;
-
-		SwordCross = Resources.Load("Prefabs/FX/AttackTrails/Cross") as GameObject;
-		SwordSpiral = Resources.Load("Prefabs/FX/AttackTrails/Spiral") as GameObject;
-		SwordThinSpiral = Resources.Load("Prefabs/FX/AttackTrails/ThinSpiral") as GameObject;
-	}
-
-	//≈∞∫∏µÂ ≈∞∑Œ ¿œ¥‹ «√∑π¿Ã Ω√πƒ
+	//ÌÇ§Î≥¥Îìú ÌÇ§Î°ú ÏùºÎã® ÌîåÎ†àÏù¥ ÏãúÎÆ¨
 	void Update()
     {
 		Player.GetComponent<PlayerController>().LikeJump();
@@ -53,10 +41,11 @@ public class FeelTset : MonoBehaviour
 
 	private void FeelFX(int i)
 	{
-		print("fx ºÓ");
+		print("fx test");
 		GameObject[] LikeFX = { MagicPoof, FSmoke, Smoke, Hit, SwordCross, SwordSpiral, SwordThinSpiral };
-		GameObject Obj = Instantiate(MagicPoof);
-		Obj.transform.position = new Vector3(
+        GameObject Obj = Instantiate(PrefabManager.Instance.GetPrefabByName("MagicPoof"));
+
+        Obj.transform.position = new Vector3(
 			Player.transform.position.x,
 			Player.transform.position.y,
 			-3.0f

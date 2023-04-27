@@ -20,13 +20,10 @@ public class EnemyManager : MonoBehaviour
 		}
 	}
 
-	// ** Enemy ´ã¾ÆµÑ »óÀ§ °´Ã¼
+	// ** Enemy ë‹´ì•„ë‘˜ ìƒìœ„ ê°ì²´
 	private GameObject Parrent;
 
-	// ** Enemy·Î »ç¿ëÇÒ ¿øÇü °´Ã¼
-	private GameObject Prefab;
-
-	//** ÇÃ·¹ÀÌ¾îÀÇ ´©Àû ÀÌµ¿ °Å¸®
+	//** í”Œë ˆì´ì–´ì˜ ëˆ„ì  ì´ë™ ê±°ë¦¬
 	public float Distance;
 
 	private void Awake()
@@ -41,34 +38,31 @@ public class EnemyManager : MonoBehaviour
 	
 	private void Start()
 	{
-		// ** »ı¼ºµÇ´Â Enemy¸¦ ´ã¾ÆµÑ »óÀ§ °´Ã¼
+		// ** ìƒì„±ë˜ëŠ” Enemyë¥¼ ë‹´ì•„ë‘˜ ìƒìœ„ ê°ì²´
 		Parrent = new GameObject("EnemyList");
 		Player = GameObject.Find("Player");
-		// ** Enemy·Î »ç¿ëÇÒ ¿øÇü °´Ã¼
-		Prefab = Resources.Load("Prefabs/Enemy/Enemy") as GameObject;
 		StartCoroutine(Generate());
 	}
 
-	// ** ½ÃÀÛÇÏÀÚ¸¶ÀÚ Start ÇÔ¼ö¸¦ ÄÚ·çÆ¾ ÇÔ¼ö·Î ½ÇÇà
+	// ** ì‹œì‘í•˜ìë§ˆì Start í•¨ìˆ˜ë¥¼ ì½”ë£¨í‹´ í•¨ìˆ˜ë¡œ ì‹¤í–‰
 	private IEnumerator Generate()
 	{
 		while (true)
 		{
-			// ** Enemy ¿øÇü °´Ã¼¸¦ º¹Á¦ÇÑ´Ù.
-			//GameObject Obj = Instantiate(Prefab);
-			GameObject Obj = Instantiate(Prefab);
+            // ** Enemy ì›í˜• ê°ì²´ë¥¼ ë³µì œí•œë‹¤.
+            GameObject Obj = Instantiate(PrefabManager.Instance.GetPrefabByName("Enemy/Enemy"));
 
-			// ** Å¬·ĞÀÇ À§Ä¡¸¦ ÃÊ±âÈ­.
-			Obj.transform.position = new Vector3(
+            // ** í´ë¡ ì˜ ìœ„ì¹˜ë¥¼ ì´ˆê¸°í™”.
+            Obj.transform.position = new Vector3(
 				18.0f, Random.Range(-8.2f, 5.5f), 0.0f);
 				//10.0f, 0.0f, 0.0f);
 
-			// ** Å¬·ĞÀÇ ÀÌ¸§ ÃÊ±âÈ­.
+			// ** í´ë¡ ì˜ ì´ë¦„ ì´ˆê¸°í™”.
 			Obj.transform.name = "Enemy";
-			// ** Å¬·ĞÀÇ °èÃş±¸Á¶ ¼³Á¤.
+			// ** í´ë¡ ì˜ ê³„ì¸µêµ¬ì¡° ì„¤ì •.
 			Obj.transform.parent = Parrent.transform;
 
-			// ** 1.5ÃÊ ÈŞ½Ä.
+			// ** 1.5ì´ˆ íœ´ì‹.
 			yield return new WaitForSeconds(LevelDesign());
 		}
 	}

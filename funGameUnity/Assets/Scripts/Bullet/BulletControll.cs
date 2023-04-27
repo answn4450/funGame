@@ -20,8 +20,6 @@ public class BulletControll : MonoBehaviour
 	// ** 이펙트효과 원본
 	public GameObject fxPrefab;
 
-	private GameObject PopText;
-
 	// ** 총알이 날아가야할 방향
 	public Vector3 Direction { get; set; }
     public Canvas Canvas;
@@ -31,8 +29,6 @@ public class BulletControll : MonoBehaviour
 		// ** 속도 초기값
 		if (Speed == 0)
 			Speed = Option ? 0.7f : 1.6f;
-		
-		PopText = Resources.Load("Prefabs/PopText") as GameObject;
 	}
 
 
@@ -81,7 +77,7 @@ public class BulletControll : MonoBehaviour
 		// ** 충돌한 대상을 삭제한다.
 		else if (collision.transform.tag == "wall")
 		{
-			GameObject Obj = Instantiate(fxPrefab);
+			GameObject Obj = Instantiate(PrefabManager.Instance.GetPrefabByName(fxPrefab.name));
             
 			Obj.transform.position = transform.position;
 
@@ -96,7 +92,7 @@ public class BulletControll : MonoBehaviour
 		{
 			// 맞은 Boss의 남은 체력 잠깐 띄우는 효과
 			string str = collision.GetComponent<BossController>().HP.ToString();
-			GameObject popText = Instantiate(PopText) as GameObject;
+			GameObject popText = Instantiate(PrefabManager.Instance.GetPrefabByName("PopText"));
 			popText.transform.position = Input.mousePosition;
 			popText.transform.position = Camera.main.WorldToScreenPoint(transform.position);
 			

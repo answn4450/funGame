@@ -88,7 +88,7 @@ public class GameStatusDraw : MonoBehaviour
         for (int i =0; i<Manual.WaveNumber; ++i)
         {
             wavePoint.GetChild(i).transform.position = new Vector3(
-                UICourseStartX + width * GameStatus.GetInstance().WavePoints[i] / 100,
+                UICourseStartX + width * Manual.WavePoints[i] / 100,
                 pointY,
                 0.0f
             );

@@ -4,61 +4,29 @@ using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-	GameObject Boss;
-	int NextWaveIndex = GameStatus.GetInstance().NextWanveIndex; 
-	public float[] WavePoints = GameStatus.GetInstance().WavePoints;
-	private GameObject Wave0, Wave1, Wave2, Wave3, Wave4, Wave5;
-	
-	private void Awake()
-	{
-		Boss = Resources.Load("Prefabs/Boss/Boss") as GameObject;
-	}
+	int NextWaveIndex = GameStatus.GetInstance().NextWanveIndex;
+    public GameObject Parent;
 
-	private void Start()
-	{
-		Wave0 = Resources.Load("Prefabs/Waves/Wave0") as GameObject;
-		Wave1 = Resources.Load("Prefabs/Waves/Wave1") as GameObject;
-		Wave2 = Resources.Load("Prefabs/Waves/Wave2") as GameObject;
-		Wave3 = Resources.Load("Prefabs/Waves/Wave3") as GameObject;
-		Wave4 = Resources.Load("Prefabs/Waves/Wave4") as GameObject;
-		Wave5 = Resources.Load("Prefabs/Waves/Wave5") as GameObject;
-	}
+    private void Start()
+    {
+        Parent = new GameObject("WaveList");
+    }
 
 	void Update()
     {
 		float percent = GameStatus.GetInstance().GetRunPercent();
-		if (percent >= WavePoints[NextWaveIndex] 
+		if (percent >= Manual.WavePoints[NextWaveIndex] 
 			&& NextWaveIndex + 1 < Manual.WaveNumber)
 		{
-			switch(NextWaveIndex)
-			{
-				case 0:
-					GenWave(Wave0);
-					break;
-				case 1:
-					GenWave(Wave1);
-					break;
-				case 2:
-					GenWave(Wave2);
-					break;
-				case 3:
-					GenWave(Wave3);
-					break;
-				case 4:
-					GenWave(Wave4);
-					break;
-				case 5:
-					GenWave(Wave5);
-					break;
-			}
-
+            GenWave("Wave" + NextWaveIndex.ToString());
 			NextWaveIndex += 1;
 		}
     }
 
-	private void GenWave(GameObject prefab)
+	private void GenWave(string _waveName)
 	{
-		GameObject obj = Instantiate(prefab);
-		obj.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+        GameObject obj = Instantiate(PrefabManager.Instance.GetPrefabByName(_waveName));
+        obj.transform.SetParent(Parent.transform);
+        obj.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
 	}
 }

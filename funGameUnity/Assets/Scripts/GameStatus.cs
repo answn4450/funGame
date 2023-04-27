@@ -15,8 +15,6 @@ public class GameStatus
 
 	public int NextWanveIndex = 0;
 
-	public float[] WavePoints = { 3.0f, 20.0f, 50.0f, 60.0f, 90.0f, 95.0f };
-
 	public static GameStatus GetInstance()
 	{
 		if (Instance == null)
@@ -26,7 +24,7 @@ public class GameStatus
 		return Instance;
 	}
 
-	// °ÔÀÓÀÌ ³¡³¯ ¶§ ¼Õ¼ö ¸®¼Â
+	// ê²Œì„ì´ ëë‚  ë•Œ ì†ìˆ˜ ë¦¬ì…‹
 	public void ResetGameStatus()
 	{
 		MaxPlayerHP = 100;

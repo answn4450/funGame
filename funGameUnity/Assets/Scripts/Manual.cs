@@ -7,9 +7,13 @@ public class Manual : MonoBehaviour
 {
 	static public readonly int WaveNumber = 6;
 
-	// ÇÃ·¹ÀÌ¾î Stat LV Á¦ÇÑ. ·¹º§Àº 0ºÎÅÍ MaxLV±îÁö
+	// í”Œë ˆì´ì–´ Stat LV ì œí•œ. ë ˆë²¨ì€ 0ë¶€í„° MaxLVê¹Œì§€
 	static public readonly int MaxStatsLV = 4;
 
-	// Bullet Pattern LV Á¦ÇÑ.
+	// Bullet Pattern LV ì œí•œ.
 	static public readonly int MaxPatternLV = 5;
+
+    static public readonly float[] WavePoints = { 
+        0.5f, 20.0f, 50.0f, 60.0f, 90.0f, 95.0f 
+    };
 }

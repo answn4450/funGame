@@ -100,8 +100,8 @@ public class PlayerController : MonoBehaviour
 		// ** 자동 공격 
 		if (GetComponent<BulletPattern>().ShotEnd)
 		{
-			// ** 공격
-			OnAttack();
+            // ** 공격
+            OnAttack();
 			BulletPattern.Pattern pattern = ControllerManager.GetInstance().Player_Pattern;
 			GetComponent<BulletPattern>().pattern = pattern;
 			GetComponent<BulletPattern>().ShotBullet(ControllerManager.GetInstance().Player_PatternLV[pattern]);

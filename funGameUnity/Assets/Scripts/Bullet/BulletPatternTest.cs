@@ -10,7 +10,6 @@ public class BulletPatternTest : MonoBehaviour
 	public BulletPattern.Pattern pattern;
 	public int LV = 0;
 	private List<GameObject> BulletList = new List<GameObject>();
-	private GameObject BulletPrefab;
 
 	private void Awake()
 	{
@@ -20,8 +19,7 @@ public class BulletPatternTest : MonoBehaviour
 	void Start()
 	{
 		Target = GameObject.Find("Target");
-		BulletPrefab = Resources.Load("Prefabs/Bullet") as GameObject;
-		GetComponent<BulletPattern>().BulletPrefab = BulletPrefab;
+		GetComponent<BulletPattern>().BulletPrefab = Instantiate(PrefabManager.Instance.GetPrefabByName("Bullet"));
 		GetComponent<BulletPattern>().Target = Target;
 	}
 

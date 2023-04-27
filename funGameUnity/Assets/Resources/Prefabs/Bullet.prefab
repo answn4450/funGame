@@ -164,7 +164,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 1737672109, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -246,6 +246,7 @@ MonoBehaviour:
   Option: 0
   Mileage: {x: 0, y: 0, z: 0}
   fxPrefab: {fileID: 3393722461886979353, guid: 38754defe110a6a419d4966fa350d3f6, type: 3}
+  Canvas: {fileID: 0}
 --- !u!114 &-6905417537173049246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,5 +259,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f36da6030a3d4554197cec705edef75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 2.1
   fxPrefab: {fileID: 3393722461886979353, guid: 38754defe110a6a419d4966fa350d3f6, type: 3}
