@@ -9,7 +9,6 @@ public class BulletPatternTest : MonoBehaviour
 	public Text Text;
 	public BulletPattern.Pattern pattern;
 	public int LV = 0;
-	private List<GameObject> BulletList = new List<GameObject>();
 
 	private void Awake()
 	{
@@ -19,22 +18,16 @@ public class BulletPatternTest : MonoBehaviour
 	void Start()
 	{
 		Target = GameObject.Find("Target");
-		GetComponent<BulletPattern>().BulletPrefab = Instantiate(PrefabManager.Instance.GetPrefabByName("Bullet"));
 		GetComponent<BulletPattern>().Target = Target;
 	}
 
 	private void Update()
 	{
-		GetComponent<BulletPattern>().pattern = pattern;
 		LVUpDown();
-		if (Input.GetKeyUp(KeyCode.Space))
+		if (GetComponent<BulletPattern>().ShotEnd)
 		{
-			GetComponent<BulletPattern>().ShotBullet(0);
-		}
-		if (this.GetComponent<BulletPattern>().ShotEnd)
-		{
-			this.GetComponent<BulletPattern>().ShotEnd = false;
-			this.GetComponent<BulletPattern>().ShotBullet(LV);
+		    GetComponent<BulletPattern>().pattern = pattern;
+			GetComponent<BulletPattern>().ShotBullet(LV );
 		}
 
 		Text.text = LV.ToString();

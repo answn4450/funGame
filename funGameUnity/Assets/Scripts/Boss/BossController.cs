@@ -130,14 +130,24 @@ public class BossController : MonoBehaviour
 
 	private void onAttack()
 	{
-        if (!WaitShot && GetComponent<BulletPattern>().ShotEnd)
+        //애니로 AttackShot
+        Anim.SetTrigger("Attack");
+
+        if (WaitShot)
         {
-            active = true;
+            Pattern = (Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
+            GetComponent<BulletPattern>().pattern = Pattern;
+            GetComponent<BulletPattern>().Target = Target;
         }
         else
         {
-            //애니로 AttackShot
-            Anim.SetTrigger("Attack");
+            if (Pattern == Pattern.DelayScrew)
+            {
+                if (GetComponent<BulletPattern>().ShotEnd)
+                    active = true;  
+            }
+            else
+                active = true;
         }
     }
 
@@ -188,8 +198,6 @@ public class BossController : MonoBehaviour
 		if (collision.tag == "Bullet" 
 			&& collision.GetComponent<BulletControll>().MasterTag!="Boss")
 		{
-			HP -= (int)ControllerManager.GetInstance().Player_BulletPower;
-			Pattern = BulletPattern.Pattern.Explosion;
 			// 플레이어가 보스를 죽였고 보스 패턴을 안갖고 있으면 패턴 선물
 			if (HP <= 0)
 			{
@@ -210,9 +218,6 @@ public class BossController : MonoBehaviour
 	{
         if (WaitShot && !active && choice == STATE_ATTACK)
         {
-            Pattern = (Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
-            GetComponent<BulletPattern>().pattern = Pattern;
-            GetComponent<BulletPattern>().Target = Target;
             GetComponent<BulletPattern>().ShotBullet(PatternLV);
             WaitShot = false;
         }

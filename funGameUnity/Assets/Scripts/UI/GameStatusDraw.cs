@@ -19,6 +19,7 @@ public class GameStatusDraw : MonoBehaviour
     private Transform UIBulletPatternPick;
     private Transform UITarget;
     private Transform UIExp;
+    private Transform UIWeather;
     
     private float UICourseStartX = 480.0f, UICourseEndX = 1457.0f;
     private int PatternIndex = 0;
@@ -36,6 +37,7 @@ public class GameStatusDraw : MonoBehaviour
         UIBulletPatternPick = this.transform.GetChild(6);
         UITarget = this.transform.GetChild(7);
         UIExp = this.transform.GetChild(8);
+        UIWeather = this.transform.GetChild(9);
     }
 
     void Update()
@@ -49,6 +51,7 @@ public class GameStatusDraw : MonoBehaviour
         DrawPickBulletPattern();
         DrawTarget();
         DrawExp();
+        DrawWeather();
     }
 
     private void DrawPlayerLV()
@@ -135,7 +138,13 @@ public class GameStatusDraw : MonoBehaviour
         textExp.text = ControllerManager.GetInstance().Player_Exp.ToString();
 	}
 
-	public void PatternButton()
+    private void DrawWeather()
+    {
+        Text textRain = UIWeather.GetChild(0).GetComponent<Text>();
+        textRain.text = Climate.GetInstance().RainPercent.ToString() + " %";
+    }
+
+    public void PatternButton()
     {
 		ControllerManager.GetInstance().SetPlayerPattern(PatternIndex);
     }

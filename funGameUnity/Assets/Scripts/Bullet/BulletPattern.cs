@@ -48,11 +48,22 @@ public class BulletPattern : MonoBehaviour
 			Target = GameObject.Find("Cursor");
 	}
 
+    private int testCount = 0;
 	public void ShotBullet(int _lv)
 	{
 		if (ShotEnd)
 		{
 			ShotEnd = false;
+            
+            List<Color> colors = new List<Color>
+            {
+                Color.red,
+                Color.green,
+                Color.blue,
+            };
+            Color randColor = colors[testCount++ % 3];
+            BulletPrefab.GetComponent<SpriteRenderer>().color = randColor;
+
 			switch (pattern)
 			{
 				case Pattern.Screw:
@@ -110,10 +121,10 @@ public class BulletPattern : MonoBehaviour
 			controller.Option = _option;
 
 			_angle += 360.0f / _count;
-			controller.Direction = new Vector3(
-				Mathf.Cos(_angle * 3.141592f / 180),
-				Mathf.Sin(_angle * 3.141592f / 180),
-				0.0f) * Speed;
+            controller.Direction = new Vector3(
+                Mathf.Cos(_angle * Mathf.Deg2Rad),
+                Mathf.Sin(_angle * Mathf.Deg2Rad),
+                0.0f);
 			Obj.transform.position = transform.position;
 
 			BulletList.Add(Obj);
@@ -121,18 +132,8 @@ public class BulletPattern : MonoBehaviour
 		StartCoroutine(DelayShotEnd(ReloadTerm));
 	}
 
-    private int testCount = 0;
 	public IEnumerator GetDelayScrewPattern(int _lv)
 	{
-        List<Color> colors = new List<Color>
-        {
-            Color.red,
-            Color.green,
-            Color.blue,
-        };
-        Color randColor = colors[testCount++ % 3];
-        BulletPrefab.GetComponent<SpriteRenderer>().color = randColor;
-
         int iCount = LVTable[Pattern.DelayScrew][_lv];
 
 		float fAngle = 0.0f;

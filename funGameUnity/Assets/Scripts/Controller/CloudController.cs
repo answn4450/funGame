@@ -8,9 +8,9 @@ public class CloudController : MonoBehaviour
     {
 
         GetComponent<SpriteRenderer>().color = new Color(
-            255.0f - Climate.GetInstance().RainPercent*255,
-            255.0f - Climate.GetInstance().RainPercent*255,
-            255.0f - Climate.GetInstance().RainPercent*255
+            255.0f - Climate.GetInstance().RainPercent*2.55f,
+            255.0f - Climate.GetInstance().RainPercent*2.55f,
+            255.0f - Climate.GetInstance().RainPercent*2.55f
             );
     }
 

@@ -12,6 +12,7 @@ public class BulletControll : MonoBehaviour
 	public GameObject Target;
 
 	public int HP = 5;
+	public int Damage = 5;
 	public bool Option;
 
 	// ** 총알이 움직인 거리
@@ -57,7 +58,7 @@ public class BulletControll : MonoBehaviour
 			else
 				Direction = (Target.transform.position - transform.position).normalized;
 		}
-		float fAngle = getAngle(Vector3.down, Direction);
+		float fAngle = getAngle(transform.position, Direction);
 		transform.eulerAngles = new Vector3(
 		0.0f, 0.0f, fAngle);
 		// ** 방향으로 속도만큼 위치를 변경
@@ -87,7 +88,7 @@ public class BulletControll : MonoBehaviour
 		}
 		else if(collision.tag=="Player")
 		{
-			ControllerManager.GetInstance().CommonHit(1);
+			ControllerManager.GetInstance().CommonHit(Damage);
 			Destroy(this.gameObject);
 		}
 		else if (collision.tag == "Boss")
@@ -97,9 +98,11 @@ public class BulletControll : MonoBehaviour
 			GameObject popText = Instantiate(PrefabManager.Instance.GetPrefabByName("PopText"));
 			popText.transform.position = Input.mousePosition;
 			popText.transform.position = Camera.main.WorldToScreenPoint(transform.position);
-			
-			//print(Input.mousePosition);
-			popText.GetComponent<Text>().text = str;
+
+
+            collision.transform.GetComponent<BossController>().HP -= Damage;
+            //print(Input.mousePosition);
+            popText.GetComponent<Text>().text = str;
 		}
 		else if(collision.tag == "Bullet"
             && collision.GetComponent<BulletControll>().MasterTag != MasterTag)
