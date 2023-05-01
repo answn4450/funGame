@@ -149,6 +149,16 @@ public class ControllerManager
 	}
 
 	
+    public void CommonHeal(float heal)
+    {
+        GameStatus.GetInstance().PlayerHP += heal;
+        GameStatus.GetInstance().PlayerHP = Math.Min(
+            GameStatus.GetInstance().PlayerHP, 
+            GameStatus.GetInstance().MaxPlayerHP
+            );
+    }
+
+
 	public void SetPlayerPattern(int index)
 	{
 		Player_Pattern = Player_Patterns[index];
