@@ -149,6 +149,8 @@ public class BossController : MonoBehaviour
             else
                 active = true;
         }
+
+        GameStatus.GetInstance().FearGage += 0.1f;
     }
 
 	private void onWalk()

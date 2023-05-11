@@ -27,7 +27,7 @@ public class BulletPatternTest : MonoBehaviour
 		if (GetComponent<BulletPattern>().ShotEnd)
 		{
 		    GetComponent<BulletPattern>().pattern = pattern;
-			GetComponent<BulletPattern>().ShotBullet(LV );
+			GetComponent<BulletPattern>().ShotBullet(LV);
 		}
 
 		Text.text = LV.ToString();

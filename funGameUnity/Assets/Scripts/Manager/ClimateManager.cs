@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Climate : MonoBehaviour
+public class Climate
 {
 	public Vector3 PlayerBreakWind = new Vector3(0.5f, 0.0f, 0.0f);
 	public Vector3 BossBreakWind = new Vector3(1.5f, 0.0f, 0.0f);

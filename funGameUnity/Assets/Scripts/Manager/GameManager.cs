@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
 	void Update()
     {
-		//°ÔÀÓ ³¡
+		//ê²Œì„ ë
 		if (GameStatus.GetInstance().PlayerHP <= 0)
 		{
 			GameStatus.GetInstance().GameEndComment = "Fail\n";
@@ -31,5 +31,12 @@ public class GameManager : MonoBehaviour
 			GameStatus.GetInstance().ResetGameStatus();
 		}
 
+        if (GameStatus.GetInstance().FearGage>=100)
+        {
+            GameStatus.GetInstance().FearGage = 0;
+            GameObject obj = Instantiate(PrefabManager.Instance.GetPrefabByName("BlackShovel"));
+            obj.transform.position = new Vector3(
+                -14.0f, 20.0f, 1.0f);
+        }
 	}
 }

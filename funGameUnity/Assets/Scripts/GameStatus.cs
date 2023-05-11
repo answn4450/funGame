@@ -11,6 +11,7 @@ public class GameStatus
 	public float PlayerHP = 100;
 	public float RunDistance = 0.0f;
 	public float DistanceLength = 300.0f;
+    public float FearGage = 0;
 	private static GameStatus Instance;
 
 	public int NextWanveIndex = 0;

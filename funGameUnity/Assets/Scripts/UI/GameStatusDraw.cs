@@ -20,6 +20,7 @@ public class GameStatusDraw : MonoBehaviour
     private Transform UITarget;
     private Transform UIExp;
     private Transform UIWeather;
+    private Transform UIBlackGage;
     
     private float UICourseStartX = 480.0f, UICourseEndX = 1457.0f;
     private int PatternIndex = 0;
@@ -38,6 +39,7 @@ public class GameStatusDraw : MonoBehaviour
         UITarget = this.transform.GetChild(7);
         UIExp = this.transform.GetChild(8);
         UIWeather = this.transform.GetChild(9);
+        UIBlackGage = this.transform.GetChild(10);
     }
 
     void Update()
@@ -52,6 +54,7 @@ public class GameStatusDraw : MonoBehaviour
         DrawTarget();
         DrawExp();
         DrawWeather();
+        DrawBlackGage();
     }
 
     private void DrawPlayerLV()
@@ -105,7 +108,7 @@ public class GameStatusDraw : MonoBehaviour
 
     private void DrawPlayerHP()
     {
-		UIPlayerHP.GetChild(0).GetComponent<Text>().text =  ((int)GameStatus.GetInstance().PlayerHP).ToString();
+		UIPlayerHP.GetChild(1).GetComponent<Text>().text =  ((int)GameStatus.GetInstance().PlayerHP).ToString();
 	}
 
     private void DrawBulletPattern()
@@ -142,6 +145,12 @@ public class GameStatusDraw : MonoBehaviour
     {
         Text textRain = UIWeather.GetChild(0).GetComponent<Text>();
         textRain.text = Climate.GetInstance().RainPercent.ToString() + " %";
+    }
+
+    private void DrawBlackGage()
+    {
+        float gageNumber = GameStatus.GetInstance().FearGage / 100.0f;
+        UIBlackGage.GetChild(1).GetComponent<UnityEngine.UI.Image>().fillAmount = gageNumber;
     }
 
     public void PatternButton()

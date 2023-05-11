@@ -1218,7 +1218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pattern: 3
   Target: {fileID: 0}
-  BulletPrefab: {fileID: 7897020455267281273, guid: 00bd02159521ff94cae60fea79b14ff3, type: 3}
+  BulletPrefab: {fileID: 7108071387673635303, guid: 8fa6632208bbe0e44a028b511e2d3f75, type: 3}
   TargetDir: {x: 0, y: 0, z: 0}
   ShotEnd: 1
   Speed: 1

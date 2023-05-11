@@ -57,15 +57,14 @@ public class BulletControll : MonoBehaviour
 				Direction = (Target.transform.position - ScreenTransformPosition).normalized;
 			else
 				Direction = (Target.transform.position - transform.position).normalized;
-		}
-		float fAngle = getAngle(transform.position, Direction);
-		transform.eulerAngles = new Vector3(
-		0.0f, 0.0f, fAngle);
+
+            float fAngle = getAngle(transform.position, Direction);
+            transform.eulerAngles = new Vector3(
+            0.0f, 0.0f, fAngle);
+        }
 		// ** 방향으로 속도만큼 위치를 변경
 		transform.position += Direction * Speed * Time.deltaTime;
 		Mileage += Direction * Speed * Time.deltaTime;
-        if (transform.IsDestroyed())
-            print("asdfa");
 	}
 
 
@@ -73,9 +72,14 @@ public class BulletControll : MonoBehaviour
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		// ** collision = 충돌한 대상.
+        // 본인 편인 물체와 충돌하면 무시
 		if (collision.transform.tag==MasterTag)
+		    return;
+
+        if(collision.tag == "Bullet"
+            && collision.GetComponent<BulletControll>().MasterTag != MasterTag && tag!=collision.tag)
 		{
-			return;
+			HP -= 1;
 		}
 		// ** 충돌한 대상을 삭제한다.
 		else if (collision.transform.tag == "wall")
@@ -103,11 +107,6 @@ public class BulletControll : MonoBehaviour
             collision.transform.GetComponent<BossController>().HP -= Damage;
             //print(Input.mousePosition);
             popText.GetComponent<Text>().text = str;
-		}
-		else if(collision.tag == "Bullet"
-            && collision.GetComponent<BulletControll>().MasterTag != MasterTag)
-		{
-			HP -= 1;
 		}
 		else
 		{

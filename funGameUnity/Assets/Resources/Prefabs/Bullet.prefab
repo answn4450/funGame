@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 723912840388670865}
   - component: {fileID: 3397071354976397198}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 333599069002779866}
   - component: {fileID: 5120063744569698712}
   - component: {fileID: -6905417537173049246}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Bullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb376440245bf9458d39768b402b13c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MasterTag: 
+  MasterTag: Player
   Speed: 5.73
   Target: {fileID: 0}
   HP: 5
