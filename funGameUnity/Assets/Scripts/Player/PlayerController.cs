@@ -84,9 +84,8 @@ public class PlayerController : MonoBehaviour
 		GetComponent<BulletPattern>().ReloadTerm = ControllerManager.GetInstance().Player_BulletTerm;
 		Move();
 		AutoAttack();
-		Climate.GetInstance().PlayerBreakWind = BreakWind;
         if (ControllerManager.GetInstance().PlayerRunHard)
-            GameStatus.GetInstance().RunDistance += (BreakWind + Climate.GetInstance().Wind).x * Time.deltaTime;
+            GameStatus.GetInstance().RunDistance += ControllerManager.GetInstance().RunPower_x * Time.deltaTime;
         
         // ** 좌측 쉬프트키를 입력한다면.....
         if (Input.GetKey(KeyCode.LeftShift))
@@ -111,7 +110,7 @@ public class PlayerController : MonoBehaviour
 
 	private void Move()
 	{
-		float mazinoX = 0.1f;
+		float maxPositionX = 0.1f;
 		Climate.GetInstance().Slide(gameObject);
         if (transform.position.x < -13.0f)
             transform.position = new Vector3(
@@ -154,17 +153,17 @@ public class PlayerController : MonoBehaviour
 		if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
 		{
 			// ** 플레이어의 좌표가 0.0 보다 작을때 플레이어만 움직인다.
-			if (transform.position.x < mazinoX)
+			if (transform.position.x < maxPositionX)
 			{ 
 				transform.position += HorMovement;
-				if (transform.position.x > mazinoX)
+				if (transform.position.x > maxPositionX)
 					transform.position = new Vector3(
-						mazinoX,
+						maxPositionX,
 						transform.position.y,
 						transform.position.z
 						);
 			}
-			if (transform.position.x >= mazinoX)
+			if (transform.position.x >= maxPositionX)
 			{
 				ControllerManager.GetInstance().PlayerRunHard = true;
 				ControllerManager.GetInstance().DirRight = true;

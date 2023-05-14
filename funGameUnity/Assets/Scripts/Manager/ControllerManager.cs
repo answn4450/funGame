@@ -74,7 +74,9 @@ public class ControllerManager
 
 	public float[] DangerPercent = { 10.0f, 20.0f, 40.0f };
 
-	private ControllerManager()
+    public float RunPower_x = Climate.GetInstance().Wind.x;
+
+    private ControllerManager()
 	{
 
 	}

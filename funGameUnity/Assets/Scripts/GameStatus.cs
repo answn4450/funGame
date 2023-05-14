@@ -10,6 +10,7 @@ public class GameStatus
 	public int MaxPlayerHP = 100;
 	public float PlayerHP = 100;
 	public float RunDistance = 0.0f;
+	public float MaginotRunDistance = 0.0f;
 	public float DistanceLength = 300.0f;
     public float FearGage = 0;
 	private static GameStatus Instance;
@@ -39,4 +40,9 @@ public class GameStatus
 	{
 		return 100 * RunDistance / DistanceLength;
 	}
+
+    public float GetMaginotRunPercent()
+    {
+        return 100 * MaginotRunDistance / DistanceLength;
+    }
 }

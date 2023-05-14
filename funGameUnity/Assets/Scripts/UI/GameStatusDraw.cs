@@ -77,6 +77,7 @@ public class GameStatusDraw : MonoBehaviour
     {
 		Transform currentPoint=UICourse.Find("CurrentPoint");
         Transform wavePoint = UICourse.Find("WavePoint");
+        Transform MaginotRun = UICourse.Find("MaginotRun");
 
 		float width = UICourseEndX - UICourseStartX;
 		//float pointY = UICourse.Find("CourseBar").GetChild(0).transform.position.y;
@@ -99,6 +100,8 @@ public class GameStatusDraw : MonoBehaviour
                 0.0f
             );
         }
+
+        MaginotRun.GetComponent<UnityEngine.UI.Image>().fillAmount = GameStatus.GetInstance().GetMaginotRunPercent()/100;
     }
 
     private void DrawPlayerMoney()
