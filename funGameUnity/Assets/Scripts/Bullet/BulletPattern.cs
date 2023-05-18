@@ -61,8 +61,8 @@ public class BulletPattern : MonoBehaviour
                 Color.green,
                 Color.blue,
             };
-            Color randColor = colors[testCount++ % 3];
-            BulletPrefab.GetComponent<SpriteRenderer>().color = randColor;
+            Color testColor = colors[testCount++ % 3];
+            BulletPrefab.GetComponent<SpriteRenderer>().color = testColor;
 
 			switch (pattern)
 			{

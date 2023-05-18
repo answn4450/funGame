@@ -14,9 +14,7 @@ public class SkillController: MonoBehaviour
 	public List<GameObject> Buttons = new List<GameObject>();
 	public List<Image> ButtonImages = new List<Image>();
 
-	private float cooldown;
-
-	private void Start()
+    private void Start()
 	{
 		GameObject SkillsObj = GameObject.Find("Skills");
 
@@ -28,8 +26,6 @@ public class SkillController: MonoBehaviour
 
 		for (int i = 0; i < Buttons.Count; ++i)
 			ButtonImages.Add(Buttons[i].GetComponent<Image>());
-
-		cooldown = 0.0f;
 	}
 
 	//키보드 숫자로 스킬 적용

@@ -31,7 +31,7 @@ public class BossController : MonoBehaviour
 	private bool active=false;
 
     private bool WaitShot = true;
-    private int choice=STATE_ATTACK;
+    private int choice=STATE_SLIDE;
 
 	private void Awake()
 	{
@@ -50,12 +50,12 @@ public class BossController : MonoBehaviour
 		active = true;
 
 		Walk = false;
-
+        
 	}
     
 	private void Update()
 	{
-		if (HP <= 0)
+        if (HP <= 0)
 		{
 			//Anim.SetTrigger("Die");
 			GetComponent<CapsuleCollider2D>().enabled = false;
@@ -67,12 +67,7 @@ public class BossController : MonoBehaviour
 		renderer.color = new Color(
 			rgb,rgb,rgb);
 
-		float result = EndPoint.x - transform.position.x;
-
-		if (result < 0.0f)
-			renderer.flipX = true;
-		else if (result > 0.0f)
-			renderer.flipX = false;
+        renderer.flipX = !(CheckRotationZ(transform, EndPoint));
 
 		if (active)
 		{
@@ -128,31 +123,37 @@ public class BossController : MonoBehaviour
         return Random.Range(STATE_WALK, STATE_SLIDE + 1);
 	}
 
-	private void onAttack()
-	{
+    private void onAttack()
+    {
         //애니로 AttackShot
         Anim.SetTrigger("Attack");
 
         if (WaitShot)
         {
             Pattern = (Pattern)Random.Range(0, System.Enum.GetValues(typeof(BulletPattern.Pattern)).Length);
+            Pattern = Pattern.DelayScrew;
             GetComponent<BulletPattern>().pattern = Pattern;
             GetComponent<BulletPattern>().Target = Target;
         }
         else
         {
-            if (Pattern == Pattern.DelayScrew)
+            if (GetComponent<BulletPattern>().ShotEnd)
             {
-                if (GetComponent<BulletPattern>().ShotEnd)
-                    active = true;  
+                active = true;
             }
             else
-                active = true;
+            {
+                if (Pattern == Pattern.DelayScrew)
+                {
+                    transform.Rotate(0.0f, 0.0f, 100 * Time.deltaTime);
+                }
+            }
+
         }
 
         GameStatus.GetInstance().FearGage += 0.1f;
     }
-
+    
 	private void onWalk()
 	{
 		Walk = true;
@@ -178,24 +179,32 @@ public class BossController : MonoBehaviour
 	private void onSlide()
 	{
 		Anim.SetBool("Slide", true);
-		Vector3 Direction = (EndPoint - transform.position).normalized;
-		Movement = new Vector3(
-			Speed * Direction.x * Time.deltaTime * 5,
-			0.0f,
-			0.0f);
+        float deg = transform.rotation.eulerAngles.z;
+        if (!CheckRotationZ(transform, Target.transform.position))
+        //if (Mathf.Abs(deg - GetAngle(transform.position, Target.transform.position)) > 90.0f)
+            deg += 180.0f;
 
-		if (Mathf.Abs(transform.position.x - EndPoint.x) > 1)
+        Movement = new Vector3(
+                (Speed + 2) * Mathf.Cos(Mathf.Deg2Rad * deg),
+                (Speed + 2) * Mathf.Sin(Mathf.Deg2Rad * deg),
+                0.0f);
+
+        Vector3 futurePosition = transform.position + Movement * Time.deltaTime;
+        
+        float distance = (transform.position - EndPoint).magnitude;
+        float futureDistance = (futurePosition - EndPoint).magnitude;
+
+		if (distance > futureDistance)
+            transform.position = futurePosition;
+        else
 		{
-			transform.position += Movement;
-		}
-		else
-		{
-			active = true;
+            active = true;
 			Anim.SetBool("Slide", false);
 		}
 	}
 
-	private void OnTriggerEnter2D(Collider2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.tag == "Bullet" 
 			&& collision.GetComponent<BulletControll>().MasterTag!="Boss")
@@ -223,5 +232,20 @@ public class BossController : MonoBehaviour
             GetComponent<BulletPattern>().ShotBullet(PatternLV);
             WaitShot = false;
         }
+    }
+    
+    // ** from의 z 축 오일러 각도 방향이 to 를 가르키는 각도에 가까운가 확인.
+    public static bool CheckRotationZ(Transform from, Vector3 to)
+    {
+        return Mathf.Abs(
+            from.eulerAngles.z - GetAngle(from.position, to)
+            ) < 90.0f;
+    }
+
+    public static float GetAngle(Vector3 from, Vector3 to)
+    {
+        Vector3 v = from - to;
+
+        return (180 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg)%360;
     }
 }

@@ -62,8 +62,8 @@ public class BulletControll : MonoBehaviour
             transform.eulerAngles = new Vector3(
             0.0f, 0.0f, fAngle);
         }
-		// ** 방향으로 속도만큼 위치를 변경
-		transform.position += Direction * Speed * Time.deltaTime;
+        // ** 방향으로 속도만큼 위치를 변경
+        transform.position += Direction * Speed * Time.deltaTime;
 		Mileage += Direction * Speed * Time.deltaTime;
 	}
 
