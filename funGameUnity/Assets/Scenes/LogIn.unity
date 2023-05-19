@@ -918,7 +918,6 @@ GameObject:
   - component: {fileID: 794268698}
   - component: {fileID: 794268697}
   - component: {fileID: 794268696}
-  - component: {fileID: 794268703}
   - component: {fileID: 794268702}
   - component: {fileID: 794268700}
   m_Layer: 5
@@ -1034,7 +1033,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 794268694}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 32abe774119af524581ff6afc29f8035, type: 3}
   m_Name: 
@@ -1042,24 +1041,6 @@ MonoBehaviour:
   emailInputField: {fileID: 554753623}
   passwordInputField: {fileID: 1621282707}
   message: {fileID: 1220235216}
---- !u!114 &794268703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 794268694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afbdb55c1cb37944e89243c7a07f9673, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EmailInput: {fileID: 554753623}
-  PasswordInput: {fileID: 1621282707}
-  MainMenuButton: {fileID: 399114174}
-  LogInButton: {fileID: 1169168557}
-  RegisterButton: {fileID: 2024466627}
-  Message: {fileID: 1220235216}
 --- !u!1 &1050601524
 GameObject:
   m_ObjectHideFlags: 0
@@ -1665,7 +1646,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 794268703}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
         m_MethodName: PressLogin
         m_Mode: 1

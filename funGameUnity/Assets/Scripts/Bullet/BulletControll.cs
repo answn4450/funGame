@@ -21,8 +21,10 @@ public class BulletControll : MonoBehaviour
 	// ** 이펙트효과 원본
 	public GameObject fxPrefab;
 
-	// ** 총알이 날아가야할 방향
-	public Vector3 Direction { get; set; }
+	// ** 총알이 움직일 방향을 정하는 각도
+    public float Angle;
+	// ** 총알의 움직임
+	private Vector3 Movement { get; set; }
     public Canvas Canvas;
 
 	private void Awake()
@@ -35,14 +37,8 @@ public class BulletControll : MonoBehaviour
 
 	private void Start()
 	{
-		// ** 벡터의 정규화
-		Direction = Direction.normalized;
-
-		float fAngle = getAngle(Vector3.down, Direction);
-
-		transform.eulerAngles = new Vector3(
-			0.0f, 0.0f, fAngle);
-	}
+        setByAngle(Angle);
+    }
 
 	void Update()
 	{
@@ -53,18 +49,17 @@ public class BulletControll : MonoBehaviour
 		{
 			// 스크린에서 비춰지는 transform의 위치를 구한다. 
 			Vector3 ScreenTransformPosition=Camera.main.WorldToScreenPoint(transform.position);
-			if(Target.name == "Cursor")
-				Direction = (Target.transform.position - ScreenTransformPosition).normalized;
-			else
-				Direction = (Target.transform.position - transform.position).normalized;
+            if (Target.name == "Cursor")
+                Angle = getAngle(ScreenTransformPosition, Target.transform.position);
+            else
+                Angle = getAngle(transform.position, Target.transform.position);
 
-            float fAngle = getAngle(transform.position, Direction);
-            transform.eulerAngles = new Vector3(
-            0.0f, 0.0f, fAngle);
+            setByAngle(Angle);
         }
+
         // ** 방향으로 속도만큼 위치를 변경
-        transform.position += Direction * Speed * Time.deltaTime;
-		Mileage += Direction * Speed * Time.deltaTime;
+        transform.position += Movement * Time.deltaTime;
+		Mileage += Movement * Time.deltaTime;
 	}
 
 
@@ -138,8 +133,21 @@ public class BulletControll : MonoBehaviour
         return Obj;
     }
 
-	public float getAngle(Vector3 from, Vector3 to)
-	{
-		return Quaternion.FromToRotation(Vector3.down, to-from).eulerAngles.z;
-	}
+    public static float getAngle(Vector3 from, Vector3 to)
+    {
+        Vector3 v = from - to;
+
+        return (180 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg) % 360;
+    }
+
+    // 각도로부터 총알의 움직임과 sprite 각도를 정함
+    private void setByAngle(float angle)
+    {
+        Movement = new Vector3(
+            Mathf.Cos(Mathf.Deg2Rad * Angle),
+            Mathf.Sin(Mathf.Deg2Rad * Angle)) * Speed;
+
+        transform.eulerAngles = new Vector3(
+            0.0f, 0.0f, Angle + 90.0f);
+    }
 }

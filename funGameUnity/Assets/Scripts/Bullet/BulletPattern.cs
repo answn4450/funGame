@@ -22,7 +22,6 @@ public class BulletPattern : MonoBehaviour
 
 	public GameObject Target;
 	public GameObject BulletPrefab;
-	public Vector3 TargetDir;
 	public bool ShotEnd = true;
 	public float Speed = 3.0f;
 	public float ReloadTerm = 2.0f;
@@ -92,19 +91,20 @@ public class BulletPattern : MonoBehaviour
 	public void GetShotGunPattern(int _lv)
 	{
 		int _count = LVTable[Pattern.ShotGun][_lv];
-		for (int i = 0; i < _count; ++i)
+        float _mainAngle;
+        if (Target)
+            _mainAngle = getAngle(transform.position, Target.transform.position);
+        else
+            _mainAngle = transform.rotation.eulerAngles.z;
+		
+        for (int i = 0; i < _count; ++i)
 		{
 			GameObject Obj = Instantiate(BulletPrefab);
 			BulletControll controller = Obj.GetComponent<BulletControll>();
-			Vector3 offSet = new Vector3(
-				Random.Range(-1.0f, 1.0f),
-				Random.Range(-1.0f, 1.0f),
-				0.0f
-				) * 0.3f;
-			float speed = Random.Range(10.0f, 20.0f);
-			controller.Direction = speed * (offSet + (Target.transform.position - transform.position).normalized);
 			
 			Obj.transform.position = transform.position;
+            controller.Speed  = Random.Range(2.0f, 5.0f);
+            controller.Angle = _mainAngle + Random.Range(-20.0f, 20.0f);
 			BulletList.Add(Obj);
 		}
 		StartCoroutine(DelayShotEnd(ReloadTerm));
@@ -113,19 +113,14 @@ public class BulletPattern : MonoBehaviour
 	public void GetScrewPattern(int _lv, bool _option = false)
 	{
 		int _count = LVTable[Pattern.Screw][_lv];
-		float _angle = 0.0f;
 		for (int i = 0; i < _count; ++i)
 		{
 			GameObject Obj = Instantiate(BulletPrefab);
 			BulletControll controller = Obj.GetComponent<BulletControll>();
 			controller.Option = _option;
 
-			_angle += 360.0f / _count;
-            controller.Direction = new Vector3(
-                Mathf.Cos(_angle * Mathf.Deg2Rad),
-                Mathf.Sin(_angle * Mathf.Deg2Rad),
-                0.0f);
-			Obj.transform.position = transform.position;
+            controller.Angle = i * 360.0f / _count;
+            Obj.transform.position = transform.position;
 
 			BulletList.Add(Obj);
 		}
@@ -134,26 +129,20 @@ public class BulletPattern : MonoBehaviour
 
 	public IEnumerator GetDelayScrewPattern(int _lv)
 	{
-        int iCount = LVTable[Pattern.DelayScrew][_lv];
-
-		float fAngle = 0.0f;
+        int _count = LVTable[Pattern.DelayScrew][_lv];
 
 		int i = 0;
 
-        while (i < (iCount) * 3)
+        while (i < _count)
 		{
 			GameObject Obj = Instantiate(BulletPrefab);
 			BulletControll controller = Obj.GetComponent<BulletControll>();
             
 			controller.Option = false;
 
-			fAngle += 360.0f / iCount;
-			controller.Direction = new Vector3(
-				Mathf.Cos(fAngle * Mathf.Deg2Rad),
-				Mathf.Sin(fAngle * Mathf.Deg2Rad),
-				0.0f) * Speed;
+            controller.Angle = i * 360.0f / _count;
 
-			Obj.transform.position = transform.position;
+            Obj.transform.position = transform.position;
 
 			BulletList.Add(Obj);
 			++i;
@@ -196,25 +185,23 @@ public class BulletPattern : MonoBehaviour
 			if (Target.name=="Cursor")
 			{
 				Vector3 ScreenTransformPosition = Camera.main.WorldToScreenPoint(transform.position);
-				controll.Direction = Target.transform.position - ScreenTransformPosition;
+                _angle = getAngle(ScreenTransformPosition, Target.transform.position);
 			}
 			else
 			{
-				controll.Direction = Target.transform.position - transform.position;
+                _angle = getAngle(transform.position, Target.transform.position);
 			}
-		}
-		else
-			controll.Direction = TargetDir;
+        }
 
-		controll.Speed = 3.3f;
+		controll.Speed = 1.3f;
+		controll.Angle = _angle;
 		ParentObj.transform.position = transform.position;
         ParentObj.transform.localScale = BulletPrefab.transform.localScale * 2;
 
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(3.5f);
 		Vector3 pos = ParentObj.transform.position;
 		Destroy(ParentObj);
 
-        _count = 10;
 		for (int i = 0; i < _count; ++i)
 		{
 			GameObject Obj = Instantiate(BulletPrefab);
@@ -223,13 +210,9 @@ public class BulletPattern : MonoBehaviour
 
 			controller.Option = _option;
 			//controller.Speed = 2.0f + _lv/2.0f;
-			_angle += 360.0f / _count;
-			controller.Direction = new Vector3(
-				Mathf.Cos(_angle * Mathf.Deg2Rad),
-				Mathf.Sin(_angle * Mathf.Deg2Rad),
-				0.0f);
+			controller.Angle = i * 360.0f / _count;
 
-			Obj.transform.position = pos;
+            Obj.transform.position = pos;
 
 			BulletList.Add(Obj);
 		}
@@ -254,4 +237,11 @@ public class BulletPattern : MonoBehaviour
 		yield return new WaitForSeconds(t);
 		ShotEnd = true;
 	}
+
+    public static float getAngle(Vector3 from, Vector3 to)
+    {
+        Vector3 v = from - to;
+
+        return (180 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg) % 360;
+    }
 }
